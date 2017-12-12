@@ -47,8 +47,9 @@ function logs($message, $module){
     fclose($log);
 }
 
-function view($view){
+function view($view, $header = null){
     $view_path = 'application/views/'.$view.'.php';
+
     if(is_file($view_path))
         include($view_path);
     else{
