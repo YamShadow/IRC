@@ -5,6 +5,8 @@ switch($action){
     case 'login':
         echo 'login';
 
+        $data['title'] = 'lol';
+
 
 
 

@@ -43,9 +43,7 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
-var_dump(ENVIRONMENT);
 logs('Test', 'core');
-
 
 require_once('application/config/route.php');
 
@@ -58,8 +56,9 @@ $controller_path = 'application/controller/'.$routes[$action].'.php';
 
 if(is_file($controller_path))
     include($controller_path);
-else 
+else{
+	logs('Controlleur inconnu: '.$action, 'index.php');
 	die('Illegal action : '.$action);
-
+}
 
 ?>

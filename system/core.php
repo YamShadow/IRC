@@ -2,8 +2,6 @@
 
 $data = json_decode(file_get_contents('application/config/config.json'), true);
 
-var_dump($data);
-
 include('functionCore.php');
 
 foreach($data['config'] as $key => $value)
@@ -24,5 +22,3 @@ if(MAINTENANCE){
         die();
     }
 }
-
-var_dump(BASE_URL);
