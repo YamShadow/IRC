@@ -1,2 +1,3 @@
 logs/
 Node/node_modules/
+application/config/config.json

@@ -18,7 +18,6 @@ switch($action){
                 'page' => 'auth/'.$action,
                 'data' => array(),
             )
-
         );
         view('template', $header);
         break;
@@ -44,7 +43,6 @@ switch($action){
                 'page' => 'auth/'.$action,
                 'data' => array(),
             )
-
         );
         view('template', $header);
         break;
