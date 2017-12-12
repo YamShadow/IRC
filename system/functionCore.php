@@ -14,13 +14,6 @@ function conf_baseurl($prod, $git, $ssl){
 
     if( $_SERVER['SERVER_NAME'] == 'localhost')
         $url .= 'localhost/';
-    else if ($_SERVER['SERVER_NAME'] == 'unidev.pushup.agency'){
-        $url .= 'unidev.pushup.agency/';
-        if (strpos($_SERVER['PHP_SELF'], 'preprod'))
-            $url .= 'preprod/';
-        else
-            $url .= 'production/';
-    }
     if($git{strlen($git)-1} != '/'){ $git = $git.'/'; }
     return $url . $git;
 }
@@ -58,6 +51,8 @@ function view($view){
     $view_path = 'application/views/'.$view.'.php';
     if(is_file($view_path))
         include($view_path);
-    else
+    else{
+        logs('View inconnue: '.$view, 'index.php');
         die('template is missing : '.$view_path);
+    }
 }
