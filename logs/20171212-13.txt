@@ -1,0 +1,1 @@
+[2017-12-12 14:35:56][core] ::1 à l\'adresse /m1Dev/IRC/index.php  - Test
