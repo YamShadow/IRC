@@ -6,7 +6,7 @@ switch($action){
             'title' => 'Formulaire de login',
             'description' => 'Page d\'interface de connexion au Tchat',
             'css' => array(
-                'main'
+                'auth/login',
             ),
             'js' => array(
                 'main'
@@ -32,7 +32,7 @@ switch($action){
             'title' => 'Formulaire d\'inscription',
             'description' => 'Page d\'interface de d\'inscription au Tchat',
             'css' => array(
-                'main'
+                'auth/login'
             ),
             'js' => array(
                 'main'

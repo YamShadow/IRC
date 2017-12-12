@@ -12,7 +12,7 @@
     <?php 
     if (isset($header['css'])){
         foreach ($header['css'] as $fichier) {
-            echo "<link rel='stylesheet' type='text/css' href='assets/css/'.$fichier.'.css' />\n";
+            echo "<link rel='stylesheet' type='text/css' href='assets/css/".$fichier.".css' />\n";
         }
     }
     ?>
