@@ -1,44 +1,63 @@
 <?php 
 
-// include('film.class.php');
+define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+require_once('system/core.php');
 
-// $film = new Film();
-// $film->id_film = 3169;
-// $film->hydrate();
 
-// var_dump($film);
+/* 
+mode possible : 
+		*     development
+		*     testing
+		*     production
 
-// $film->genre->nom = 'Je suis un méga genre';
-// $film->genre->id_genre = 40;
+*/
 
-// // Tenacious D in The Pick of Destiny
+/*
+ *---------------------------------------------------------------
+ * ERROR REPORTING
+ *---------------------------------------------------------------
+*/
+switch (ENVIRONMENT)
+{
+	case 'development':
+		error_reporting(-1);
+		ini_set('display_errors', 1);
+	break;
 
-// $film->titre = 'Je suis un autre nom';
+	case 'testing':
+	case 'production':
+		ini_set('display_errors', 0);
+		if (version_compare(PHP_VERSION, '5.3', '>='))
+		{
+			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+		}
+		else
+		{
+			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+		}
+	break;
 
-// $recup = $film->save();
-// var_dump($recup);
+	default:
+		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+		echo 'The application environment is not set correctly.';
+		exit(1); // EXIT_ERROR
+}
 
-// $film->genre->nom = 'Je le rename !';
-// $recup = $film->save();
-// var_dump($recup);
-
-//doit dumper $film hydraté ($film->genre qui contient le genre hydraté et $film->distributeur qui contient le distributeur hydraté)
-
-require_once('config/route.php');
+require_once('application/config/route.php');
 
 if(empty($_GET['action']))
     $action = 'home';
 else
     $action = $_GET['action'];
 
-$controller_path = 'controller/'.$routes[$action].'.php';
+$controller_path = 'application/controller/'.$routes[$action].'.php';
 
 if(is_file($controller_path))
     include($controller_path);
 else 
     die('Illegal action : '.$action);
 
-$view_path = 'views/'.$action.'.php';
+$view_path = 'application/views/'.$action.'.php';
 if(is_file($view_path))
     include($view_path);
 else

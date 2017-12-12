@@ -1,0 +1,32 @@
+{
+    "config": {
+        "base_url": {
+            "git" : "m1Dev/irc"
+            , "prod" : "##URLPROD##"
+            , "ssl" : false
+        }
+		, "database" : {
+            "localhost" : {
+                "hostname": "localhost"
+                , "username" : "root"
+                , "password" : ""
+                , "database" : "irc"
+            }
+            ,"prod" : {
+                "hostname": "##HOSTPROD##"
+                , "username" : "##USERPROD##"
+                , "password" : "##PWDPROD##"
+                , "database" : "##BASEPROD##"
+            }
+        }
+        , "upBDD" : false
+        , "logs" : true
+        , "csrf_protection" : true
+        , "csrf_cookie_name" : "5432efdc070645ea3816dcb2598301aa86716de7b2bae114c20b05fb57e7893a"
+        , "csrf_token_name" : "7510aa38ba4e2e76103ebcb201ac8e5cdb550f5e87e5082127509f7c07d5e835"
+		, "application_folder" : "application/"
+		, "system_path" : "system"
+        , "maintenance" : false
+        , "echapMaintenance" : "maintenance"
+    }
+}
