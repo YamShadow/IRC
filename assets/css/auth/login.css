@@ -95,44 +95,35 @@ p {
 }
 
 .body .pulse {
-  -webkit-animation: pulse 1s ease-in-out infinite;
-  -moz-animation: pulse 1s ease-in-out infinite;
-  animation: pulse 1s ease-in-out infinite;
+  -webkit-animation: pulse 1.05s ease-in-out infinite;
+  -moz-animation: pulse 1.05s ease-in-out infinite;
+  animation: pulse 1.05s ease-in-out infinite;
 }
 
 @-webkit-keyframes pulse {
-  0% {
-    border-bottom: none;
-  }
   50% {
-    border-bottom: 1px solid white;
+    border-bottom-color: white;
   }
   100% {
-    border-bottom: none;
+    border-bottom-color: #232323;
   }
 }
 
 @-moz-keyframes pulse {
-  0% {
-    border-bottom: none;
-  }
   50% {
-    border-bottom: 1px solid white;
+    border-bottom-color: white;
   }
   100% {
-    border-bottom: none;
+    border-bottom-color: #232323;
   }
 }
 
 @keyframes pulse {
-  0% {
-    border-bottom: none;
-  }
   50% {
-    border-bottom: 1px solid white;
+    border-bottom-color: white;
   }
   100% {
-    border-bottom: none;
+    border-bottom-color: #232323;
   }
 }
 
@@ -147,7 +138,7 @@ p {
 .input-shell {
   background-color: #232323;
   outline: none;
-  border: none;
+  border: 1px solid #232323;
   color: white;
 }
 
