@@ -102,37 +102,37 @@ p {
 
 @-webkit-keyframes pulse {
   0% {
-    opacity: 0;
+    border-bottom: none;
   }
   50% {
-    opacity: 1;
+    border-bottom: 1px solid white;
   }
   100% {
-    opacity: 0;
+    border-bottom: none;
   }
 }
 
 @-moz-keyframes pulse {
   0% {
-    opacity: 0;
+    border-bottom: none;
   }
   50% {
-    opacity: 1;
+    border-bottom: 1px solid white;
   }
   100% {
-    opacity: 0;
+    border-bottom: none;
   }
 }
 
 @keyframes pulse {
   0% {
-    opacity: 0;
+    border-bottom: none;
   }
   50% {
-    opacity: 1;
+    border-bottom: 1px solid white;
   }
   100% {
-    opacity: 0;
+    border-bottom: none;
   }
 }
 
@@ -142,4 +142,26 @@ p {
 
 .comment {
   opacity: .5;
+}
+
+.input-shell {
+  background-color: #232323;
+  outline: none;
+  border: none;
+  color: white;
+}
+
+.input-shell:focus {
+  animation: none;
+}
+
+.btn-shell {
+  background: none;
+  color: white;
+  outline: none;
+  border-right: none;
+  border-left: none;
+  padding: 10px 0;
+  border-bottom: 1px dashed white;
+  border-top: 1px dashed white;
 }
