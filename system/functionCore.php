@@ -1,5 +1,9 @@
 <?php 
 
+/*
+Methode conf_baseurl qui permet en fonction des méthode défine de definir la base_url
+*/
+
 function conf_baseurl($prod, $git, $ssl){
     $url = $ssl ? 'https://' : 'http://';
     if($prod{strlen($prod)-1} != '/'){ $prod = $prod.'/'; }
@@ -21,7 +25,32 @@ function conf_baseurl($prod, $git, $ssl){
     return $url . $git;
 }
 
+/*
+Methode conf_bdd qui permet en fonction des méthode défine de linké une base de donnée local ou en prod
+*/
+
 function conf_bdd($database){
     if (ENVIRONMENT == 'production') return $database['prod'];
     if( $_SERVER['SERVER_NAME'] == 'localhost') return $database['localhost'];
+}
+
+/***** Traitement *****/
+
+/**
+* Methode logs qui permet de crée un log
+* @param $message
+*/
+
+function logs($message, $module){
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {$ip = $_SERVER['HTTP_CLIENT_IP'];}
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];}
+    else {$ip = $_SERVER['REMOTE_ADDR'];}
+    
+    $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
+    if(!is_dir('logs/')){mkdir('logs/', '750');}
+    var_dump(getcwd());
+    $log = fopen('logs/'.date('Ymd-H').'.txt', 'a+');
+    $prepare = "[".$date->format('Y-m-d H:i:s')."][".$module."] ".$ip." à l\'adresse ".$_SERVER['PHP_SELF']."  - ".$message."\r\n";
+    fputs($log, $prepare);
+    fclose($log);
 }
