@@ -1,6 +1,5 @@
 <?php 
 
-
 $data = json_decode(file_get_contents('application/config/config.json'), true);
 
 var_dump($data);

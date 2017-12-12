@@ -24,5 +24,4 @@ function conf_baseurl($prod, $git, $ssl){
 function conf_bdd($database){
     if (ENVIRONMENT == 'production') return $database['prod'];
     if( $_SERVER['SERVER_NAME'] == 'localhost') return $database['localhost'];
-    else if ($_SERVER['SERVER_NAME'] == 'unidev.pushup.agency') return $database['unidev'];
 }
