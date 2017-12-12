@@ -46,6 +46,7 @@ switch (ENVIRONMENT)
 var_dump(ENVIRONMENT);
 logs('Test', 'core');
 
+
 require_once('application/config/route.php');
 
 if(empty($_GET['action']))
@@ -59,6 +60,6 @@ if(is_file($controller_path))
     include($controller_path);
 else 
 	die('Illegal action : '.$action);
-	
+
 
 ?>
