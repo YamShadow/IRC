@@ -43,24 +43,22 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
+var_dump(ENVIRONMENT);
+logs('Test', 'core');
+
 require_once('application/config/route.php');
 
 if(empty($_GET['action']))
     $action = 'home';
 else
-    $action = $_GET['action'];
+	$action = $_GET['action'];
 
 $controller_path = 'application/controller/'.$routes[$action].'.php';
 
 if(is_file($controller_path))
     include($controller_path);
 else 
-    die('Illegal action : '.$action);
-
-$view_path = 'application/views/'.$action.'.php';
-if(is_file($view_path))
-    include($view_path);
-else
-    die('template is missing : '.$view_path);
+	die('Illegal action : '.$action);
+	
 
 ?>

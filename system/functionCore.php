@@ -48,9 +48,16 @@ function logs($message, $module){
     
     $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
     if(!is_dir('logs/')){mkdir('logs/', '750');}
-    var_dump(getcwd());
     $log = fopen('logs/'.date('Ymd-H').'.txt', 'a+');
-    $prepare = "[".$date->format('Y-m-d H:i:s')."][".$module."] ".$ip." à l\'adresse ".$_SERVER['PHP_SELF']."  - ".$message."\r\n";
+    $prepare = "[".$date->format('Y-m-d H:i:s')."][".$module."] ".$ip." à l'adresse ".$_SERVER['PHP_SELF']."  - ".$message."\r\n";
     fputs($log, $prepare);
     fclose($log);
+}
+
+function view($view){
+    $view_path = 'application/views/'.$view.'.php';
+    if(is_file($view_path))
+        include($view_path);
+    else
+        die('template is missing : '.$view_path);
 }

@@ -4,9 +4,8 @@
 
 $routes = [
     'home' => 'HomeController',
-    'login_fom' => 'AuthController',
+    'login_form' => 'AuthController',
     'login' => 'AuthController',
-    'register_fom' => 'AuthController',
+    'register_form' => 'AuthController',
     'register' => 'AuthController',
-
 ];
