@@ -43,6 +43,13 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
+
+/* require_once('application/config/Rooter.class.php');
+$rooter = new Rooter();
+var_dump($_SERVER);
+$rooter->callToAction(BASE_URL);
+*/ 
+
 require_once('application/config/route.php');
 
 if(empty($_GET['action']))
@@ -61,6 +68,7 @@ $view_path = 'application/views/'.$action.'.php';
 if(is_file($view_path))
     include($view_path);
 else
-    die('template is missing : '.$view_path);
+	die('template is missing : '.$view_path);
+
 
 ?>
