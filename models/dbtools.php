@@ -1,6 +1,6 @@
 <?php
 
-include_once('config/define.php');
+include_once('../config/define.php');
     
     function    myQuery($query)
     {

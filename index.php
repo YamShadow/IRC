@@ -24,7 +24,7 @@
 
 //doit dumper $film hydraté ($film->genre qui contient le genre hydraté et $film->distributeur qui contient le distributeur hydraté)
 
-require_once('route.php');
+require_once('config/route.php');
 
 if(empty($_GET['action']))
     $action = 'home';
