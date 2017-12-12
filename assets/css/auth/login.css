@@ -165,3 +165,11 @@ p {
   border-bottom: 1px dashed white;
   border-top: 1px dashed white;
 }
+
+.btn-shell::before {
+  content: '| ';
+}
+
+.btn-shell::after {
+  content: ' |';
+}

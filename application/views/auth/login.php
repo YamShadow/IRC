@@ -15,7 +15,7 @@
                 <div class="prompt">$ <span class="command">add link register</span></div>
                 <div class="prompt"><a href="index.php?action=register" title="Inscription au Tchat">Créer votre compte</a></div>
                 <div class="prompt">$ <span class="command">add input connexion</span></div>
-                <div><button type="submit" class="btn-shell">| Connexion |</button></div>
+                <div><button type="submit" class="btn-shell">Connexion</button></div>
             </form>
         </pre>
     </div>
