@@ -27,9 +27,9 @@ switch($action){
         var_dump(DATABASE);
         require('application/models/functions/users.php');
         $users = getUser();
-        var_dump($users);
         if($users){
-            echo "Je suis reconnu !!!!";
+            setSessionUser($users);
+            redirect('chat');
         }
         else{
             redirect('login');
@@ -61,12 +61,12 @@ switch($action){
     // Permet de faire le traitement du formulaire d'inscription
         require('application/models/functions/users.php');
         $users = setUser();
-        // if($users){
-        //     echo "Je suis inscrit !!!!";
-        // }
-        // else{
-        //     redirect('register');
-        // }
+        if($users){
+            redirect('login');
+        }
+        else{
+            redirect('register');
+        }
 
 
         // $user = new User();

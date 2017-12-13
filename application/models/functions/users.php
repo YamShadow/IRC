@@ -39,8 +39,6 @@ function checkDisponibilitePseudo(){
 
 }
 
-
-
 function setUser(){
     $valide = true;
     if(!isset($_POST['login']) || empty($_POST['login'])){
@@ -78,4 +76,12 @@ function setUser(){
         }
     }
     return false;
+}
+
+function setSessionUser($user){
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_pseudo'] = $user['pseudo'];
+    $_SESSION['user_image'] = $user['image'];
+    $_SESSION['user_mail'] = $user['mail'];
+    $_SESSION['user_connected'] = 1;
 }

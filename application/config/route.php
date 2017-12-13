@@ -8,4 +8,5 @@ $routes = [
     'login' => 'AuthController',
     'register_form' => 'AuthController',
     'register' => 'AuthController',
+    'chat' => 'ChatController',
 ];
