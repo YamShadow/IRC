@@ -10,7 +10,7 @@
                 "hostname": "localhost"
                 , "username" : "root"
                 , "password" : ""
-                , "database" : "irc"
+                , "database" : "chatbot"
             }
             ,"prod" : {
                 "hostname": "##HOSTPROD##"

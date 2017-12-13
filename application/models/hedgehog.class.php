@@ -99,4 +99,8 @@ Class Hedgehog {
         }
     }
 
+    public function __autoload($class_name){
+        include 'models/'.$class_name.'class.php';
+    }
+
 }

@@ -1,13 +1,11 @@
 <?php
-
-include_once('../config/define.php');
     
     function    myQuery($query)
     {
         global $link;
 
         if (empty($link))
-            $link = mysqli_connect(HOST, USER, PWD, BASE) or die (mysqli_connect_error());
+            $link = mysqli_connect(DATABASE['hostname'], DATABASE['username'], DATABASE['password'], DATABASE['database']) or die (mysqli_connect_error());
         $result = mysqli_query($link, $query) or die (mysqli_error($link));
         return $result;
     }

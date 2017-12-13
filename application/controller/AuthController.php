@@ -24,6 +24,17 @@ switch($action){
     case 'login_form':
     // Permet de faire le traitement du formulaire de connexion
         echo 'login_form';
+        var_dump(DATABASE);
+        require('application/models/functions/users.php');
+        $users = getUser();
+        var_dump($users);
+        if($users){
+            echo "Je suis reconnu !!!!";
+        }
+        else{
+            redirect('login');
+        }
+
         break;
     case 'register':
     // Permet d'affichier toute la partie dédiée au formulaire d'inscription
@@ -48,11 +59,21 @@ switch($action){
         break;
     case 'register_form':
     // Permet de faire le traitement du formulaire d'inscription
-        require_once('models/users.class.php');
-        $user = new User();
-        $user->nom = $_POST['nom'];
-        $user->prenom = $_POST['prenom'];
+        require('application/models/functions/users.php');
+        $users = setUser();
+        // if($users){
+        //     echo "Je suis inscrit !!!!";
+        // }
+        // else{
+        //     redirect('register');
+        // }
+
+
+        // $user = new User();
+        // $user->nom = $_POST['nom'];
+        // $user->prenom = $_POST['prenom'];
         //header location 
+        break;
     default: 
         die('Erreur de routing dans AuthController.');
 }

@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS `users` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `pseudo` VARCHAR(100) NOT NULL,
     `mail` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
     `image` TEXT,
     `connected` int(1) NOT NULL,
-
 
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS `messages_prives` (
     `emetteur` INT NOT NULL,
     `destinataire` INT NOT NULL,
     -- `dateMessage` Date NOT NULL,
-
 
     PRIMARY KEY (id),
     FOREIGN KEY `emetteur` REFERENCES (`users`.`id`),

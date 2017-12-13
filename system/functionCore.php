@@ -57,3 +57,7 @@ function view($view, $header = null){
         die('template is missing : '.$view_path);
     }
 }
+
+function redirect($action){
+    header('Location: index.php?action='.$action);
+}
