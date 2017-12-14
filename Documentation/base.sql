@@ -1,8 +1,8 @@
 /* Pour les tests en dev*/
-DROP DATABASE IF EXISTS `chatbot`;
+DROP DATABASE IF EXISTS `FinalChatProject`;
 
-CREATE DATABASE IF NOT EXISTS `chatbot`;
-USE `chatbot`;
+CREATE DATABASE IF NOT EXISTS `FinalChatProject`;
+USE `FinalChatProject`;
 
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
