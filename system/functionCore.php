@@ -61,3 +61,14 @@ function view($view, $header = null){
 function redirect($action){
     header('Location: index.php?action='.$action);
 }
+
+function seterr($mdg, $module) {
+    if (ENVIRONNEMENT == 'production') {
+        header('x', true, 500);
+        echo '<br />Veuillez contacter un administrateur système ou réessayer plus tard.';
+        exit();
+    } else if (ENVIRONNEMENT == 'testing') {
+        logs($msg, $module);
+        die('An error has occured. Please consult logs file.');
+    }
+}

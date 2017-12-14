@@ -1,7 +1,8 @@
 <?php 
+namespace models;
 
 include_once('dbtools.php');
-include_once('/system/function_core.php');
+include_once('system/functionCore.php');
 
 Class DataObject {
 
@@ -10,7 +11,7 @@ Class DataObject {
 
 	*/
 
-	protected $table_name = null;
+	protected $tableName = null;
 	protected $primaryKey = null;
 	protected $innerFields = [];        // Contient la liste des champs qui sont propres à la table
 	protected $foreignFields = [];      // Contient la liste des champs qui sont des clefs étrangères OtO
@@ -22,7 +23,7 @@ Class DataObject {
 		if ($id != null) {
 			// Si on fournit un id, c'est qu'on veut récupérer l'instance qui est en base avec cet id
 			if (is_numeric($id)) {
-				$this->primaryKey = $id;
+				$this->{$this->primaryKey} = $id;
 				$this->hydrate();
 				$this->isNewOne = false;
 			} else 
@@ -30,34 +31,43 @@ Class DataObject {
 		}
 	}
 
-	public function setAttributes() {
+	/* public function setAttributes() {
 		// La seule fonction que l'utilisateur aura a réécrire
 
 		// Instanciation des variables
-	}
+	} */
 
-	public function hydrate() {
-
+	public function hydrate() {			// Ne prend pour l'instant pas en compte les FK MtM
 		if ($this->isNewOne) 
-			seterr('Error: tentavive d\'hydrate une entité qui n\'existe pas encore en base', 'DataObject.hydrate');
+			seterr('Fatal error: tentavive d\'hydrate une entité qui n\'existe pas encore en base', 'DataObject.hydrate');
 
 		if ($this->{$this->primaryKey} == null) 
 			seterr('Fatal error: pas de primary key.', 'DataObject.hydrate');
 
-		$query = 'SELECT * FROM '.$this->table_name.' where '.$this->primaryKey.'='.$this->{$this->primaryKey};
+		$query = 'SELECT * FROM '.$this->tableName.' WHERE '.$this->primaryKey.' = '.$this->{$this->primaryKey};
+
 		$result = dbFetchAssoc($query);
 		if (empty($result))
-			seterr('Fatal error: hydrate a échoué', 'DataObject.hydrate');
-		
-		foreach($result as $keyElm => $valueElm){
-			if($keyElm != $this->primaryKey){
-				$this->$keyElm = $valueElm;
-			}
+			seterr('Fatal error: hydrate n\'a pas pu récupérer de donnée', 'DataObject.hydrate');
+
+
+		foreach ($this->innerFields as $field) {				// On set tous les champs classiques
+			$this->$field = $result[$field];
+		}
+
+		foreach ($this->foreignFields as $field => $class) {	// On set toutes les FK, donc on doit créer des objets des class concernées et les hydrate
+			$this->$field = new $class($result[$field]);
+			/* Si on doit tricher :
+				$this->$field = new $class;
+				$this->$field->{$this->$field->$primaryKey} = $result[$field];
+				$this->$field->hydrate();
+			*/
 		}
 	}
 
-	public function hydrateWith() {
-
+	public function getBy($array) {
+		// Nous renvoie l'entité qui correspond à l'array de conditions en entrée ou false si rien trouvé
+		// Array en entrée = ['champ' => value, 'champ' => value]
 	}
 
 	public function __get($attr_name) {
@@ -75,7 +85,7 @@ Class DataObject {
 	}
 
 	public function save() {
-		$query = 'SELECT * FROM '.$this->table_name.' WHERE '.$this->primaryKey.'='.$this->{$this->primaryKey};
+		$query = 'SELECT * FROM '.$this->tableName.' WHERE '.$this->primaryKey.'='.$this->{$this->primaryKey};
 		$stringName = '';
 		$stringValue = '';
 		$result = dbFetchAssoc($query);
@@ -94,7 +104,7 @@ Class DataObject {
 					$stringValue .= '"'.utf8_decode($this->$valueChamps).'"';
 				}
 			}
-			$query = 'INSERT INTO '.$this->table_name.' ('.$stringName.') VALUES ('.$stringValue.')';
+			$query = 'INSERT INTO '.$this->tableName.' ('.$stringName.') VALUES ('.$stringValue.')';
 			$result = dbQuery($query);
 
 			if(!$result)
@@ -102,7 +112,7 @@ Class DataObject {
 			return lastId($result);
 
 		} else {
-			$query = 'UPDATE '.$this->table_name.' set';
+			$query = 'UPDATE '.$this->tableName.' set';
 			$flag = true;
 			foreach($this->fields as $valueChamps){
 				if($flag){
@@ -128,8 +138,8 @@ Class DataObject {
 		}
 	}
 
-	public function __autoload($class_name) {
+	/* public function __autoload($class_name) {
 		include 'models/'.$class_name.'.class.php';
-	}
+	} */
 
 }

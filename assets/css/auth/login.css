@@ -1,4 +1,5 @@
 body {
+  position: relative;
   background: #25313e;
   color: #fff;
   font-family: 'Proxima Nova', 'Helvetica Neue', helvetica, arial, sans-serif;

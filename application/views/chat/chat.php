@@ -16,9 +16,13 @@
                 <ul>
                     <li v-for="salon in salons">{{ salon.text }}</li>
                 </ul>
-                <input class="pulse input-shell" type="text" v-model="name" />
-                <button class="btn-shell" v-on:click="addSalon">Ajouter un salon</button>
+                
+                <button class="btn-shell addSalon">Ajouter un salon</button>
             </aside>
+
+            <object data="http://localhost:3000?pseudo=<?= $_SESSION['user_pseudo'] ?>" width="1000" height="1000">
+                <p>Le serveur Node n'est pas lancé !</p>
+            </object>
 
             <aside id="connectedMembers">
             <h2 class="comment">#Connectés :</h2>
@@ -29,3 +33,19 @@
         </pre>
     </div>
 </main>
+
+<div id="modalAddSalon">
+    <div class="window">
+        <div class="bar">
+            <div class="btn"></div>
+        </div>
+        <div class="body">
+            <pre>
+                <span data-typer="$ add input newSalon"></span>
+                <input class="pulse input-shell" type="text" v-model="name" />
+                <button class="btn-shell" v-on:click="addSalon">Ajouter</button>
+            </pre>
+        </div>
+    </div>
+    
+</div>

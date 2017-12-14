@@ -16,6 +16,7 @@ IRC for ECV Digital. Student Project.
 ### Jeudi 14
 On s'est fixé de partir sans serveur pour commencer. 
 * Jordan : Fini la BDD et sorti un schéma de celle-ci.
+* Jordan : Avancée dans ORM. Le côté foreign key est clair, sauf pour les tables de liaisons.
 
 --------------
 
@@ -31,6 +32,7 @@ On s'est fixé de partir sans serveur pour commencer.
 - [ ] <del>Maquettes</del>
 - [ ] Implémenter les erreurs dans les views Logins/Register
 - [ ] Commencer les get des data pour Florian
+- [ ] .htaccess
 
 ### Florian
 - [ ] Implémenter Vue.js

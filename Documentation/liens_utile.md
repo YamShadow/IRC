@@ -3,6 +3,7 @@
 ## Le projet
 
 * GitHub : https://github.com/YamShadow/IRC
+* GoogleDoc : https://docs.google.com/document/d/1lVHFOlGys7hYZQkiNYtUEwuFJbBlta7d6j4rju5Aq70/edit
 
 ## Socket IO
 
