@@ -13,14 +13,18 @@ IRC for ECV Digital. Student Project.
 ### Mercredi 13
 * Mathieu : Création des vues login/inscription (html/css). Création du modèle users (inscription/checkpseudodispo/getUser). Création ChatController+views lié. Redirection effecté en cas de connexion.
 
+### Jeudi 14
+On s'est fixé de partir sans serveur pour commencer. 
+* Jordan : Fini la BDD et sorti un schéma de celle-ci.
+
 --------------
 
 ## TODO
 
 ### Jordan
 - [ ] Faire ORM
-- [ ] Finir BDD
-- [ ] Sortir le schéma de la base
+- [x] Finir BDD
+- [x] Sortir le schéma de la base
 
 ### Mathieu
 - [x] Partie métier de login et register
