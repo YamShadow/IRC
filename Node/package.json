@@ -15,10 +15,12 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "nvm": "0.0.4",
+    "path": "^0.12.7",
     "socket.io": "^2.0.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1"
+    "babel-preset-env": "^1.6.1",
+    "express": "^4.16.2"
   }
 }
