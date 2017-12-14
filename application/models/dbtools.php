@@ -1,11 +1,12 @@
-<?php
+﻿<?php
     
     function dbQuery($query) {
         global $link;
 
         if (empty($link))
             $link = mysqli_connect(DATABASE['hostname'], DATABASE['username'], DATABASE['password'], DATABASE['database']) or die (mysqli_connect_error());
-        $result = mysqli_query($link, mysqli_real_escape_string($link, htmlspecialchars($query))) or die (mysqli_error($link));
+        //$result = mysqli_query($link, mysqli_real_escape_string($link, htmlspecialchars($query))) or die (mysqli_error($link));
+        $result = mysqli_query($link, $query) or die (mysqli_error($link));
         return $result;
     }
 
