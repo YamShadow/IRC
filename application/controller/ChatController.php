@@ -1,6 +1,6 @@
 <?php 
 
-if(isset($_SESSION['pseudo'])){
+if(isset($_SESSION['user_pseudo'])){
     switch($action){
         case 'chat':
         // Permet d'afficher toute la partie dédié au formulaire de connexion
