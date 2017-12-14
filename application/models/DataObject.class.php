@@ -18,35 +18,36 @@ Class DataObject {
 	protected $isNewOne = true;			// Indique s'il s'agit d'une nouvelle entité (défini pendant __construct). Utile pour set en base.
 
 	public function __construct($id = null) {
+		$this->setAttributes();
 		if ($id != null) {
 			// Si on fournit un id, c'est qu'on veut récupérer l'instance qui est en base avec cet id
 			if (is_numeric($id)) {
 				$this->primaryKey = $id;
 				$this->hydrate();
 				$this->isNewOne = false;
-			} else {
-				logs('ERREUR : Une clef primaire non numérique a été fournie en construction d\'une entité.', 'DataObject.class.php');
-				die('Une clef primaire non numérique a été fournie');
-			}
+			} else 
+				seterr('ERREUR : Une clef primaire non numérique a été fournie en construction d\'une entité.', 'DataObject.class.php');
 		}
 	}
 
-	public function instantiate() {
+	public function setAttributes() {
 		// La seule fonction que l'utilisateur aura a réécrire
 
 		// Instanciation des variables
 	}
 
-	public function hydrate(){
+	public function hydrate() {
 
-		if($this->{$this->primaryKey} == null){
-			die('Fatal error: pas de primary key.');
-		}
+		if ($this->isNewOne) 
+			seterr('Error: tentavive d\'hydrate une entité qui n\'existe pas encore en base', 'DataObject.hydrate');
+
+		if ($this->{$this->primaryKey} == null) 
+			seterr('Fatal error: pas de primary key.', 'DataObject.hydrate');
 
 		$query = 'SELECT * FROM '.$this->table_name.' where '.$this->primaryKey.'='.$this->{$this->primaryKey};
 		$result = dbFetchAssoc($query);
-		if(empty($result))
-			return false;
+		if (empty($result))
+			seterr('Fatal error: hydrate a échoué', 'DataObject.hydrate');
 		
 		foreach($result as $keyElm => $valueElm){
 			if($keyElm != $this->primaryKey){
@@ -59,26 +60,22 @@ Class DataObject {
 
 	}
 
-	public function __get($attr_name){
-		if(in_array($attr_name, $this->fields)){
+	public function __get($attr_name) {
+		if(in_array($attr_name, $this->fields))
 			return $this->$attr_name;
-		}
-		else{
-			die('La variable n\'existe pas');
-		}
+		else
+			seterr('La variable n\'existe pas', 'DataObject.__get');
 	}
 
-	public function __set($attr_name, $attr_value){
-		if(in_array($attr_name, $this->fields)){
+	public function __set($attr_name, $attr_value) {
+		if(in_array($attr_name, $this->fields))
 			$this->$attr_name = $attr_value;
-		}
-		else{
-			die('La variable n\'existe pas');
-		}
+		else
+			seterr('La variable n\'existe pas', 'DataObject.__set');
 	}
 
-	public function save(){
-		$query = 'SELECT * FROM '.$this->table_name.' where '.$this->primaryKey.'='.$this->{$this->primaryKey};
+	public function save() {
+		$query = 'SELECT * FROM '.$this->table_name.' WHERE '.$this->primaryKey.'='.$this->{$this->primaryKey};
 		$stringName = '';
 		$stringValue = '';
 		$result = dbFetchAssoc($query);
@@ -101,11 +98,10 @@ Class DataObject {
 			$result = dbQuery($query);
 
 			if(!$result)
-				die('Erreur durant l\'insert du genre');
+				seterr('Erreur durant l\'insert du genre', 'DataObject.save');
 			return lastId($result);
 
-		}
-		else{
+		} else {
 			$query = 'UPDATE '.$this->table_name.' set';
 			$flag = true;
 			foreach($this->fields as $valueChamps){
@@ -123,16 +119,16 @@ Class DataObject {
 				}
 			}
 			$query .= ' where '.$this->primaryKey.'='.$this->{$this->primaryKey};
-			var_dump($query);
-			die();
+			/* var_dump($query);
+			die(); */
 			$result = dbQuery($query);
 			if(!$result)
-				die('Erreur durant la maj du genre');
+				seterr('Erreur durant la maj du genre', 'DataObject.save');
 			return true;
 		}
 	}
 
-	public function __autoload($class_name){
+	public function __autoload($class_name) {
 		include 'models/'.$class_name.'.class.php';
 	}
 
