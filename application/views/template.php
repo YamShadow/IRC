@@ -21,7 +21,7 @@ if (isset($header['jquery']) && $header['jquery'])
 // Ajout du JS
 if (isset($header['js'])){
     foreach ($header['js'] as $fichier) {
-        echo "<script type='text/javascript' src='assets/js/'.$fichier.'.js'></script>\n";
+        echo "<script type='text/javascript' src='assets/js/".$fichier.".js'></script>\n";
     }
 }
 

@@ -1,0 +1,41 @@
+h2, h3 {
+    font-weight: normal;
+}
+
+.window {
+    height: 80%;
+}
+
+.body {
+    height: 94.3%;
+}
+
+pre {
+    line-height: 2;
+}
+
+#salonsList {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    padding-left: 10px;
+}
+
+#connectedMembers {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+}
+
+
+.greenColor {
+    color: #32C146;
+}
+
+h3.custom {
+    line-height: 0.1;
+}

@@ -9,9 +9,12 @@ if(isset($_SESSION['user_pseudo'])){
                 'description' => 'Page d\'interface de connexion au Tchat',
                 'css' => array(
                     'auth/login',
+                    'chat/main'
                 ),
                 'js' => array(
+                    'vue',
                     'main'
+                    
                 ),
                 'jquery' => true,
                 'menu' => false,
