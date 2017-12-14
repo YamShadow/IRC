@@ -1,7 +1,6 @@
 <?php
     
-    function    myQuery($query)
-    {
+    function dbQuery($query) {
         global $link;
 
         if (empty($link))
@@ -10,11 +9,10 @@
         return $result;
     }
 
-    function    myFetchAssoc($query)
-    {
+    function dbFetchAssoc($query) {
         global $link;
 
-        $result = myQuery($query) or die (mysqli_error($link));
+        $result = dbQuery($query) or die (mysqli_error($link));
         if (!$result)
             return false;
         $tab_res = mysqli_fetch_assoc($result);
@@ -22,11 +20,10 @@
         
     }
     
-    function    myFetchAllAssoc($query)     
-    {
+    function dbFetchAllAssoc($query) {
         global $link;
 
-        $result = myQuery($query) or die (mysqli_error($link));
+        $result = dbQuery($query) or die (mysqli_error($link));
         if (!$result)
             return false;
 
@@ -37,7 +34,7 @@
         return $tab_res;
     }
 
-    function last_id($query){
+    function lastId($query) {
         global $link;
         
         return mysqli_insert_id($link);

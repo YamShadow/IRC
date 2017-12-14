@@ -16,7 +16,7 @@ function getUser(){
 
     if($valide){
         $query = 'SELECT * FROM users where pseudo="'.$_POST['login'].'" and password="'.md5($_POST['mdp']).'"';
-        $result = myFetchAssoc($query);
+        $result = dbFetchAssoc($query);
         if(empty($result))
             return false;
         else
@@ -29,7 +29,7 @@ function getUser(){
 function checkDisponibilitePseudo(){
     if(isset($_POST['login']) && !empty($_POST['login'])){ 
         $query = 'SELECT * FROM users where pseudo="'.$_POST['login'].'"';
-        $result = myFetchAssoc($query);
+        $result = dbFetchAssoc($query);
         if(empty($result))
             return true;
     }else{
@@ -61,11 +61,11 @@ function setUser(){
             if($_POST['mdp'] == $_POST['confirmMdp']){
                 $query = 'INSERT INTO users (`pseudo`, `image`, `password`, `mail`) VALUES ("'
                 .$_POST['login'].'","'.$_POST['image'].'","'.md5($_POST['mdp']).'", "")';
-                $result = myQuery($query);
+                $result = dbQuery($query);
 
                 if(!$result)
                     die('Erreur durant l\'insert du genre');
-                return last_id($result);
+                return lastId($result);
             }else{
                 $errors['mdpegaux'] = 'Veuillez saisir deux mots de passes identiques !';
                 return false;

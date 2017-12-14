@@ -10,13 +10,12 @@ Class DataObject {
 
 	*/
 
-	protected $pk = null;
 	protected $table_name = null;
 	protected $primaryKey = null;
 	protected $innerFields = [];        // Contient la liste des champs qui sont propres à la table
 	protected $foreignFields = [];      // Contient la liste des champs qui sont des clefs étrangères OtO
 	protected $foreignManyFields = [];  // Contient la liste des champs qui sont des clefs étrangères MtM
-	protected $isNewOne = false;		// Indique s'il s'agit d'une nouvelle entité (défini pendant __construct). Utile pour set en base.
+	protected $isNewOne = true;			// Indique s'il s'agit d'une nouvelle entité (défini pendant __construct). Utile pour set en base.
 
 	public function __construct($id = null) {
 		if ($id != null) {
@@ -24,26 +23,33 @@ Class DataObject {
 			if (is_numeric($id)) {
 				$this->primaryKey = $id;
 				$this->hydrate();
-			} else
+				$this->isNewOne = false;
+			} else {
 				logs('ERREUR : Une clef primaire non numérique a été fournie en construction d\'une entité.', 'DataObject.class.php');
-		
-		} else
-			$this->isNewOne = true;
+				die('Une clef primaire non numérique a été fournie');
+			}
+		}
+	}
+
+	public function instantiate() {
+		// La seule fonction que l'utilisateur aura a réécrire
+
+		// Instanciation des variables
 	}
 
 	public function hydrate(){
 
-		if($this->{$this->pk} == null){
-			die('Fatal error: pas de PK');
+		if($this->{$this->primaryKey} == null){
+			die('Fatal error: pas de primary key.');
 		}
 
-		$query = 'SELECT * FROM '.$this->table_name.' where '.$this->pk.'='.$this->{$this->pk};
-		$result = myFetchAssoc($query);
+		$query = 'SELECT * FROM '.$this->table_name.' where '.$this->primaryKey.'='.$this->{$this->primaryKey};
+		$result = dbFetchAssoc($query);
 		if(empty($result))
 			return false;
 		
 		foreach($result as $keyElm => $valueElm){
-			if($keyElm != $this->pk){
+			if($keyElm != $this->primaryKey){
 				$this->$keyElm = $valueElm;
 			}
 		}
@@ -72,15 +78,15 @@ Class DataObject {
 	}
 
 	public function save(){
-		$query = 'SELECT * FROM '.$this->table_name.' where '.$this->pk.'='.$this->{$this->pk};
+		$query = 'SELECT * FROM '.$this->table_name.' where '.$this->primaryKey.'='.$this->{$this->primaryKey};
 		$stringName = '';
 		$stringValue = '';
-		$result = myFetchAssoc($query);
+		$result = dbFetchAssoc($query);
 		if(empty($result)){
 			echo 'insert';
 			$flag = true;
 			foreach($this->fields as $valueChamps){
-				if($valueChamps != $this->pk){
+				if($valueChamps != $this->primaryKey){
 					if($flag)
 						$flag = false;
 					else{
@@ -92,11 +98,11 @@ Class DataObject {
 				}
 			}
 			$query = 'INSERT INTO '.$this->table_name.' ('.$stringName.') VALUES ('.$stringValue.')';
-			$result = myQuery($query);
+			$result = dbQuery($query);
 
 			if(!$result)
 				die('Erreur durant l\'insert du genre');
-			return last_id($result);
+			return lastId($result);
 
 		}
 		else{
@@ -108,18 +114,18 @@ Class DataObject {
 				}else{ 
 					$query .= ','; 
 				}
-				if($valueChamps != $this->pk){
+				if($valueChamps != $this->primaryKey){
 					if(gettype($this->$valueChamps) == 'object'){
-						$value = $this->{$this->$valueChamps->pk};
+						$value = $this->{$this->$valueChamps->primaryKey};
 					}else
 						$value = $this->$valueChamps;
 					$query .= ' `'.$valueChamps.'` = "'.utf8_decode($value).'"';
 				}
 			}
-			$query .= ' where '.$this->pk.'='.$this->{$this->pk};
+			$query .= ' where '.$this->primaryKey.'='.$this->{$this->primaryKey};
 			var_dump($query);
 			die();
-			$result = myQuery($query);
+			$result = dbQuery($query);
 			if(!$result)
 				die('Erreur durant la maj du genre');
 			return true;
