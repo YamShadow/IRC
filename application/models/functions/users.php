@@ -59,8 +59,8 @@ function setUser(){
     if($valide){
         if(checkDisponibilitePseudo()){
             if($_POST['mdp'] == $_POST['confirmMdp']){
-                $query = 'INSERT INTO users (`pseudo`, `image`, `password`, `mail`) VALUES ("'
-                .$_POST['login'].'","'.$_POST['image'].'","'.md5($_POST['mdp']).'", "")';
+                $query = 'INSERT INTO users (`pseudo`, `image`, `password`, `mail`, `connected`) VALUES ("'
+                .$_POST['login'].'","'.$_POST['image'].'","'.md5($_POST['mdp']).'", "", 0)';
                 $result = dbQuery($query);
 
                 if(!$result)

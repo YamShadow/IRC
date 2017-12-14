@@ -23,8 +23,6 @@ switch($action){
         break;
     case 'login_form':
     // Permet de faire le traitement du formulaire de connexion
-        echo 'login_form';
-        var_dump(DATABASE);
         require('application/models/functions/users.php');
         $users = getUser();
         if($users){
