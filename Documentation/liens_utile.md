@@ -1,5 +1,9 @@
 # Lien utile 
 
+## Le projet
+
+* GitHub : https://github.com/YamShadow/IRC
+
 ## Socket IO
 
 * https://socket.io/demos/chat/

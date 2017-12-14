@@ -2,7 +2,7 @@
 
 include_once('dbtools.php');
 
-Class Users extends Hedgehog {
+Class Users extends DataObject {
     public function __construct(){
 
         $this->pk = 'id';
