@@ -42,8 +42,18 @@ io.sockets.on('connection', (socket) => {
     socket.on('chat_message', function(msg){
         msg = ent.encode(msg)
         if(msg == '/quit'){
-            console.log('commande '+msg)
             socket.emit('quit_user', 'close')
+        }else if(msg.indexOf('switchChannel') > 0) {
+            let newChannel = msg.split(" ")[1]
+
+            socket.leave(socket.salon)
+            socket.join(newChannel)
+
+            socket.emit('switch_channel', 'Vous êtes connecter sur le channel '+ newChannel)
+            socket.broadcast.to(socket.salon).emit('switch_channel', socket.pseudo +' a quitter le salon')
+
+            socket.salon = newChannel
+            socket.broadcast.to(newChannel).emit('switch_channel', socket.pseudo +' a rejoint votre salon')
         }else{
             socket.emit('chat_message', {pseudo: socket.pseudo, message: msg})
             socket.to(socket.salon).broadcast.emit('chat_message', {pseudo: socket.pseudo, message: msg})     
