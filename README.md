@@ -18,6 +18,9 @@ On s'est fixé de partir sans serveur pour commencer.
 * Jordan : Fini la BDD et sorti un schéma de celle-ci.
 * Jordan : Avancée dans ORM. Le côté foreign key est clair, sauf pour les tables de liaisons.
 
+### Vendredi 15
+Concernant l'ORM, on oublie les Foreign Keys en Many-to-Many. A la place on part sur une écriture des méthodes compliquées à la mano pour chaque entité. 
+
 --------------
 
 ## TODO

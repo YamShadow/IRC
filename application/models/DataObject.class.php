@@ -15,7 +15,7 @@ Class DataObject {
 	protected $primaryKey = null;
 	protected $innerFields = [];        // Contient la liste des champs qui sont propres à la table
 	protected $foreignFields = [];      // Contient la liste des champs qui sont des clefs étrangères OtO
-	protected $foreignManyFields = [];  // Contient la liste des champs qui sont des clefs étrangères MtM
+	// protected $foreignManyFields = [];  // Contient la liste des champs qui sont des clefs étrangères MtM
 	protected $isNewOne = true;			// Indique s'il s'agit d'une nouvelle entité (défini pendant __construct). Utile pour set en base.
 
 	public function __construct($id = null) {
@@ -65,9 +65,31 @@ Class DataObject {
 		}
 	}
 
-	public function getBy($array) {
+	public function getBy($conditions = false, $order_by = false, $order = 'ASC') {
 		// Nous renvoie l'entité qui correspond à l'array de conditions en entrée ou false si rien trouvé
 		// Array en entrée = ['champ' => value, 'champ' => value]
+
+		$req = 'SELECT '.$primaryKey.' FROM '.$tableName;				// Requête de base
+
+		if (is_array($conditions) || !empty($conditions)) {				// Si y a des conditions on les ajoute
+			$req .= ' WHERE ';
+			foreach ($conditions as $champ => $value) {
+				$req .= $champ.' = '.$value.' AND ';
+			}
+			$req = substr($req, 0, -5);									// On vire le AND de trop
+		}
+
+		if (is_array($order_by) || !empty($order_by)) {					// Si y a un ordre spécifié on l'ajoute
+			$req .= ' ORDER BY ';
+			foreach ($order_by as $champ) {
+				$req .= $champ.', ';
+			}
+			$req = substr($req, 0, -2);									// On vire la , de trop
+			if (in_array($order, ['ASC', 'DESC'])) $req .= $order;
+		}
+
+
+		// On va chercher en base les résults, puis on crée un tableau de class et on instancie une entité par result
 	}
 
 	public function __get($attr_name) {
