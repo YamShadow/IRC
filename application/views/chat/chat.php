@@ -35,7 +35,7 @@
         </div>
         <div class="body">
             <pre>
-                <span data-typer="$ add input newSalon"></span>
+                $ <span class="greenColor" data-typer="add input newSalon"></span>
                 <input class="pulse input-shell" type="text" v-model="name" />
                 <button class="btn-shell" v-on:click="addSalon">Ajouter</button>
             </pre>
