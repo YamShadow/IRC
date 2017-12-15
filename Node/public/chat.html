@@ -18,64 +18,70 @@
 		<form action="">
 			<input id="m" autocomplete="off" /><button>Send</button>
 		</form>
-
-		<!-- express generator template --> 
 		
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 		<script>
-				$(function () {
-						let socket = io();
+			$(function () {
+				let socket = io();
 
-						let pseudoGet = $_GET('pseudo')
-						let salonGet = $_GET('salon')
-						socket.emit('new_user', pseudoGet, salonGet)
-						document.title = pseudoGet + ' - ' + salonGet + ' - ' + document.title
-
-						socket.on('new_user', function(pseudo) {
-							$('#messages').append($('<li style="font-style: italic;">').text(pseudo + ' a rejoint le Chat !'))
-						})
+				//recuperation de GET
+				let pseudoGet = $_GET('pseudo')
+				let salonGet = $_GET('salon')
+				//Connexion d'un nouveau user
+				socket.emit('new_user', pseudoGet, salonGet)
+				//Modification du title d'onglet du navigateur
+				document.title = pseudoGet + ' - ' + salonGet + ' - ' + document.title
+				
+				//Affiche la réponse du serveur pour new_user
+				socket.on('new_user', function(pseudo) {
+					$('#messages').append($('<li style="font-style: italic;">').text(pseudo + ' a rejoint le Chat !'))
+				})
 						
-						socket.on('goodbye_user', function(pseudo) {
-							$('#messages').append($('<li style="font-style: italic;">').text(pseudo + ' a quitter le Chat !'))
-						})
+				//Affiche la réponse du serveur pour goodbye_user
+				socket.on('goodbye_user', function(pseudo) {
+					$('#messages').append($('<li style="font-style: italic;">').text(pseudo + ' a quitter le Chat !'))
+				})
 
-						socket.on('switch_channel', function(msg) {
-							$('#messages').append($('<li style="font-style: italic;">').text(msg))
-						})
+				//Affiche la réponse du serveur pour switch_channel
+				socket.on('switch_channel', function(msg) {
+					$('#messages').append($('<li style="font-style: italic;">').text(msg))
+				})
 						
-						socket.on('quit_user', function(msg) {
-							console.log('quit_user')
-							$('#messages').append($('<li style="font-style: italic;">').text('Vous avez été déconnecté !'))
-							socket.close()
-            			})
-
-						$('form').submit(function(){
-							socket.emit('chat_message', $('#m').val())
-							$('#m').val('')
-							return false;
-						});
-
-						socket.on('chat_message', function(data){
-							$('#messages').append($('<li>').text(data.pseudo+': '+data.message))
-						});
+				//Affiche la réponse du serveur pour quit_user
+				socket.on('quit_user', function(msg) {
+					$('#messages').append($('<li style="font-style: italic;">').text('Vous avez été déconnecté !'))
+					socket.close()
+				})
+						
+				//Traitement du formulaire
+				socket.on('chat_message', function(data){
+					$('#messages').append($('<li>').text(data.pseudo+': '+data.message))
 				});
 
+				//Traitement du formulaire
+				$('form').submit(function(){
+					socket.emit('chat_message', $('#m').val())
+					$('#m').val('')
+					return false
+				});
+			});
 
-				function $_GET(param) {
-					var vars = {};
-					window.location.href.replace( location.hash, '' ).replace( 
-						/[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-						function( m, key, value ) { // callback
-							vars[key] = value !== undefined ? value : '';
-						}
-					);
-
-					if ( param ) {
-						return vars[param] ? vars[param] : null;	
+			//Fonction qui emule la methode GET de PHP
+			function $_GET(param) {
+				let vars = {}
+				window.location.href.replace( location.hash, '' ).replace( 
+					/[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+					function( m, key, value ) { // callback
+						vars[key] = value !== undefined ? value : ''
 					}
-					return vars;
+				);
+
+				if (param) {
+					return vars[param] ? vars[param] : null	
 				}
+				return vars
+			}
 		</script>
 	</body>
 </html>
