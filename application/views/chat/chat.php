@@ -1,9 +1,3 @@
-<?php
-
-// var_dump($_SESSION);
-
-?>
-
 <main class="window">
     <div class="bar">
         <div class="btn"></div>
@@ -20,7 +14,7 @@
                 <button class="btn-shell addSalon">Ajouter un salon</button>
             </aside>
 
-            <object data="http://localhost:3000?pseudo=<?= $_SESSION['user_pseudo'] ?>" width="1000" height="1000">
+            <object data="http://localhost:3000?pseudo=<?= $_SESSION['user_pseudo'] ?>&salon=room" width="1000" height="1000">
                 <p>Le serveur Node n'est pas lancé !</p>
             </object>
 
