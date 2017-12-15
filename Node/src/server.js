@@ -3,6 +3,7 @@ import path from 'path'
 import bodyParser from 'body-parser'
 import httpBase from 'http'
 import ioBase from 'socket.io'
+let ent = require('ent');
 
 const app = express()
 const http = httpBase.Server(app)
@@ -16,54 +17,35 @@ app.use(bodyParser.urlencoded({
 const PUBLIC_PATH = path.join(path.dirname(__dirname), 'public');
 const CHAT_PATH = path.join(PUBLIC_PATH, 'chat.html');
 
-let pseudos = {};
-let pseudo
-
-let rooms = ['room1','room2','room3'];
-
 app.get('/', (req, res) => {
-    pseudo = req.params('pseudo')
-    console.log('logged in: ', pseudo)
-    
     res.sendFile(CHAT_PATH)
 })
 
 io.sockets.on('connection', (socket) => {
-    io.emit('chat.message', pseudo+' has connected');
 
-    socket.on('adduser', function(username){
-		// store the username in the socket session for this client
-		socket.username = username;
-		// store the room name in the socket session for this client
-		socket.room = 'room1';
-		// add the client's username to the global list
-		usernames[username] = username;
-		// send client to room 1
-		socket.join('room1');
-		// echo to client they've connected
-		socket.emit('updatechat', 'SERVER', 'you have connected to room1');
-		// echo to room 1 that a person has connected to their room
-		socket.broadcast.to('room1').emit('updatechat', 'SERVER', username + ' has connected to this room');
-		socket.emit('updaterooms', rooms, 'room1');
-	});
-
-
-
-
-
-
-
-
-
+    socket.on('new_user', function(pseudo, salon) {
+        pseudo = ent.encode(pseudo);
+        salon = ent.encode(salon);
+        socket.pseudo = pseudo
+        socket.salon = salon
+        socket.join(socket.salon);
+        socket.emit('new_user', socket.pseudo)
+        socket.broadcast.to(socket.salon).emit('new_user', socket.pseudo)
+    });
 
     socket.on('disconnect', function(){
-        console.log('user disconnected');
-        io.emit('chat.message', pseudo+' disconnected');
+        socket.to(socket.salon).broadcast.emit('goodbye_user', socket.pseudo)
       });
-    socket.on('chat.message', function(msg){
-        console.log('message: '+msg.content);
-        //io.emit('chat.message', pseudo+': '+msg.content);
-        io.emit('chat.message', msg);
+
+    socket.on('chat_message', function(msg){
+        msg = ent.encode(msg)
+        if(msg == '/quit'){
+            console.log('commande '+msg);
+            socket.emit('quit_user', 'close');
+        }else{
+            socket.emit('chat_message', {pseudo: socket.pseudo, message: msg});
+            socket.to(socket.salon).broadcast.emit('chat_message', {pseudo: socket.pseudo, message: msg})     
+        }
     });
 })
 
