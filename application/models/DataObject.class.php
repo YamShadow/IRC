@@ -1,8 +1,6 @@
 <?php 
-namespace models;
-
-include_once('dbtools.php');
-include_once('system/functionCore.php');
+require_once('dbtools.php');
+require_once('system/functionCore.php');
 
 Class DataObject {
 
@@ -11,15 +9,14 @@ Class DataObject {
 
 	*/
 
+	protected $className = null;
 	protected $tableName = null;
-	protected $primaryKey = null;
+	protected $primaryKey = 'id';
 	protected $innerFields = [];        // Contient la liste des champs qui sont propres à la table
 	protected $foreignFields = [];      // Contient la liste des champs qui sont des clefs étrangères OtO
-	// protected $foreignManyFields = [];  // Contient la liste des champs qui sont des clefs étrangères MtM
 	protected $isNewOne = true;			// Indique s'il s'agit d'une nouvelle entité (défini pendant __construct). Utile pour set en base.
 
 	public function __construct($id = null) {
-		$this->setAttributes();
 		if ($id != null) {
 			// Si on fournit un id, c'est qu'on veut récupérer l'instance qui est en base avec cet id
 			if (is_numeric($id)) {
@@ -27,17 +24,11 @@ Class DataObject {
 				$this->hydrate();
 				$this->isNewOne = false;
 			} else 
-				seterr('ERREUR : Une clef primaire non numérique a été fournie en construction d\'une entité.', 'DataObject.class.php');
+			seterr('ERREUR : Une clef primaire non numérique a été fournie en construction d\'une entité.', 'DataObject.class.php');
 		}
 	}
-
-	/* public function setAttributes() {
-		// La seule fonction que l'utilisateur aura a réécrire
-
-		// Instanciation des variables
-	} */
-
-	public function hydrate() {			// Ne prend pour l'instant pas en compte les FK MtM
+	
+	public function hydrate() {
 		if ($this->isNewOne) 
 			seterr('Fatal error: tentavive d\'hydrate une entité qui n\'existe pas encore en base', 'DataObject.hydrate');
 
@@ -57,11 +48,6 @@ Class DataObject {
 
 		foreach ($this->foreignFields as $field => $class) {	// On set toutes les FK, donc on doit créer des objets des class concernées et les hydrate
 			$this->$field = new $class($result[$field]);
-			/* Si on doit tricher :
-				$this->$field = new $class;
-				$this->$field->{$this->$field->$primaryKey} = $result[$field];
-				$this->$field->hydrate();
-			*/
 		}
 	}
 
@@ -69,12 +55,12 @@ Class DataObject {
 		// Nous renvoie l'entité qui correspond à l'array de conditions en entrée ou false si rien trouvé
 		// Array en entrée = ['champ' => value, 'champ' => value]
 
-		$req = 'SELECT '.$primaryKey.' FROM '.$tableName;				// Requête de base
+		$req = 'SELECT '.$this->primaryKey.' FROM '.$this->tableName;				// Requête de base
 
 		if (is_array($conditions) || !empty($conditions)) {				// Si y a des conditions on les ajoute
 			$req .= ' WHERE ';
 			foreach ($conditions as $champ => $value) {
-				$req .= $champ.' = '.$value.' AND ';
+				$req .= '`'.$champ.'` = \''.$value.'\' AND ';
 			}
 			$req = substr($req, 0, -5);									// On vire le AND de trop
 		}
@@ -82,7 +68,7 @@ Class DataObject {
 		if (is_array($order_by) || !empty($order_by)) {					// Si y a un ordre spécifié on l'ajoute
 			$req .= ' ORDER BY ';
 			foreach ($order_by as $champ) {
-				$req .= $champ.', ';
+				$req .= '`'.$champ.'`, ';
 			}
 			$req = substr($req, 0, -2);									// On vire la , de trop
 			if (in_array($order, ['ASC', 'DESC'])) $req .= $order;
@@ -90,6 +76,15 @@ Class DataObject {
 
 
 		// On va chercher en base les résults, puis on crée un tableau de class et on instancie une entité par result
+		$result = dbFetchAllAssoc($req);
+		$return = array();
+
+
+		foreach ($result as $i => $entity) {
+			$return[$i] = new $this->className($entity[$this->primaryKey]);
+		}
+
+		return $return;
 	}
 
 	public function __get($attr_name) {

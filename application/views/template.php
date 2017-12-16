@@ -12,7 +12,7 @@ if(isset($header['view']['page']) && $header['view']['page'] != '')
 
 // Intégration d'un section footer
 if((isset($header['footer']) && $header['footer']))
-    include_once('commons/t_standard/footer');
+    require_once('commons/t_standard/footer');
 
 // Ajout (ou non) de jQuery
 if (isset($header['jquery']) && $header['jquery'])
@@ -26,4 +26,4 @@ if (isset($header['js'])){
 }
 
 // Intégration d'un section commune à plusieurs templates sans variable
-include_once('dom/eof.php');
+require_once('dom/eof.php');

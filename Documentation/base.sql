@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `mail` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     `image` TEXT,
-    `connected` int(1) NOT NULL,
-    -- `last_conn` TIMESTAMP,
+    `connected` int(1) NOT NULL DEFAULT 0,
+    -- `last_conn` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
@@ -131,3 +131,21 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
     FOREIGN KEY (`role`) REFERENCES `roles`(`id`),
     FOREIGN KEY (`salon`) REFERENCES `salons`(`id`)
 ) ENGINE = InnoDB;
+
+
+
+-- Les INSERT en base pour avoir un minimum de données
+
+INSERT INTO `users` (`pseudo`, `mail`, `password`) VALUES 
+    ('2alheure', 'juv.jordan@hotmail.fr', '7fa24af7462af18eb7fbe4b850913815'),
+    ('YamiShadow', 'mathieu.nibas@gmail.com', '7fa24af7462af18eb7fbe4b850913815'),
+    ('MidnaTaka', 'flo.rambur@gmail.com', '7fa24af7462af18eb7fbe4b850913815')
+;
+
+INSERT INTO `etats` (`nom`) VALUES
+    ('Invitation envoyée'),
+    ('Invitattion rejetée'),
+    ('Invitation expirée'),
+    ('Indésirable'),
+    ('Amis')
+;

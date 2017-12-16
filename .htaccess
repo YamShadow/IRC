@@ -1,2 +1,5 @@
 options -indexes
-RewriteEngine on
+Options +FollowSymlinks
+RewriteEngine On
+RewriteRule ^/$ index.php?action=home [L]
+RewriteRule ^/(.*)$ index.php?action=$1 [L]

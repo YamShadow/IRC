@@ -44,9 +44,7 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
-logs('Test', 'core');
-
-require_once('application/config/route.php');
+require_once('application/config/routes.php');
 
 if(empty($_GET['action']))
     $action = 'home';
@@ -55,11 +53,10 @@ else
 
 $controller_path = 'application/controller/'.$routes[$action].'.php';
 
-if(is_file($controller_path))
+if(is_file($controller_path)) {
     include($controller_path);
-else{
-	logs('Controlleur inconnu: '.$action, 'index.php');
-	die('Illegal action : '.$action);
+} else {
+	seterr('Controlleur inconnu pour l\'action : '.$action, 'index.php');
 }
 
 ?>

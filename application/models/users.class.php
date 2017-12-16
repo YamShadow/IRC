@@ -1,14 +1,14 @@
 <?php 
-
-include_once('dbtools.php');
-use models\DataObject;
+require_once('dbtools.php');
+require_once('application/models/DataObject.class.php');
 
 Class Users extends DataObject {
+    protected $className = 'Users';
     protected $tableName = 'users';
     protected $primaryKey = 'id';
-    protected $fields = [ 
+    protected $innerFields = [ 
         'id',
-        'name',
+        'pseudo',
         'image',
         'password',
         'mail',
@@ -16,14 +16,16 @@ Class Users extends DataObject {
     ];
 
     protected $id;
-    protected $name;
+    protected $pseudo;
     protected $image;
     protected $password;
     protected $mail;
     protected $connected = 0;       // To set a default value
 
-    /* Exemple si on doit tricher pour les FK :
-    protected $champFK = new classDuFK();
-    auquel cas il y aura direct un objet vide avec la bonne class et on aura juste à l'hydrate
-    */
+    
+    public function isConnected() {
+        if (!in_array($connected, [0, 1], true)) seterr('Erreur de type pour $connected.', 'Users');
+        if ($connected) return true;
+        return false;
+    }
 }

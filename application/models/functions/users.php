@@ -1,8 +1,8 @@
 <?php
 
-include_once('application/models/dbtools.php');
+require_once('application/models/dbtools.php');
 
-function getUser(){
+function getUser(){             // Utiliser getBy à la place de celle-ci
     $valide = true;
     if(!isset($_POST['login']) || empty($_POST['login'])){
         $errors['login'] = 'Veuillez saisir un login !';
@@ -26,7 +26,7 @@ function getUser(){
     return false;
 }
 
-function checkDisponibilitePseudo(){
+function checkDisponibilitePseudo(){                // Utiliser getBy aussi
     if(isset($_POST['login']) && !empty($_POST['login'])){ 
         $query = 'SELECT * FROM users where pseudo="'.$_POST['login'].'"';
         $result = dbFetchAssoc($query);

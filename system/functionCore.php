@@ -63,12 +63,16 @@ function redirect($action){
 }
 
 function seterr($mdg, $module) {
-    if (ENVIRONNEMENT == 'production') {
+    if (ENVIRONMENT == 'production') {
         header('x', true, 500);
         echo '<br />Veuillez contacter un administrateur système ou réessayer plus tard.';
         exit();
-    } else if (ENVIRONNEMENT == 'testing') {
+    } else if (ENVIRONMENT == 'testing') {
         logs($msg, $module);
         die('An error has occured. Please consult logs file.');
     }
+}
+
+function pr($chose) {
+    var_dump($chose);
 }
