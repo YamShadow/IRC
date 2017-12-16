@@ -65,7 +65,7 @@ function setUser(){
 
                 if(!$result)
                     die('Erreur durant l\'insert du genre');
-                return lastId($result);
+                return dbLastId($result);
             }else{
                 $errors['mdpegaux'] = 'Veuillez saisir deux mots de passes identiques !';
                 return false;

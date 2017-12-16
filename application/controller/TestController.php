@@ -1,8 +1,10 @@
 <?php
 require_once('application/models/Users.class.php');
 
-$users = new Users(1);
-$users = $users->getBy([], ['pseudo']);
-pr($users);
+$user = new Users(1);
+$user->pseudo = '2alheure';
+$user->save();
+$usr = new Users(1);
+pr($usr);
 die();
 ?>

@@ -34,7 +34,7 @@
         return $tab_res;
     }
 
-    function lastId($query) {
+    function dbLastId($query) {
         global $link;
         
         return mysqli_insert_id($link);

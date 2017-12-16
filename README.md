@@ -21,12 +21,15 @@ On s'est fixé de partir sans serveur pour commencer.
 ### Vendredi 15
 Concernant l'ORM, on oublie les Foreign Keys en Many-to-Many. A la place on part sur une écriture des méthodes compliquées à la mano pour chaque entité. 
 
+### Samedi 16
+* Jordan : Fini l'ORM. Testé. Reste à voir comment il se comportera avec les FK quand elles arriveront.
+
 --------------
 
 ## TODO
 
 ### Jordan
-- [ ] Faire ORM
+- [x] Faire ORM
 - [x] Finir BDD
 - [x] Sortir le schéma de la base
 

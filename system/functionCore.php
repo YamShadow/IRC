@@ -75,4 +75,5 @@ function seterr($mdg, $module) {
 
 function pr($chose) {
     var_dump($chose);
+    echo '<hr>';
 }
