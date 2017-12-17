@@ -4,13 +4,13 @@
 		<title>ShellCord</title>
 		<style>
 			* { margin: 0; padding: 0; box-sizing: border-box; }
-			body { font: 13px Helvetica, Arial; background-color: #fff;}
+			body { font: 13px Helvetica, Arial; background-color: #232323; color: #fff}
 			form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
 			form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
 			form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
 			#messages { list-style-type: none; margin: 0; padding: 0; }
 			#messages li { padding: 5px 10px; }
-			#messages li:nth-child(odd) { background: #eee; }
+			#messages li:nth-child(odd) { background: #232323; border-top: 1px #404040 dashed; border-bottom: 1px #404040 dashed;}
 		</style>
 	</head>
 	<body>
@@ -37,33 +37,33 @@
 				
 				//Affiche la réponse du serveur pour new_user
 				socket.on('new_user', function(pseudo) {
-					$('#messages').append($('<li style="font-weight: bold;color:red">').text(pseudo + ' a rejoint le Chat !'))
+					$('#messages').append($('<li style="font-weight: bold;color:#32c146">').text('$ '+pseudo + ' a rejoint le Chat !'))
 				})
 						
 				//Affiche la réponse du serveur pour goodbye_user
 				socket.on('goodbye_user', function(pseudo) {
-					$('#messages').append($('<li style="font-weight: bold;color:red">').text(pseudo + ' a quitter le Chat !'))
+					$('#messages').append($('<li style="font-weight: bold;color:#32c146">').text('$ '+pseudo + ' a quitter le Chat !'))
 				})
 
 				//Affiche la réponse du serveur pour switch_channel / chat_privateMessageError
 				socket.on('chat_messageBrute', function(msg) {
-					$('#messages').append($('<li style="font-weight: bold;color:red">').text(msg))
+					$('#messages').append($('<li style="font-weight: bold;color:#32c146">').text('$ '+msg))
 				})
 
 				//Affiche la réponse du serveur pour chat_messagePrivate
 				socket.on('chat_messagePrivate', function(msg) {
-					$('#messages').append($('<li style="font-weight: bold;color:blue">').text(msg))
+					$('#messages').append($('<li style="font-weight: bold;color:#6e6e9a">').text('$ '+msg))
 				})
 						
 				//Affiche la réponse du serveur pour quit_user
 				socket.on('quit_user', function(msg) {
-					$('#messages').append($('<li style="font-weight: bold;color:red">').text('Vous avez été déconnecté !'))
+					$('#messages').append($('<li style="font-weight: bold;color:#32c146">').text('$ Vous avez été déconnecté !'))
 					socket.close()
 				})
 						
 				//Traitement du formulaire
 				socket.on('chat_message', function(data){
-					$('#messages').append($('<li>').text(data.pseudo+': '+data.message))
+					$('#messages').append($('<li>').text(data.pseudo+' - $ '+data.message))
 					mySound.play()
 				});
 
