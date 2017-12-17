@@ -187,7 +187,6 @@ io.sockets.on('connection', function (socket) {
                     callSQL(sql, function (err, data) {
                         if (err) console.log("ERROR : ", err);else {
                             if (data.length > 0) {
-                                console.log(data);
                                 sql = "INSERT INTO messages_prives (message, emetteur, destinataire) VALUES ('" + addslashes(message) + "', (select id from users where pseudo='" + socket.pseudo + "')," + data[0].id + ")";
                                 callSQL(sql, function (err, data) {
                                     if (err) console.log("ERROR : ", err);
