@@ -46,6 +46,7 @@ On s'est fixé de partir sans serveur pour commencer.
     * Reload des 10 derniers messages dans le salon 
     * Ajout d'un son en cas de messages
     * Ajout des MP
+    * Début du style css du chat
 
 --------------
 
@@ -55,13 +56,13 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] Faire ORM
 - [x] Finir BDD
 - [x] Sortir le schéma de la base
+- [ ] .htaccess
+- [ ] Début des requettes Salons/personne en ligne en php ? 
 
 ### Mathieu
 - [x] Partie métier de login et register
 - [ ] <del>Maquettes</del>
 - [ ] Implémenter les erreurs dans les views Logins/Register
-- [ ] Commencer les get des data pour Florian
-- [ ] .htaccess
 - [x] Switch de channel
 - [x] Rejet en cas de pseudo inconnu
 - [x] Recuperation des salons existant
