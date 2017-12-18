@@ -103,6 +103,7 @@ io.sockets.on('connection', (socket) => {
         switch(msg.split(' ', 1)[0]){
             case '/quit': 
                 socket.emit('quit_user', 'close')
+                delete users[socket.pseudo]
                 break
             case '/switch':
                 let newChannel = msg.split(" ")[1]
@@ -120,6 +121,12 @@ io.sockets.on('connection', (socket) => {
                     //Emet un message dans le nouveau salon
                     socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo +' a rejoint votre salon')
                 }
+                break
+            case '/kick':
+                let splitKick = msg.split(" ")
+                let pseudoKick = splitKick[1]
+                users[pseudoKick].emit('quit_user', 'close')                
+                delete users[pseudoKick]
                 break
             case '/msg':
                 let split = msg.split(" ")
