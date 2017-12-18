@@ -165,30 +165,21 @@ io.sockets.on('connection', (socket) => {
                             console.log("ERROR : ",err); 
                         else{
                             if(data.length > 0){
-                                sql = "SELECT etat FROM `amis` WHERE `personne_a` = (select id from users where pseudo='"+socket.pseudo+"') and `personne_b` = (select id from users where pseudo='"+pseudoInvite+"')"
+                                sql = "SELECT etat FROM `amis` WHERE (`personne_a` = (select id from users where pseudo='"+socket.pseudo+"') and `personne_b` = (select id from users where pseudo='"+pseudoInvite+"')) || (`personne_a` = (select id from users where pseudo='"+pseudoInvite+"') and `personne_b` = (select id from users where pseudo='"+socket.pseudo+"'))"
                                 callSQL(sql, function(err,data){
                                     if (err)
                                         console.log("ERROR : ",err); 
                                     if(data.length <= 0){
                                         sql = "INSERT INTO `amis` (`id`, `personne_a`, `personne_b`, `etat`) VALUES (NULL, (select id from users where pseudo='"+socket.pseudo+"'), (select id from users where pseudo='"+pseudoInvite+"'), '1')"
-                                        callSQL(sql, function(err,dataRequest){
+                                        callSQL(sql, function(err,data){
                                             if (err)
                                                 console.log("ERROR : ",err); 
                                             else{
-                                                console.log(dataRequest)
-                                                    // if(data.length > 0){
-                                                        
-                            
-                                                    // }else{
-                                                    //     socket.emit('chat_messageBrute', "Le pseudo "+pseudoMsg+" ne correspond à aucun utilisateur...")
-                                                    // }
+                                                console.log(data)
+                                                socket.emit('chat_messageBrute', "Une demande d'ami a été envoyée a "+pseudoInvite)
+                                                users[pseudoInvite].emit('chat_messageBrute', socket.pseudo+" souhaite devenir votre ami !")
                                             }
                                         })
-        
-        
-        
-                                        // socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+message)
-                                        // users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+message)
                                     }else{
                                         switch(data[0].etat){
                                             case 1:
