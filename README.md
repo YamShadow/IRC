@@ -73,13 +73,13 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] Add d'un son en cas de messages
 - [x] Add des MP( /msg )
 - [ ] /w = reponse a la derniere personne MP 
-- [X] /ami = liste les amis
+- [x] /friendlist = liste les amis
 - [x] /invite [PSEUDO] invite la personne en ami
-- [x] /accepteAmi [Pseudo] = Accepte l'ami
-- [X] /refuseAmi [Pseudo] = refuse
-- [ ] /Online = Affiche tous les gens en ligne sur le chat
-- [x] /room = liste toute les rooms
-- [ ] /createRoom = crée un salon
+- [x] /acceptFriend [Pseudo] = Accepte l'ami
+- [x] /declineFriend [Pseudo] = refuse
+- [x] /online = Affiche tous les gens en ligne sur le chat
+- [x] /roomList = liste toute les rooms
+- [x] /createRoom = crée un salon
 - [ ] /deleteRoom = delete un salon
 - [x] /kick [PSEUDO] = kick une personne 
 - [ ] /withMe = liste les gens en ligne dans cette room
