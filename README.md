@@ -74,9 +74,9 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] Add des MP( /msg )
 - [ ]/w = reponse a la derniere personne MP 
 - [ ]/ami = liste les amis
-- [ ]/invite [PSEUDO] invite la personne en ami
-- [ ]/accepteAmi [Psedo] = Accepte l'ami
-- [ ]/refuseAmi = refuse
+- [x]/invite [PSEUDO] invite la personne en ami
+- [ ]/accepteAmi [Pseudo] = Accepte l'ami
+- [ ]/refuseAmi [Pseudo] = refuse
 - [ ]/Online = Affiche tous les gens en ligne sur le chat
 - [ ]/room = liste toute les rooms
 - [ ]/OnlineRoom = liste les gens en ligne dans cette room
