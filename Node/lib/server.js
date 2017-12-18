@@ -112,7 +112,7 @@ io.sockets.on('connection', function (socket) {
                     for (var _iterator2 = data[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                         var m = _step2.value;
 
-                        socket.emit('chat_message', { pseudo: m.pseudo, message: m.message });
+                        socket.emit('chat_message', { pseudo: m.pseudo, message: ent.decode(m.message) });
                     }
                     //affiche un message de bienvenue dans le client du socket
                 } catch (err) {
@@ -152,10 +152,10 @@ io.sockets.on('connection', function (socket) {
 
     //Route d'echange des messages
     socket.on('chat_message', function (msg) {
-        //msg = ent.encode(msg)
         switch (msg.split(' ', 1)[0]) {
             case '/quit':
                 socket.emit('quit_user', 'close');
+                delete users[socket.pseudo];
                 break;
             case '/switch':
                 var newChannel = msg.split(" ")[1];
@@ -170,10 +170,15 @@ io.sockets.on('connection', function (socket) {
                     socket.emit('chat_messageBrute', 'Vous êtes connecter sur le channel ' + socket.salon);
                     //Emet un message dans l'ancien salon 
                     socket.broadcast.to(oldChannel).emit('chat_messageBrute', socket.pseudo + ' a quitter le salon');
-
                     //Emet un message dans le nouveau salon
                     socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo + ' a rejoint votre salon');
                 }
+                break;
+            case '/kick':
+                var splitKick = msg.split(" ");
+                var pseudoKick = splitKick[1];
+                users[pseudoKick].emit('quit_user', 'close');
+                delete users[pseudoKick];
                 break;
             case '/msg':
                 var split = msg.split(" ");
@@ -187,7 +192,7 @@ io.sockets.on('connection', function (socket) {
                 callSQL(sql, function (err, data) {
                     if (err) console.log("ERROR : ", err);else {
                         if (data.length > 0) {
-                            sql = "INSERT INTO messages_prives (message, emetteur, destinataire) VALUES ('" + addslashes(message) + "', (select id from users where pseudo='" + socket.pseudo + "')," + data[0].id + ")";
+                            sql = "INSERT INTO messages_prives (message, emetteur, destinataire) VALUES ('" + ent.encode(addslashes(message.trim())) + "', (select id from users where pseudo='" + socket.pseudo + "')," + data[0].id + ")";
                             callSQL(sql, function (err, data) {
                                 if (err) console.log("ERROR : ", err);
                             });
@@ -202,7 +207,6 @@ io.sockets.on('connection', function (socket) {
                 });
                 break;
             case '/invite':
-                // /invite [PSEUDO] invite la personne en ami
                 var splitInvite = msg.split(" ");
                 var pseudoInvite = splitInvite[1];
 
@@ -218,7 +222,6 @@ io.sockets.on('connection', function (socket) {
                                         sql = "INSERT INTO `amis` (`id`, `personne_a`, `personne_b`, `etat`) VALUES (NULL, (select id from users where pseudo='" + socket.pseudo + "'), (select id from users where pseudo='" + pseudoInvite + "'), '1')";
                                         callSQL(sql, function (err, data) {
                                             if (err) console.log("ERROR : ", err);else {
-                                                console.log(data);
                                                 socket.emit('chat_messageBrute', "Une demande d'ami a été envoyée a " + pseudoInvite);
                                                 users[pseudoInvite].emit('chat_messageBrute', socket.pseudo + " souhaite devenir votre ami !");
                                             }
@@ -237,7 +240,6 @@ io.sockets.on('connection', function (socket) {
                                             default:
                                                 socket.emit('chat_messageBrute', "Bug de la matrice !");
                                                 break;
-
                                         }
                                     }
                                 });
@@ -247,11 +249,67 @@ io.sockets.on('connection', function (socket) {
                         }
                     });
                 }
+                break;
+            case '/amis':
+                sql = "SELECT DISTINCT users.pseudo FROM users join amis on users.id = amis.personne_a or users.id = amis.personne_b where (amis.personne_a = (select id from users where pseudo='" + socket.pseudo + "') or amis.personne_b = (select id from users where pseudo='" + socket.pseudo + "')) and users.id != (select id from users where pseudo='" + socket.pseudo + "') and amis.etat = 2";
+                callSQL(sql, function (err, data) {
+                    if (err) console.log("ERROR : ", err);else {
+                        var listeAmi = false;
+                        var _iteratorNormalCompletion3 = true;
+                        var _didIteratorError3 = false;
+                        var _iteratorError3 = undefined;
 
+                        try {
+                            for (var _iterator3 = data[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                                var ami = _step3.value;
+
+                                if (listeAmi) listeAmi += ', ' + ami.pseudo;else listeAmi = ami.pseudo;
+                            }
+                        } catch (err) {
+                            _didIteratorError3 = true;
+                            _iteratorError3 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                    _iterator3.return();
+                                }
+                            } finally {
+                                if (_didIteratorError3) {
+                                    throw _iteratorError3;
+                                }
+                            }
+                        }
+
+                        if (!listeAmi) socket.emit('chat_messageBrute', "Vous n'avez aucun amis... ");else socket.emit('chat_messageBrute', "Vos amis sont : " + listeAmi);
+                    }
+                });
+                break;
+            case '/accepteAmi':
+                var splitAccepte = msg.split(" ");
+                var pseudoAccepte = splitAccepte[1];
+                sql = "UPDATE `amis` SET `etat` = '2' WHERE `amis`.`personne_a` = (select id from users where pseudo='" + pseudoAccepte + "') and `amis`.`personne_b` = (select id from users where pseudo='" + socket.pseudo + "')";
+                callSQL(sql, function (err, data) {
+                    if (err) console.log("ERROR : ", err);else {
+                        if (data.affectedRows > 0) socket.emit('chat_messageBrute', pseudoAccepte + " est maintenant votre ami !");
+                        users[pseudoAccepte].emit('chat_messageBrute', socket.pseudo + " a accepté votre demande !");
+                    }
+                });
+                break;
+            case '/refuseAmi':
+                var splitRefuse = msg.split(" ");
+                var pseudoRefuse = splitRefuse[1];
+                console.log(pseudoRefuse);
+                sql = "UPDATE `amis` SET `etat` = '3' WHERE `amis`.`personne_a` = (select id from users where pseudo='" + pseudoRefuse + "') and `amis`.`personne_b` = (select id from users where pseudo='" + socket.pseudo + "')";
+                callSQL(sql, function (err, data) {
+                    if (err) console.log("ERROR : ", err);else {
+                        if (data.affectedRows > 0) socket.emit('chat_messageBrute', "La demande de " + pseudoRefuse + " a été réfusé !");
+                        users[pseudoRefuse].emit('chat_messageBrute', socket.pseudo + " a refusé votre demande !");
+                    }
+                });
                 break;
 
             default:
-                sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('" + addslashes(msg) + "', (select id from users where pseudo='" + socket.pseudo + "'),(select id from salons where name='" + socket.salon + "'))";
+                sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('" + ent.encode(addslashes(msg.trim())) + "', (select id from users where pseudo='" + socket.pseudo + "'),(select id from salons where name='" + socket.salon + "'))";
                 callSQL(sql, function (err, data) {
                     if (err) console.log("ERROR : ", err);
                 });
