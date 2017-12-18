@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `password` VARCHAR(255) NOT NULL,
     `image` TEXT,
     `connected` int(1) NOT NULL DEFAULT 0,
+    `channelConnected` int(5) NULL
     -- `last_conn` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (`id`)
