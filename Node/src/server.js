@@ -228,10 +228,24 @@ io.sockets.on('connection', (socket) => {
                     if (err)
                         console.log("ERROR : ",err)
                     else{
-                        console.log(data.affectedRows)
                         if(data.affectedRows > 0)
                             socket.emit('chat_messageBrute', pseudoAccepte+" est maintenant votre ami !")
                             users[pseudoAccepte].emit('chat_messageBrute', socket.pseudo+" a accepté votre demande !")
+                    }
+                })
+                break
+            case '/refuseAmi':
+                let splitRefuse = msg.split(" ")
+                let pseudoRefuse = splitRefuse[1]
+                console.log(pseudoRefuse)
+                sql = "UPDATE `amis` SET `etat` = '3' WHERE `amis`.`personne_a` = (select id from users where pseudo='"+pseudoRefuse+"') and `amis`.`personne_b` = (select id from users where pseudo='"+socket.pseudo+"')"
+                callSQL(sql, function(err,data){
+                    if (err)
+                        console.log("ERROR : ",err)
+                    else{
+                        if(data.affectedRows > 0)
+                            socket.emit('chat_messageBrute', "La demande de "+pseudoRefuse+" a été réfusé !")
+                            users[pseudoRefuse].emit('chat_messageBrute', socket.pseudo+" a refusé votre demande !")
                     }
                 })
                 break
