@@ -10,7 +10,7 @@
                 "hostname": "localhost"
                 , "username" : "root"
                 , "password" : ""
-                , "database" : "finalchatproject"
+                , "database" : "chatbot"
             }
             ,"prod" : {
                 "hostname": "##HOSTPROD##"
