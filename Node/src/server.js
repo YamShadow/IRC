@@ -294,6 +294,26 @@ io.sockets.on('connection', (socket) => {
                 }else
                     socket.emit('chat_messageBrute', "Veuillez saisir un nom de salon valide !")
                 break
+            case '/online':
+                sql = "SELECT * FROM `users` where connected = 1 order by pseudo ASC"
+                callSQL(sql, function(err,data){
+                    if (err)
+                        console.log("ERROR : ",err)
+                    else{
+                        let listeOnline = false
+                        for(let perso of data){
+                            if(listeOnline)
+                            listeOnline += ', '+perso.pseudo
+                            else
+                            listeOnline = perso.pseudo
+                        }
+                        if(!listeOnline)
+                            socket.emit('chat_messageBrute', "Aucun utilisateur n'est en ligne !")
+                        else
+                            socket.emit('chat_messageBrute', "Utilisateur en ligne : "+listeOnline)
+                    }
+                })
+                break
 
 
 
@@ -301,7 +321,6 @@ io.sockets.on('connection', (socket) => {
 
 
 
-                
 
             default: 
                 sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('"+ ent.encode(addslashes(msg.trim())) +"', (select id from users where pseudo='"+socket.pseudo+"'),(select id from salons where nom='"+socket.salon+"'))"
@@ -342,7 +361,7 @@ function checkSalons(socket, salon, old = null){
             retour = salons[0]
     }
 
-    sql = "UPDATE `users` SET `connected` = '"+socket.id+"',`channelConnected` = (select id from salons where nom='"+retour+"')  WHERE `users`.`pseudo` = '"+socket.pseudo+"'"
+    sql = "UPDATE `users` SET `connected` = '1',`channelConnected` = (select id from salons where nom='"+retour+"')  WHERE `users`.`pseudo` = '"+socket.pseudo+"'"
     callSQL(sql, function(err,data){
         if (err)
             console.log("ERROR : ",err)
