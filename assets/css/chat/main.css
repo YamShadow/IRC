@@ -13,36 +13,31 @@ h2, h3 {
 
 pre {
     line-height: 2;
-}
-
-object {
-    position: absolute;
-    top: 0;
-    left: 200px;
-    width: 70%;
     height: 100%;
 }
 
+.displayFlex {
+    display: flex;
+}
+
+object {
+    left: 200px;
+    height: 100%;
+    margin: 0 15px;
+}
+
 #salonsList {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: -4px;
     width: 200px;
-    padding-left: 10px;
-    padding-right: 10px;
-    box-shadow: 7px 0 5px -2px #121212;
+    padding-left: 7px;
+    padding-right: 15px;
+    border-right: 1px solid #454545;
 }
 
 #connectedMembers {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: -4px;
     width: 200px;
-    padding-left: 10px;
-    padding-right: 10px;
-    box-shadow: -7px 0 5px -2px #121212;
+    padding-left: 15px;
+    padding-right: 7px;
+    border-left: 1px solid #454545;
 }
 
 #connectedMembers li:nth-child(odd), #salonsList li:nth-child(odd) {
@@ -139,3 +134,4 @@ h3.custom {
     left: -18px;
     bottom: 9px;
   }
+
