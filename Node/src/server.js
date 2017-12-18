@@ -190,17 +190,15 @@ io.sockets.on('connection', (socket) => {
                                         // socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+message)
                                         // users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+message)
                                     }else{
-                                        console.log('data invite existante ');
-                                        console.log(data);
-                                        switch(data.etat){
+                                        switch(data[0].etat){
                                             case 1:
-                                                socket.emit('chat_messageBrute', "Une invitation est déjà en cours pour "+splitInvite)
+                                                socket.emit('chat_messageBrute', "Une invitation est déjà en cours avec "+pseudoInvite)
                                                 break
                                             case 2:
-                                                socket.emit('chat_messageBrute', "Vous êtes déjà ami avec "+splitInvite+" !")
+                                                socket.emit('chat_messageBrute', "Vous êtes déjà ami avec "+pseudoInvite+" !")
                                                 break
                                             case 2:
-                                                socket.emit('chat_messageBrute', splitInvite+" refuse d'être votre ami ! Prenez un Curly !")
+                                                socket.emit('chat_messageBrute', pseudoInvite+" refuse d'être votre ami ! Prenez un Curly !")
                                                 break
                                             default:
                                                 socket.emit('chat_messageBrute', "Bug de la matrice !")
