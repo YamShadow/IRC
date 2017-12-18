@@ -36,7 +36,7 @@ callSQL(sql, function(err,data){
         console.log("ERROR : ",err)      
     }else{            
         for(let d of data){
-            salons.push(d.name.toLowerCase())
+            salons.push(d.nom.toLowerCase())
         } 
     }    
 })
@@ -67,7 +67,7 @@ io.sockets.on('connection', (socket) => {
         socket.join(socket.salon)
         
         //recuperer les 10 derniers messages
-        sql = "select users.pseudo, messages.message from messages join users on messages.emetteur = users.id where salon = (select id from salons where name='"+socket.salon+"') order by date_message DESC limit 10"
+        sql = "select users.pseudo, messages.message from messages join users on messages.emetteur = users.id where salon = (select id from salons where nom='"+socket.salon+"') order by date_message DESC limit 10"
         callSQL(sql, function(err,data){
             if (err)
                 console.log("ERROR : ",err)
@@ -207,8 +207,8 @@ io.sockets.on('connection', (socket) => {
                     })
                 }
                 break
-            case '/amis':
-                sql = "SELECT DISTINCT users.pseudo FROM users join amis on users.id = amis.personne_a or users.id = amis.personne_b where (amis.personne_a = (select id from users where pseudo='"+socket.pseudo+"') or amis.personne_b = (select id from users where pseudo='"+socket.pseudo+"')) and users.id != (select id from users where pseudo='"+socket.pseudo+"') and amis.etat = 2"
+            case '/friendlist':
+                sql = "SELECT DISTINCT users.pseudo FROM users join amis on users.id = amis.personne_a or users.id = amis.personne_b where (amis.personne_a = (select id from users where pseudo='"+socket.pseudo+"') or amis.personne_b = (select id from users where pseudo='"+socket.pseudo+"')) and users.id != (select id from users where pseudo='"+socket.pseudo+"') and amis.etat = 2 order by pseudo ASC"
                 callSQL(sql, function(err,data){
                     if (err)
                         console.log("ERROR : ",err)
@@ -227,42 +227,84 @@ io.sockets.on('connection', (socket) => {
                     }
                 })
                 break
-            case '/accepteAmi':
+            case '/acceptFriend':
                 let splitAccepte = msg.split(" ")
                 let pseudoAccepte = splitAccepte[1]
-                sql = "UPDATE `amis` SET `etat` = '2' WHERE `amis`.`personne_a` = (select id from users where pseudo='"+pseudoAccepte+"') and `amis`.`personne_b` = (select id from users where pseudo='"+socket.pseudo+"')"
+                sql = "UPDATE `amis` SET `etat` = '5' WHERE `amis`.`personne_a` = (select id from users where pseudo='"+pseudoAccepte+"') and `amis`.`personne_b` = (select id from users where pseudo='"+socket.pseudo+"')"
                 callSQL(sql, function(err,data){
                     if (err)
                         console.log("ERROR : ",err)
                     else{
-                        if(data.affectedRows > 0)
+                        if(data.affectedRows > 0){
                             socket.emit('chat_messageBrute', pseudoAccepte+" est maintenant votre ami !")
                             users[pseudoAccepte].emit('chat_messageBrute', socket.pseudo+" a accepté votre demande !")
+                        }
                     }
                 })
                 break
-            case '/refuseAmi':
+            case '/declineFriend':
                 let splitRefuse = msg.split(" ")
                 let pseudoRefuse = splitRefuse[1]
-                console.log(pseudoRefuse)
-                sql = "UPDATE `amis` SET `etat` = '3' WHERE `amis`.`personne_a` = (select id from users where pseudo='"+pseudoRefuse+"') and `amis`.`personne_b` = (select id from users where pseudo='"+socket.pseudo+"')"
+                sql = "UPDATE `amis` SET `etat` = '2' WHERE `amis`.`personne_a` = (select id from users where pseudo='"+pseudoRefuse+"') and `amis`.`personne_b` = (select id from users where pseudo='"+socket.pseudo+"')"
                 callSQL(sql, function(err,data){
                     if (err)
                         console.log("ERROR : ",err)
                     else{
-                        if(data.affectedRows > 0)
+                        if(data.affectedRows > 0){
                             socket.emit('chat_messageBrute', "La demande de "+pseudoRefuse+" a été réfusé !")
                             users[pseudoRefuse].emit('chat_messageBrute', socket.pseudo+" a refusé votre demande !")
+                        }
                     }
                 })
+                break
+            case '/roomList':
+                sql = "SELECT * FROM `salons` order by nom ASC"
+                callSQL(sql, function(err,data){
+                    if (err)
+                        console.log("ERROR : ",err)
+                    else{
+                        let listeRoom = false
+                        for(let room of data){
+                            if(listeRoom)
+                                listeRoom += ', '+room.nom
+                            else
+                                listeRoom = room.nom
+                        }
+                        socket.emit('chat_messageBrute', "Les salons sont : "+listeRoom)
+                    }
+                })
+                break
+            case '/createRoom':
+                let splitCreateRoom = msg.split(" ")
+                let nameCreateRoom = splitCreateRoom[1]
+                if(nameCreateRoom != undefined){
+                    sql = "INSERT INTO `salons` (`nom`, `type_salon`) VALUES ('"+nameCreateRoom+"', '1')"
+                    callSQL(sql, function(err,data){
+                        if (err)
+                            console.log("ERROR : ",err)
+                        else{
+                            console.log(data)
+                            if(data.affectedRows > 0){
+                                socket.emit('chat_messageBrute', "Le salon "+nameCreateRoom+" a été crée !")
+                                salons.push(nameCreateRoom)
+                            }
+                            console.log(salons)
+                        }
+                    })
+                }else
+                    socket.emit('chat_messageBrute', "Veuillez saisir un nom de salon valide !")
                 break
 
 
 
 
 
+
+
+                
+
             default: 
-                sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('"+ ent.encode(addslashes(msg.trim())) +"', (select id from users where pseudo='"+socket.pseudo+"'),(select id from salons where name='"+socket.salon+"'))"
+                sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('"+ ent.encode(addslashes(msg.trim())) +"', (select id from users where pseudo='"+socket.pseudo+"'),(select id from salons where nom='"+socket.salon+"'))"
                 callSQL(sql, function(err,data){
                     if (err)
                         console.log("ERROR : ",err)
@@ -300,7 +342,7 @@ function checkSalons(socket, salon, old = null){
             retour = salons[0]
     }
 
-    sql = "UPDATE `users` SET `connected` = '"+socket.id+"',`channelConnected` = (select id from salons where name='"+retour+"')  WHERE `users`.`pseudo` = '"+socket.pseudo+"'"
+    sql = "UPDATE `users` SET `connected` = '"+socket.id+"',`channelConnected` = (select id from salons where nom='"+retour+"')  WHERE `users`.`pseudo` = '"+socket.pseudo+"'"
     callSQL(sql, function(err,data){
         if (err)
             console.log("ERROR : ",err)
