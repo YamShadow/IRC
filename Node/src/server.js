@@ -101,7 +101,6 @@ io.sockets.on('connection', (socket) => {
     //Route d'echange des messages
     socket.on('chat_message', function(msg){
         //msg = ent.encode(msg)
-
         switch(msg.split(' ', 1)[0]){
             case '/quit': 
                 socket.emit('quit_user', 'close')
@@ -111,18 +110,19 @@ io.sockets.on('connection', (socket) => {
             
                 let oldChannel = socket.salon 
                 socket.leave(socket.salon)
-                socket.salon = checkSalons(socket, newChannel)
-                socket.join(socket.salon)
+                socket.salon = checkSalons(socket, newChannel, oldChannel)
             
-                //Emet un message dans le tchat du client
-                socket.emit('chat_messageBrute', 'Vous êtes connecter sur le channel '+ socket.salon)
-                //Emet un message dans l'ancien salon 
-                socket.broadcast.to(oldChannel).emit('chat_messageBrute', socket.pseudo +' a quitter le salon')
-            
-                //Emet un message dans le nouveau salon
-                socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo +' a rejoint votre salon')
+                if(socket.salon != oldChannel){
+                    socket.join(socket.salon)
+                     //Emet un message dans le tchat du client
+                    socket.emit('chat_messageBrute', 'Vous êtes connecter sur le channel '+ socket.salon)
+                    //Emet un message dans l'ancien salon 
+                    socket.broadcast.to(oldChannel).emit('chat_messageBrute', socket.pseudo +' a quitter le salon')
+                
+                    //Emet un message dans le nouveau salon
+                    socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo +' a rejoint votre salon')
+                }
                 break
-
             case '/msg':
                 let split = msg.split(" ")
                 let pseudoMsg = split[1]
@@ -153,6 +153,13 @@ io.sockets.on('connection', (socket) => {
                     }
                 })
                 break
+
+
+
+
+
+
+
             default: 
                 sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('"+ addslashes(msg) +"', (select id from users where pseudo='"+socket.pseudo+"'),(select id from salons where name='"+socket.salon+"'))"
                 callSQL(sql, function(err,data){
@@ -171,25 +178,25 @@ io.sockets.on('connection', (socket) => {
 http.listen(3000, () => console.log('LINK START 3000!'))
 
 function callSQL(request, callback){
-   // connection.connect()
-    
     connection.query(request, function (error, results, fields) {
         if (error) 
             callback(error,null)
         else
             callback(null,results)
     });
-    
-    //connection.end()
 }
 
-function checkSalons(socket, salon){
+function checkSalons(socket, salon, old = null){
     let retour
     if(salons.indexOf(salon.toLowerCase()) > 0){
         retour = salon.toLowerCase()
     }
     else{
-        retour = salons[0]
+        socket.emit('chat_messageBrute', "Le salon "+salon+" n'existe pas...")
+        if(old != null)
+            retour = old
+        else
+            retour = salons[0]
     }
 
     sql = "UPDATE `users` SET `connected` = '"+socket.id+"',`channelConnected` = (select id from salons where name='"+retour+"')  WHERE `users`.`pseudo` = '"+socket.pseudo+"'"
