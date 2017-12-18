@@ -1,3 +1,5 @@
+.button, input {outline: none;}
+
 body {
   position: relative;
   background: #25313e;
