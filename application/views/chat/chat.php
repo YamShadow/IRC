@@ -1,35 +1,34 @@
-  <main class="window">
-      <div class="bar">
-          <div class="btn"></div>
-          <i title="Paramètres" class="fa fa-cog" aria-hidden="true"></i>
-      </div>
-      <div class="body">
-          <pre>
-              <aside id="salonsList">
-                  <h2 class="comment">#Salons :</h2>
-                  <h3 class="custom">$ <span class="greenColor">add array Salons</span></h3>
+<main class="window">
+    <div class="bar">
+        <div class="btn"></div>
+        <i title="Paramètres" class="fa fa-cog" aria-hidden="true"></i>
+    </div>
+    <div class="body">
+        <pre class="displayFlex">
+            <aside id="salonsList">
+                <h2 class="comment">#Salons :</h2>
+                <h3 class="custom">$ <span class="greenColor">add array Salons</span></h3>
 
-                  <vue-salon ref="foo"></vue-salon>
+                <vue-salon ref="foo"></vue-salon>
 
-                  <button class="btn-shell addSalon">Ajouter un salon</button>
-              </aside>
+                <button class="btn-shell addSalon">Ajouter un salon</button>
+            </aside>
 
-              <object data="http://localhost:3000?pseudo=<?= $_SESSION['user_pseudo'] ?>&salon=room" width="1000" height="1000">
-                  <p>Le serveur Node n'est pas lancé !</p>
-              </object>
+            <object data="http://localhost:3000?pseudo=<?= $_SESSION['user_pseudo'] ?>&salon=room" width="1000" height="1000">
+                <p>Le serveur Node n'est pas lancé !</p>
+            </object>
 
-              <aside id="connectedMembers">
-              <h2 class="comment">#Connectés :</h2>
-              <h3 class="custom">$ <span class="greenColor">echo each Members</span></h3>
-                  <ul>
-                      <li v-for="member in members" :id="member.id" :pseudo="member.pseudo" :avatar="member.avatar">{{ member.pseudo }}</li>
-                  </ul>
-              </aside>
-          </pre>
-      </div>
-  </main>
-  <div class="filter">
-</div>
+            <aside id="connectedMembers">
+            <h2 class="comment">#Connectés :</h2>
+            <h3 class="custom">$ <span class="greenColor">echo each Members</span></h3>
+                <ul>
+                    <li v-for="member in members" :id="member.id" :pseudo="member.pseudo" :avatar="member.avatar">{{ member.pseudo }}</li>
+                </ul>
+            </aside>
+        </pre>
+    </div>
+</main>
+  <div class="filter"></div>
 
 <div id="modalAddSalon" class="modal">
     <div class="window">
