@@ -79,7 +79,7 @@ On s'est fixé de partir sans serveur pour commencer.
 - [X] /refuseAmi [Pseudo] = refuse
 - [ ] /Online = Affiche tous les gens en ligne sur le chat
 - [x] /room = liste toute les rooms
-- [ ] /createRoom = crée un salon
+- [x] /createRoom = crée un salon
 - [ ] /deleteRoom = delete un salon
 - [x] /kick [PSEUDO] = kick une personne 
 - [ ] /withMe = liste les gens en ligne dans cette room
