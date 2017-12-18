@@ -1,6 +1,6 @@
 <?php 
-require_once('dbtools.php');
 require_once('system/functionCore.php');
+require_once('dbtools.php');
 
 Class DataObject {
 
@@ -13,7 +13,7 @@ Class DataObject {
 	protected $tableName = null;
 	protected $primaryKey = 'id';
 	protected $innerFields = [];        // Contient la liste des champs qui sont propres à la table
-	protected $foreignFields = [];      // Contient la liste des champs qui sont des clefs étrangères OtO ==> ['champ' => 'foreignChamp']
+	protected $foreignFields = [];      // Contient la liste des champs qui sont des clefs étrangères OtO ==> ['field' => 'class']
 	protected $isNewOne = true;			// Indique s'il s'agit d'une nouvelle entité (défini pendant __construct). Utile pour set en base.
 
 	public function __construct($id = null) {

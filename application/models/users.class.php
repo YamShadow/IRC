@@ -1,5 +1,4 @@
 <?php 
-require_once('dbtools.php');
 require_once('application/models/DataObject.class.php');
 
 Class Users extends DataObject {
@@ -20,7 +19,7 @@ Class Users extends DataObject {
     protected $image;
     protected $password;
     protected $mail;
-    protected $connected = 0;       // To set a default value
+    protected $connected = 0;
 
     
     public function isConnected() {

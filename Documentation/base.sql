@@ -30,14 +30,14 @@ CREATE TABLE IF NOT EXISTS `messages_prives` (
 
 CREATE TABLE IF NOT EXISTS `types_salon` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `nom` VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `salons` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `nom` VARCHAR(255) NOT NULL,
     -- `serveur` INT UNSIGNED NOT NULL,
     `type_salon` INT UNSIGNED NOT NULL,
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `amis` (
 /* Tant qu'on utilise pas les serveurs elle reste commentée
 CREATE TABLE IF NOT EXISTS `serveurs` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `nom` VARCHAR(255) NOT NULL,
     `image` TEXT NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -148,4 +148,31 @@ INSERT INTO `etats` (`nom`) VALUES
     ('Invitation expirée'),
     ('Indésirable'),
     ('Amis')
+;
+
+INSERT INTO `amis` (`personne_a`, `personne_b`, `etat`) VALUES
+    (1, 2, 5),
+    (1, 3, 1),
+    (2, 3, 2)
+;
+
+INSERT INTO `types_salon` (`nom`) VALUES
+    ('écrit'),
+    ('vocal'),
+    ('console')
+;
+
+INSERT INTO `salons` (`nom`, `type_salon`) VALUES
+    ('Général', 1),
+    ('Console', 3)
+;
+
+INSERT INTO `messages_prives` (`message`, `emetteur`, `destinataire`) VALUES
+    ('Testons les messages privés !', 1, 2),
+    ('Ouaip, faisons ça !', 2, 1)
+;
+
+INSERT INTO `messages` (`message`, `emetteur`, `salon`) VALUES
+    ('Testons les messages dans les salons !', 1, 1),
+    ('Ouaip, faisons ça !', 2, 1)
 ;
