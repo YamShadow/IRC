@@ -59,12 +59,13 @@ function setUser(){
     if($valide){
         if(checkDisponibilitePseudo()){
             if($_POST['mdp'] == $_POST['confirmMdp']){
-                $query = 'INSERT INTO users (`pseudo`, `image`, `password`, `mail`, `connected`) VALUES ("'
-                .$_POST['login'].'","'.$_POST['image'].'","'.md5($_POST['mdp']).'", "", 0)';
+                $query = 'INSERT INTO users (`pseudo`, `image`, `password`, `mail`, `connected`, `channelConnected`) VALUES ("'
+                .$_POST['login'].'","'.$_POST['image'].'","'.md5($_POST['mdp']).'", "", 0, null)';
+                var_dump($query);
                 $result = dbQuery($query);
 
                 if(!$result)
-                    die('Erreur durant l\'insert du genre');
+                    die('Erreur durant l\'insert de l\'user');
                 return dbLastId($result);
             }else{
                 $errors['mdpegaux'] = 'Veuillez saisir deux mots de passes identiques !';
