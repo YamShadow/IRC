@@ -303,9 +303,9 @@ io.sockets.on('connection', (socket) => {
                         let listeOnline = false
                         for(let perso of data){
                             if(listeOnline)
-                            listeOnline += ', '+perso.pseudo
+                                listeOnline += ', '+perso.pseudo
                             else
-                            listeOnline = perso.pseudo
+                                listeOnline = perso.pseudo
                         }
                         if(!listeOnline)
                             socket.emit('chat_messageBrute', "Aucun utilisateur n'est en ligne !")
@@ -314,7 +314,32 @@ io.sockets.on('connection', (socket) => {
                     }
                 })
                 break
+            case '/withMe':
+                sql = "SELECT * FROM `users` where connected = 1 and channelConnected = (select id from salons where nom='"+socket.salon+"') order by pseudo ASC"
+                callSQL(sql, function(err,data){
+                    if (err)
+                        console.log("ERROR : ",err)
+                    else{
+                        let listeOnlineRoom = false
+                        for(let persoRoom of data){
+                            if(listeOnlineRoom)
+                                listeOnlineRoom += ', '+persoRoom.pseudo
+                            else
+                                listeOnlineRoom = persoRoom.pseudo
+                        }
+                        if(!listeOnlineRoom)
+                            socket.emit('chat_messageBrute', "Aucun utilisateur n'est en ligne dans votre salon!")
+                        else
+                            socket.emit('chat_messageBrute', "Utilisateur en ligne dans "+socket.salon+": "+listeOnlineRoom)
+                    }
+                })
+            break
 
+            case '/help':
+                array = [
+
+                ]
+                break
 
 
 

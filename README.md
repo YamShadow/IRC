@@ -82,7 +82,7 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] /createRoom = crée un salon
 - [ ] /deleteRoom = delete un salon
 - [x] /kick [PSEUDO] = kick une personne 
-- [ ] /withMe = liste les gens en ligne dans cette room
+- [x] /withMe = liste les gens en ligne dans cette room
 - [ ] /help = liste les commandes
 
 ### Florian
