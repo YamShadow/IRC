@@ -38,13 +38,13 @@
 				document.title = pseudoGet + ' - ' + salonGet + ' - ' + document.title
 				
 				//Affiche la réponse du serveur pour new_user
-				socket.on('new_user', function(pseudo) {
-					$('#messages').append($('<li class="green" style="font-weight: bold;">').text('$ '+pseudo + ' a rejoint le Chat !'))
+				socket.on('new_user', function(data) {
+					$('#messages').append($('<li class="green" style="font-weight: bold;">').text('$ '+data.pseudo + ' a rejoint ShellCord dans le salon '+data.salon+' !'))
 				})
 						
 				//Affiche la réponse du serveur pour goodbye_user
 				socket.on('goodbye_user', function(pseudo) {
-					$('#messages').append($('<li class="green" style="font-weight: bold;">').text('$ '+pseudo + ' a quitter le Chat !'))
+					$('#messages').append($('<li class="green" style="font-weight: bold;">').text('$ '+pseudo + ' a quitter ShellCord !'))
 				})
 
 				//Affiche la réponse du serveur pour switch_channel / chat_privateMessageError
