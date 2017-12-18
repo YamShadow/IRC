@@ -1,0 +1,36 @@
+.window
+  .bar
+    .btn
+  .body
+    pre
+      .comment # Bienvenue sur ShellCord !
+      .prompt
+        ' $
+        span.command add input Login
+      .prompt
+        | Login
+      .prompt
+        ' $
+        span.pulse ____________________________
+      .prompt
+        ' $
+        span.command add input password
+      .prompt
+        | Password
+      .prompt
+        ' $
+        span.pulse ____________________________
+      .prompt
+        ' $
+        span.command add link register
+      .prompt
+        | Créer votre compte
+      .prompt
+        ' $
+        span.command add input connxion
+      .prompt
+        | -------------
+      .prompt
+        | | Connexion |
+      .prompt
+        | -------------

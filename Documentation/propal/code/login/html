@@ -1,0 +1,21 @@
+<div class="window">
+    <div class="bar">
+        <div class="btn"></div>
+    </div>
+    <div class="body">
+        <pre>
+            <div class="comment"># Bienvenue sur ShellCord !</div>
+            <div class="prompt">$ <span class="command">add input Login</span></div>
+            <div class="prompt">Login</div>
+            <div class="prompt">$ <span class="pulse">____________________________</span></div>
+            <div class="prompt">$ <span class="command">add input password</span></div>
+            <div class="prompt">Password</div><div class="prompt">$ <span class="pulse">____________________________</span></div>
+            <div class="prompt">$ <span class="command">add link register</span></div>
+            <div class="prompt">Créer votre compte</div>
+            <div class="prompt">$ <span class="command">add input connxion</span></div>
+            <div class="prompt">-------------</div>
+            <div class="prompt">| Connexion |</div>
+            <div class="prompt">-------------</div>
+        </pre>
+    </div>
+</div>

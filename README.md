@@ -72,6 +72,15 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] Reload des 10 derniers messages dans le salon
 - [x] Add d'un son en cas de messages
 - [x] Add des MP( /msg )
+- [ ]/w = reponse a la derniere personne MP 
+- [ ]/ami = liste les amis
+- [ ]/invite [PSEUDO] invite la personne en ami
+- [ ]/accepteAmi [Psedo] = Accepte l'ami
+- [ ]/refuseAmi = refuse
+- [ ]/Online = Affiche tous les gens en ligne sur le chat
+- [ ]/room = liste toute les rooms
+- [ ]/OnlineRoom = liste les gens en ligne dans cette room
+- [ ]/help = liste les commandes
 
 ### Florian
 - [ ] Implémenter Vue.js

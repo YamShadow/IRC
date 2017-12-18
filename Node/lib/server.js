@@ -130,12 +130,12 @@ io.sockets.on('connection', function (socket) {
                     }
                 }
 
-                socket.emit('new_user', socket.pseudo);
+                socket.emit('new_user', { pseudo: socket.pseudo, salon: socket.salon });
             }
         });
 
         //affiche un message chez les autres clients du même channel
-        socket.broadcast.to(socket.salon).emit('new_user', socket.pseudo);
+        socket.broadcast.to(socket.salon).emit('new_user', { pseudo: socket.pseudo, salon: socket.salon });
     });
 
     //Route de deconnexion
@@ -153,63 +153,120 @@ io.sockets.on('connection', function (socket) {
     //Route d'echange des messages
     socket.on('chat_message', function (msg) {
         //msg = ent.encode(msg)
-        //Comande /quit qui deconnecte le client
-        if (msg.match('/quit')) {
-            socket.emit('quit_user', 'close');
-        }
-        //Commande /switchChannel [NAME] qui permet de move de channel
-        else if (msg.match('/switch(.)*')) {
+        switch (msg.split(' ', 1)[0]) {
+            case '/quit':
+                socket.emit('quit_user', 'close');
+                break;
+            case '/switch':
                 var newChannel = msg.split(" ")[1];
 
                 var oldChannel = socket.salon;
                 socket.leave(socket.salon);
-                socket.salon = checkSalons(socket, newChannel);
-                socket.join(socket.salon);
+                socket.salon = checkSalons(socket, newChannel, oldChannel);
 
-                //Emet un message dans le tchat du client
-                socket.emit('chat_messageBrute', 'Vous êtes connecter sur le channel ' + socket.salon);
-                //Emet un message dans l'ancien salon 
-                socket.broadcast.to(oldChannel).emit('chat_messageBrute', socket.pseudo + ' a quitter le salon');
+                if (socket.salon != oldChannel) {
+                    socket.join(socket.salon);
+                    //Emet un message dans le tchat du client
+                    socket.emit('chat_messageBrute', 'Vous êtes connecter sur le channel ' + socket.salon);
+                    //Emet un message dans l'ancien salon 
+                    socket.broadcast.to(oldChannel).emit('chat_messageBrute', socket.pseudo + ' a quitter le salon');
 
-                //Emet un message dans le nouveau salon
-                socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo + ' a rejoint votre salon');
-            }
-            //Commande /msg PSEUDO MESSAGE
-            else if (msg.match('/msg(.)*')) {
-                    var split = msg.split(" ");
-                    var pseudoMsg = split[1];
-                    var message = '';
-                    for (var i = 2; i < split.length; i++) {
-                        message += ' ' + split[i];
+                    //Emet un message dans le nouveau salon
+                    socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo + ' a rejoint votre salon');
+                }
+                break;
+            case '/msg':
+                var split = msg.split(" ");
+                var pseudoMsg = split[1];
+                var message = '';
+                for (var i = 2; i < split.length; i++) {
+                    message += ' ' + split[i];
+                }
+
+                sql = "select * from users where pseudo='" + pseudoMsg + "'";
+                callSQL(sql, function (err, data) {
+                    if (err) console.log("ERROR : ", err);else {
+                        if (data.length > 0) {
+                            sql = "INSERT INTO messages_prives (message, emetteur, destinataire) VALUES ('" + addslashes(message) + "', (select id from users where pseudo='" + socket.pseudo + "')," + data[0].id + ")";
+                            callSQL(sql, function (err, data) {
+                                if (err) console.log("ERROR : ", err);
+                            });
+                            if (data[0].connected != '') {
+                                socket.emit('chat_messagePrivate', socket.pseudo + " (vous avez chuchoté): " + message);
+                                users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo + " (murmure): " + message);
+                            }
+                        } else {
+                            socket.emit('chat_messageBrute', "Le pseudo " + pseudoMsg + " ne correspond à aucun utilisateur...");
+                        }
                     }
+                });
+                break;
+            case '/invite':
+                // /invite [PSEUDO] invite la personne en ami
+                var splitInvite = msg.split(" ");
+                var pseudoInvite = splitInvite[1];
 
-                    sql = "select * from users where pseudo='" + pseudoMsg + "'";
+                if (socket.pseudo != pseudoInvite) {
+                    sql = "select * from users where pseudo='" + pseudoInvite + "'";
                     callSQL(sql, function (err, data) {
                         if (err) console.log("ERROR : ", err);else {
                             if (data.length > 0) {
-                                sql = "INSERT INTO messages_prives (message, emetteur, destinataire) VALUES ('" + addslashes(message) + "', (select id from users where pseudo='" + socket.pseudo + "')," + data[0].id + ")";
+                                sql = "SELECT etat FROM `amis` WHERE `personne_a` = (select id from users where pseudo='" + socket.pseudo + "') and `personne_b` = (select id from users where pseudo='" + pseudoInvite + "')";
                                 callSQL(sql, function (err, data) {
                                     if (err) console.log("ERROR : ", err);
+                                    if (data.length <= 0) {
+                                        sql = "INSERT INTO `amis` (`id`, `personne_a`, `personne_b`, `etat`) VALUES (NULL, (select id from users where pseudo='" + socket.pseudo + "'), (select id from users where pseudo='" + pseudoInvite + "'), '1')";
+                                        callSQL(sql, function (err, dataRequest) {
+                                            if (err) console.log("ERROR : ", err);else {
+                                                console.log(dataRequest);
+                                                // if(data.length > 0){
+
+
+                                                // }else{
+                                                //     socket.emit('chat_messageBrute', "Le pseudo "+pseudoMsg+" ne correspond à aucun utilisateur...")
+                                                // }
+                                            }
+                                        });
+
+                                        // socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+message)
+                                        // users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+message)
+                                    } else {
+                                        switch (data[0].etat) {
+                                            case 1:
+                                                socket.emit('chat_messageBrute', "Une invitation est déjà en cours avec " + pseudoInvite);
+                                                break;
+                                            case 2:
+                                                socket.emit('chat_messageBrute', "Vous êtes déjà ami avec " + pseudoInvite + " !");
+                                                break;
+                                            case 2:
+                                                socket.emit('chat_messageBrute', pseudoInvite + " refuse d'être votre ami ! Prenez un Curly !");
+                                                break;
+                                            default:
+                                                socket.emit('chat_messageBrute', "Bug de la matrice !");
+                                                break;
+
+                                        }
+                                    }
                                 });
-                                if (data[0].connected != '') {
-                                    socket.emit('chat_messagePrivate', socket.pseudo + " (vous avez chuchoté): " + message);
-                                    users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo + " (murmure): " + message);
-                                }
                             } else {
-                                socket.emit('chat_messageBrute', "Le pseudo " + pseudoMsg + " ne correspond à aucun utilisateur...");
+                                socket.emit('chat_messageBrute', "Le pseudo " + pseudoInvite + " ne correspond à aucun utilisateur...");
                             }
                         }
                     });
-                } else {
-                    //Route par défauts
-                    sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('" + addslashes(msg) + "', (select id from users where pseudo='" + socket.pseudo + "'),(select id from salons where name='" + socket.salon + "'))";
-                    callSQL(sql, function (err, data) {
-                        if (err) console.log("ERROR : ", err);
-                    });
-
-                    socket.emit('chat_message', { pseudo: socket.pseudo, message: msg });
-                    socket.to(socket.salon).broadcast.emit('chat_message', { pseudo: socket.pseudo, message: msg });
                 }
+
+                break;
+
+            default:
+                sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('" + addslashes(msg) + "', (select id from users where pseudo='" + socket.pseudo + "'),(select id from salons where name='" + socket.salon + "'))";
+                callSQL(sql, function (err, data) {
+                    if (err) console.log("ERROR : ", err);
+                });
+
+                socket.emit('chat_message', { pseudo: socket.pseudo, message: msg });
+                socket.to(socket.salon).broadcast.emit('chat_message', { pseudo: socket.pseudo, message: msg });
+                break;
+        }
     });
 });
 
@@ -218,21 +275,20 @@ http.listen(3000, function () {
 });
 
 function callSQL(request, callback) {
-    // connection.connect()
-
     connection.query(request, function (error, results, fields) {
         if (error) callback(error, null);else callback(null, results);
     });
-
-    //connection.end()
 }
 
 function checkSalons(socket, salon) {
+    var old = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
     var retour = void 0;
     if (salons.indexOf(salon.toLowerCase()) > 0) {
         retour = salon.toLowerCase();
     } else {
-        retour = salons[0];
+        socket.emit('chat_messageBrute', "Le salon " + salon + " n'existe pas...");
+        if (old != null) retour = old;else retour = salons[0];
     }
 
     sql = "UPDATE `users` SET `connected` = '" + socket.id + "',`channelConnected` = (select id from salons where name='" + retour + "')  WHERE `users`.`pseudo` = '" + socket.pseudo + "'";
