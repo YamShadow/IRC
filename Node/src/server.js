@@ -153,8 +153,76 @@ io.sockets.on('connection', (socket) => {
                     }
                 })
                 break
+            case '/invite':
+                // /invite [PSEUDO] invite la personne en ami
+                let splitInvite = msg.split(" ")
+                let pseudoInvite = splitInvite[1]
+
+                if(socket.pseudo != pseudoInvite){
+                    sql = "select * from users where pseudo='"+pseudoInvite+"'"
+                    callSQL(sql, function(err,data){
+                        if (err)
+                            console.log("ERROR : ",err); 
+                        else{
+                            if(data.length > 0){
+                                sql = "SELECT etat FROM `amis` WHERE `personne_a` = (select id from users where pseudo='"+socket.pseudo+"') and `personne_b` = (select id from users where pseudo='"+pseudoInvite+"')"
+                                callSQL(sql, function(err,data){
+                                    if (err)
+                                        console.log("ERROR : ",err); 
+                                    if(data.length <= 0){
+                                        sql = "INSERT INTO `amis` (`id`, `personne_a`, `personne_b`, `etat`) VALUES (NULL, (select id from users where pseudo='"+socket.pseudo+"'), (select id from users where pseudo='"+pseudoInvite+"'), '1')"
+                                        callSQL(sql, function(err,dataRequest){
+                                            if (err)
+                                                console.log("ERROR : ",err); 
+                                            else{
+                                                console.log(dataRequest)
+                                                    // if(data.length > 0){
+                                                        
+                            
+                                                    // }else{
+                                                    //     socket.emit('chat_messageBrute', "Le pseudo "+pseudoMsg+" ne correspond à aucun utilisateur...")
+                                                    // }
+                                            }
+                                        })
+        
+        
+        
+                                        // socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+message)
+                                        // users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+message)
+                                    }else{
+                                        console.log('data invite existante ');
+                                        console.log(data);
+                                        switch(data.etat){
+                                            case 1:
+                                                socket.emit('chat_messageBrute', "Une invitation est déjà en cours pour "+splitInvite)
+                                                break
+                                            case 2:
+                                                socket.emit('chat_messageBrute', "Vous êtes déjà ami avec "+splitInvite+" !")
+                                                break
+                                            case 2:
+                                                socket.emit('chat_messageBrute', splitInvite+" refuse d'être votre ami ! Prenez un Curly !")
+                                                break
+                                            default:
+                                                socket.emit('chat_messageBrute', "Bug de la matrice !")
+                                                break
+
+                                        }
+                                    }
+                                })
+                            }else{
+                                socket.emit('chat_messageBrute', "Le pseudo "+pseudoInvite+" ne correspond à aucun utilisateur...")
+                            }
+                        }
+                    })
 
 
+
+
+                }
+                
+
+                break
+            
 
 
 

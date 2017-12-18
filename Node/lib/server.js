@@ -163,15 +163,17 @@ io.sockets.on('connection', function (socket) {
                 var oldChannel = socket.salon;
                 socket.leave(socket.salon);
                 socket.salon = checkSalons(socket, newChannel, oldChannel);
-                socket.join(socket.salon);
 
-                //Emet un message dans le tchat du client
-                socket.emit('chat_messageBrute', 'Vous êtes connecter sur le channel ' + socket.salon);
-                //Emet un message dans l'ancien salon 
-                socket.broadcast.to(oldChannel).emit('chat_messageBrute', socket.pseudo + ' a quitter le salon');
+                if (socket.salon != oldChannel) {
+                    socket.join(socket.salon);
+                    //Emet un message dans le tchat du client
+                    socket.emit('chat_messageBrute', 'Vous êtes connecter sur le channel ' + socket.salon);
+                    //Emet un message dans l'ancien salon 
+                    socket.broadcast.to(oldChannel).emit('chat_messageBrute', socket.pseudo + ' a quitter le salon');
 
-                //Emet un message dans le nouveau salon
-                socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo + ' a rejoint votre salon');
+                    //Emet un message dans le nouveau salon
+                    socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo + ' a rejoint votre salon');
+                }
                 break;
             case '/msg':
                 var split = msg.split(" ");
@@ -199,6 +201,64 @@ io.sockets.on('connection', function (socket) {
                     }
                 });
                 break;
+            case '/invite':
+                // /invite [PSEUDO] invite la personne en ami
+                var splitInvite = msg.split(" ");
+                var pseudoInvite = splitInvite[1];
+
+                if (socket.pseudo != pseudoInvite) {
+                    sql = "select * from users where pseudo='" + pseudoInvite + "'";
+                    callSQL(sql, function (err, data) {
+                        if (err) console.log("ERROR : ", err);else {
+                            if (data.length > 0) {
+                                sql = "SELECT etat FROM `amis` WHERE `personne_a` = (select id from users where pseudo='" + socket.pseudo + "') and `personne_b` = (select id from users where pseudo='" + pseudoInvite + "')";
+                                callSQL(sql, function (err, data) {
+                                    if (err) console.log("ERROR : ", err);
+                                    if (data.length <= 0) {
+                                        sql = "INSERT INTO `amis` (`id`, `personne_a`, `personne_b`, `etat`) VALUES (NULL, (select id from users where pseudo='" + socket.pseudo + "'), (select id from users where pseudo='" + pseudoInvite + "'), '1')";
+                                        callSQL(sql, function (err, dataRequest) {
+                                            if (err) console.log("ERROR : ", err);else {
+                                                console.log(dataRequest);
+                                                // if(data.length > 0){
+
+
+                                                // }else{
+                                                //     socket.emit('chat_messageBrute', "Le pseudo "+pseudoMsg+" ne correspond à aucun utilisateur...")
+                                                // }
+                                            }
+                                        });
+
+                                        // socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+message)
+                                        // users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+message)
+                                    } else {
+                                        console.log('data invite existante ');
+                                        console.log(data);
+                                        switch (data.etat) {
+                                            case 1:
+                                                socket.emit('chat_messageBrute', "Une invitation est déjà en cours pour " + splitInvite);
+                                                break;
+                                            case 2:
+                                                socket.emit('chat_messageBrute', "Vous êtes déjà ami avec " + splitInvite + " !");
+                                                break;
+                                            case 2:
+                                                socket.emit('chat_messageBrute', splitInvite + " refuse d'être votre ami ! Prenez un Curly !");
+                                                break;
+                                            default:
+                                                socket.emit('chat_messageBrute', "Bug de la matrice !");
+                                                break;
+
+                                        }
+                                    }
+                                });
+                            } else {
+                                socket.emit('chat_messageBrute', "Le pseudo " + pseudoInvite + " ne correspond à aucun utilisateur...");
+                            }
+                        }
+                    });
+                }
+
+                break;
+
             default:
                 sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('" + addslashes(msg) + "', (select id from users where pseudo='" + socket.pseudo + "'),(select id from salons where name='" + socket.salon + "'))";
                 callSQL(sql, function (err, data) {
@@ -217,13 +277,9 @@ http.listen(3000, function () {
 });
 
 function callSQL(request, callback) {
-    // connection.connect()
-
     connection.query(request, function (error, results, fields) {
         if (error) callback(error, null);else callback(null, results);
     });
-
-    //connection.end()
 }
 
 function checkSalons(socket, salon) {
@@ -233,6 +289,7 @@ function checkSalons(socket, salon) {
     if (salons.indexOf(salon.toLowerCase()) > 0) {
         retour = salon.toLowerCase();
     } else {
+        socket.emit('chat_messageBrute', "Le salon " + salon + " n'existe pas...");
         if (old != null) retour = old;else retour = salons[0];
     }
 
