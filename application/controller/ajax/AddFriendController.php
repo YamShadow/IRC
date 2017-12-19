@@ -1,5 +1,5 @@
 <?php
-
+// Not yet clean. Not tested.
 require_once('application/models/Users.class.php');
 
 if (checkPost('id_a') && checkPost('id_b') && checkPost('id_etat')) {
