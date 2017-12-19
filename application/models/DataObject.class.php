@@ -104,7 +104,7 @@ Class DataObject implements JsonSerializable {
 	public function save() {		// Sauvegarde l'entité en base
 		if ($this->isNewOne) {
 			$req = 'INSERT INTO `'.$this->tableName.'` (`';
-			$req .= implode('`, `', $this->innerFields).'`, `'.implode('`, `', $this->foreignFields).'`) VALUE (';
+			$req .= implode('`, `', $this->innerFields).'`, `'.implode('`, `', array_keys($this->foreignFields)).'`) VALUE (';
 
 			foreach ($this->innerFields as $field) {
 				switch ($this->$field) {
@@ -123,6 +123,8 @@ Class DataObject implements JsonSerializable {
 					$fv = 'NULL';
 				$req .= $fv.', ';
 			}
+
+			$req = substr($req, 0, -2);
 			$req .= ')';
 
 		} else {
@@ -151,16 +153,15 @@ Class DataObject implements JsonSerializable {
 			$req .= ' WHERE `'.$this->primaryKey.'` = '.$this->{$this->primaryKey};
 		}
 
-		
 		// Exécuter la requête et return + log et save l'id
+		logs('Requête appelée : <<< '.$req.' >>>', 'DataObject.save');
 		if ($result = dbQuery($req)) {
 			if ($this->isNewOne) {
-				$this->$primaryKey = dbLasyId();
+				$this->{$this->primaryKey} = dbLastId();
 				$this->isNewOne = false;
 			}
-			logs('Requête appelée : <<< '.$req.' >>>', 'DataObject.save');
 		} else 
-			seterr('Erreur : Requête <<< '.$req.' >>> non exécutée.', 'DataObject.save');
+			seterr('Erreur : Requête non exécutée.', 'DataObject.save');
 	}
 
 	public function jsonSerialize() {

@@ -42,7 +42,7 @@ function logs($message, $module){
     $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
     if(!is_dir('logs/')){mkdir('logs/', '750');}
     $log = fopen('logs/'.date('Ymd-H').'.txt', 'a+');
-    $prepare = "[".$date->format('Y-m-d H:i:s')."][".$module."] ".$ip." à l'adresse ".$_SERVER['PHP_SELF']."  - ".$message."\r\n";
+    $prepare = "[".$date->format('Y-m-d H:i:s')."][".$module."] ".$ip." à l'adresse ".$_SERVER['PHP_SELF']."  - ".$message."\r\n\r\n";
     fputs($log, $prepare);
     fclose($log);
 }
