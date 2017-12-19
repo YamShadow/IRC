@@ -67,6 +67,9 @@
                 <div class="prompt">$ <span class="command">add input update confirmPassword</span></div>
                 <div class="prompt">Update Confirm Password</div>
                 <div class="prompt">$ <input type="password" name="confirmMdp" id="confirmMdp" class="pulse input-shell" required></div>
+                <div class="prompt">$ <span class="command">add input update mail</span></div>
+                <div class="prompt">Update Mail</div>
+                <div class="prompt">$ <input type="email" name="mail" id="mail" class="pulse input-shell" ></div>
                 <div class="prompt">$ <span class="command">add input update image</span></div>
                 <div class="prompt">Update Url Avatar</div>
                 <div class="prompt">$ <input type="text" name="image" id="image" class="pulse input-shell" ></div>
