@@ -14,9 +14,11 @@
         $(function (){
             $.ajax({
                 method: 'POST',
-                url: 'ajax.php?action=listSalons',
+                url: 'ajax.php?action=updateUser',
                 data: {
-                    salon_id: 1
+                    user_id: 4,
+                    mail: 'teste@tes.te',
+                    image: '/url'
                 }
             }).done(function (data) {
                 $('#ret').text(JSON.stringify(data, null, '\t'));

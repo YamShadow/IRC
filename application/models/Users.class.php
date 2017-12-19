@@ -32,7 +32,7 @@ Class Users extends DataObject {
             'pseudo' => $this->pseudo,
             'image' => $this->image,
             'connected' => $this->connected,
-            'id' => $this->id
+            'mail' => $this->mail
         ];
     }
 
