@@ -100,3 +100,7 @@
     </div>
   </div>
 </div>
+
+<<script>
+    let idUser = <?= $_SESSION['user_id']; ?>
+</script>
