@@ -55,7 +55,7 @@ Class DataObject implements JsonSerializable {
 		// Nous renvoie l'entité qui correspond à l'array de conditions en entrée ou false si rien trouvé ordonnées par $order_by, qui peut être un soit un array soit false
 		// Array en entrée = ['champ' => value, 'champ' => value]
 
-		$req = 'SELECT '.$this->primaryKey.' FROM '.$this->tableName;				// Requête de base
+		$req = 'SELECT '.$this->primaryKey.' FROM '.$this->tableName;	// Requête de base
 
 		if (is_array($conditions) || !empty($conditions)) {				// Si y a des conditions on les ajoute
 			$req .= ' WHERE ';
@@ -164,8 +164,18 @@ Class DataObject implements JsonSerializable {
 	}
 
 	public function jsonSerialize() {
+		$return = array();
+
+		foreach ($this->innerFields as $field) {
+			$return[$field] = $this->$field;
+		}
+		
+		foreach ($this->foreignFields as $field => $class) {
+			$return[$field] = $this->$field->jsonSerialize();
+		}
+
 		logs('ATTENTION : Appel à jsonSerialize non surchargé !', $this->className.'.jsonSerialize');
-		return [];
+		return $return;
 	}
 
 	/* public function __autoload($class_name) {

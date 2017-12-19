@@ -20,14 +20,6 @@ Class Salons extends DataObject {
     protected $nom;
     protected $type_salon;
 
-    public function jsonSerialize() {
-        return [
-            'id' => $this->id,
-            'nom' => $this->nom,
-            'type_salon' => $this->type_salon->id,
-        ];
-    }
-
     public function getUsers() {
         $req = 'SELECT * FROM users WHERE channelConnected = '.$this->{$this->primaryKey}.' AND connected = 1';
 
