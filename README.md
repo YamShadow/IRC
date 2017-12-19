@@ -95,3 +95,9 @@ On s'est fixé de partir sans serveur pour commencer.
 - [ ] Page du chat, avec CSS modulaire
 - [ ] "Pop up" ajout d'ami / acceptation d'ami
 - [ ] "Pop up" de message privé
+
+### Bonus :
+
+- [ ] Autocomplétion des commandes
+- [ ] Clique pseudo user => @Pseudo dans l'input text 
+
