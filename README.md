@@ -86,6 +86,7 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] /kick [PSEUDO] = kick une personne 
 - [x] /withMe = liste les gens en ligne dans cette room
 - [x] /help = liste les commandes
+- [x] /rename = rename temporairement le pseudo
 - [ ] target des users @
 - [x] Logo
 

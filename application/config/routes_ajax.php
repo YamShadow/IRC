@@ -6,6 +6,7 @@ $routes = [
     'test' => 'TestController',
     'empty' => 'EmptyController',
     'usersInSalon' => 'UsersInSalonController',
+    'listSalons' => 'ListSalonsController',
 ];
 
 

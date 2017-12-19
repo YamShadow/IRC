@@ -2,7 +2,7 @@
 require_once('system/functionCore.php');
 require_once('dbtools.php');
 
-Class DataObject {
+Class DataObject implements JsonSerializable {
 
 	/* POSTULAT DE BASE : 
 		* La clef primaire est numérique (INT UNSIGNED NOT NULL AUTO_INCREMENT)
@@ -161,6 +161,11 @@ Class DataObject {
 			logs('Requête appelée : <<< '.$req.' >>>', 'DataObject.save');
 		} else 
 			seterr('Erreur : Requête <<< '.$req.' >>> non exécutée.', 'DataObject.save');
+	}
+
+	public function jsonSerialize() {
+		logs('ATTENTION : Appel à jsonSerialize non surchargé !', $this->className.'.jsonSerialize');
+		return [];
 	}
 
 	/* public function __autoload($class_name) {
