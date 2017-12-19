@@ -8,7 +8,8 @@ $(document).ready(function() {
             members: [],
         },
         created () {
-            this.buildMembers()
+            this.buildMembers();
+            this.timer = setInterval(this.buildMembers, 1000)
         },
         methods: {
             buildMembers: function() {
