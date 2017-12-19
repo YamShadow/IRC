@@ -47,7 +47,7 @@ switch (ENVIRONMENT)
 require_once('application/config/routes.php');
 
 if(empty($_GET['action']))
-    $action = 'home';
+    $action = 'empty';
 else
 	$action = $_GET['action'];
 
