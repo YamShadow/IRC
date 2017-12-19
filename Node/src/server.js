@@ -151,8 +151,40 @@ io.sockets.on('connection', (socket) => {
                                 if(data[0].connected != ''){
                                     socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+message)
                                     users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+message)
+                                    users[pseudoMsg].lastMsgPseudo = socket.pseudo
                                 }
 
+                            }else{
+                                socket.emit('chat_messageBrute', "Le pseudo "+pseudoMsg+" ne correspond à aucun utilisateur...")
+                            }
+                        }
+                    })
+                    break
+                case '/r':
+                    console.log(socket.lastMsgPseudo)
+                    let splitReponse = msg.split(" ")
+                    let messageReponse = ''
+                    for(let i= 1; i<splitReponse.length; i++){
+                        messageReponse += ' '+splitReponse[i]
+                    }  
+
+                    sql = "select * from users where pseudo='"+socket.lastMsgPseudo+"'"
+                    callSQL(sql, function(err,data){
+                        if (err)
+                            console.log("ERROR : ",err)
+                        else{
+                            if(data.length > 0){
+                                sql = "INSERT INTO messages_prives (message, emetteur, destinataire) VALUES ('"+ ent.encode(addslashes(messageReponse.trim())) +"', (select id from users where pseudo='"+socket.pseudo+"'),"+data[0].id+")"
+                                callSQL(sql, function(err,data){
+                                    if (err)
+                                        console.log("ERROR : ",err)
+                                })
+                                if(data[0].connected != ''){
+                                    socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+messageReponse)
+                                    users[socket.lastMsgPseudo].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+messageReponse)
+                                    users[socket.lastMsgPseudo].lastMsgPseudo = socket.pseudo
+                                    delete socket.lastMsgPseudo
+                                }
                             }else{
                                 socket.emit('chat_messageBrute', "Le pseudo "+pseudoMsg+" ne correspond à aucun utilisateur...")
                             }
@@ -190,10 +222,16 @@ io.sockets.on('connection', (socket) => {
                                                     socket.emit('chat_messageBrute', "Une invitation est déjà en cours avec "+pseudoInvite)
                                                     break
                                                 case 2:
-                                                    socket.emit('chat_messageBrute', "Vous êtes déjà ami avec "+pseudoInvite+" !")
-                                                    break
-                                                case 2:
                                                     socket.emit('chat_messageBrute', pseudoInvite+" refuse d'être votre ami ! Prenez un Curly !")
+                                                    break
+                                                case 3:
+                                                    socket.emit('chat_messageBrute', "Votre invitation à "+pseudoInvite+" a expirée !")
+                                                    break
+                                                case 4:
+                                                    socket.emit('chat_messageBrute', "Invitation indésirable pour "+pseudoInvite+" !")
+                                                    break
+                                                case 5:
+                                                    socket.emit('chat_messageBrute', "Vous êtes déjà ami avec "+pseudoInvite+" !")
                                                     break
                                                 default:
                                                     socket.emit('chat_messageBrute', "Bug de la matrice !")

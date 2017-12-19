@@ -76,7 +76,7 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] Reload des 10 derniers messages dans le salon
 - [x] Add d'un son en cas de messages
 - [x] Add des MP( /msg )
-- [ ] /w = reponse a la derniere personne MP 
+- [x] /r = reponse a la derniere personne MP 
 - [x] /friendlist = liste les amis
 - [x] /invite [PSEUDO] invite la personne en ami
 - [x] /acceptFriend [Pseudo] = Accepte l'ami
