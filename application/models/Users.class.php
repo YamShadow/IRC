@@ -52,4 +52,21 @@ Class Users extends DataObject {
         $this->connected = 1;
         $this->save();
     }
+
+    public function getFriends() {
+        $req = 
+        'SELECT DISTINCT users.pseudo, users.connected, users.image, amis.etat
+        FROM users 
+            INNER JOIN amis ON users.id = amis.personne_a OR users.id = amis.personne_b
+        WHERE 
+            (amis.personne_a = 
+                (SELECT id FROM users WHERE pseudo=\''.$this->pseudo.'\') 
+            OR amis.personne_b = 
+                (select id from users where pseudo=\''.$this->pseudo.'\')) 
+            AND users.id != 
+                (select id from users where pseudo=\''.$this->pseudo.'\') 
+        ORDER BY pseudo ASC';
+
+        return dbFetchAllAssoc($req);
+    }
 }

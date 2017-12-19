@@ -14,10 +14,9 @@
         $(function (){
             $.ajax({
                 method: 'POST',
-                url: 'ajax.php?action=addSalon',
+                url: 'ajax.php?action=listFriends',
                 data: {
-                    nom: 'blabla',
-                    id_type: 1
+                    user_id: 5
                 }
             }).done(function (data) {
                 $('#ret').html(data);
