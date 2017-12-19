@@ -449,10 +449,6 @@ function callSQL(request, callback){
 
 function checkSalons(socket, salon, old = null){
     let retour
-    // console.log(salon)
-    // console.log(old)
-    // console.log(salons)
-    console.log(salons.indexOf(salon.toLowerCase()))
     if(salons.indexOf(salon.toLowerCase()) >= 0){
         retour = salon
     }
