@@ -1,0 +1,50 @@
+body {
+    padding-top: 0;
+    overflow: hidden;
+}
+
+nav {
+    background: #232323;
+    padding: 15px 0;
+}
+
+nav ul {
+    text-align: right;
+    margin-right: 15px;
+}
+
+nav ul li {
+    display: inline-block;
+    list-style-type: none;
+}
+
+nav ul li a {
+    padding: 15px 10px;
+}
+
+.logoHomePage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.logoHomePage img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #232323;
+    padding: 10px 0;
+}
+
+footer i {
+    margin: 0 10px;
+}
