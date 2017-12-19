@@ -59,8 +59,6 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] Faire ORM
 - [x] Finir BDD
 - [x] Sortir le schéma de la base
-- [ ] .htaccess
-- [ ] Début des requettes Salons/personne en ligne en php ? 
 - [ ] Créer les scripts répondant aux requêtes AJAX faites par le client.
 
 ### Mathieu
@@ -89,15 +87,23 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] /withMe = liste les gens en ligne dans cette room
 - [x] /help = liste les commandes
 - [ ] target des users @
+- [ ] Logo
+
 
 ### Florian
 - [ ] Implémenter Vue.js
 - [ ] Page du chat, avec CSS modulaire
 - [ ] "Pop up" ajout d'ami / acceptation d'ami
 - [ ] "Pop up" de message privé
+- [ ] HomePage
+- [ ] Responsive + boutons mobiles
+- [ ] Accessibilité
+- [ ] MarkDown
 
 ### Bonus :
 
+- [ ] .htaccess
+- [ ] sons
 - [ ] Autocomplétion des commandes
 - [ ] Clique pseudo user => @Pseudo dans l'input text 
 

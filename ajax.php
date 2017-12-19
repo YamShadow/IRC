@@ -44,17 +44,18 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
-require_once('application/config/routes.php');
+require_once('application/config/routes_ajax.php');
+
 
 if(empty($_GET['action']))
-    $action = 'empty';
+	$action = 'empty';
 else
 	$action = $_GET['action'];
 
-$controller_path = 'application/controller/'.$routes[$action].'.php';
+$controller_path = 'application/controller/ajax/'.$routes[$action].'.php';
 
 if(is_file($controller_path)) {
-    include($controller_path);
+	include($controller_path);
 } else {
 	seterr('Controlleur inconnu pour l\'action : '.$action, 'index.php');
 }
