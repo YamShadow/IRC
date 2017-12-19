@@ -48,8 +48,19 @@ On s'est fixé de partir sans serveur pour commencer.
     * Ajout des MP
     * Début du style css du chat
 
+### Dimanche 17
+
+* Mathieu :
+    * Avancement des commandes
+    * Refonte de la structure des commandes du chat
+    * Ajout de l'amitié
+
 ### Lundi 18
 * Jordan : Les FK fonctionnent par l'ORM. Entités de base. Réécrit le connect en utilisant des fonctions de Users.
+* Mathieu : 
+    * Documentation
+    * finition des commandes
+    * ajout des sons
 
 --------------
 
@@ -67,8 +78,8 @@ On s'est fixé de partir sans serveur pour commencer.
 - [ ] Implémenter les erreurs dans les views Logins/Register
 - [x] Switch de channel
 - [x] Rejet en cas de pseudo inconnu
-- [x] Recuperation des salons existant
-- [x] Suppression du token en cas de deconnexion
+- [x] Recupération des salons existant
+- [x] Suppression du token en cas de déconnexion
 - [x] Ajout du token de connexion
 - [x] Sauvegarde des messages en BDD
 - [x] Reload des 10 derniers messages dans le salon
@@ -101,10 +112,10 @@ On s'est fixé de partir sans serveur pour commencer.
 - [ ] Accessibilité
 - [ ] MarkDown
 
+
 ### Bonus :
 
 - [ ] .htaccess
 - [ ] sons
 - [ ] Autocomplétion des commandes
-- [ ] Clique pseudo user => @Pseudo dans l'input text 
-
+- [ ] Clique pseudo user => @Pseudo dans l'input text
