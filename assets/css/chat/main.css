@@ -37,6 +37,10 @@ object {
     flex: 1;
 }
 
+object > .logo{
+    width: 80%;
+}
+
 #salonsList {
     display: none;
     position: fixed;

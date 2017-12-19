@@ -19,7 +19,8 @@
                 <button class="btn-shell addSalon">Ajouter un salon</button>
             </aside>
 
-            <object data="http://localhost:3000?pseudo=<?= $_SESSION['user_pseudo'] ?>&salon=room" width="1000" height="1000">
+            <object data="http://localhost:3000?pseudo=<?= $_SESSION['user_pseudo'] ?>&salon=Generale" width="1000" height="1000">
+                <img class="logo" src="assets/images/logo.png" title="logo de ShellCoord" alt="logo de ShellCoord">
                 <p>Le serveur Node n'est pas lancé !</p>
             </object>
 
@@ -95,7 +96,7 @@
     <div class="body">
       <pre>
         Profil de <span data-id="" class="profilPseudo"></span>
-        <img class="profilAvatar" src="" alt="" />
+        <img class="profilAvatar" src="" alt="Photo de profil" title="Photo de profil" />
       </pre>
     </div>
   </div>
