@@ -466,9 +466,9 @@ io.sockets.on('connection', function (socket) {
                     var splitRename = msg.split(" ");
                     var pseudoRename = splitRename[1];
                     if (pseudoRename != undefined) {
-                        console.log(pseudoRename);
-                        console.log(socket.RealPseudo);
                         if (pseudoRename == socket.RealPseudo) {
+                            socket.emit('chat_messageBrute', socket.pseudo + " est devenu " + socket.RealPseudo);
+                            socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo + " est devenu " + socket.RealPseudo);
                             socket.pseudo = socket.RealPseudo;
                             users[socket.pseudo] = socket;
                             delete socket.RealPseudo;
@@ -476,6 +476,8 @@ io.sockets.on('connection', function (socket) {
                             pseudoRename = '(' + pseudoRename + ')';
                             socket.RealPseudo = socket.pseudo;
                             delete users[socket.pseudo];
+                            socket.emit('chat_messageBrute', socket.pseudo + " est devenu " + pseudoRename);
+                            socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo + " est devenu " + pseudoRename);
                             socket.pseudo = pseudoRename;
                             users[socket.pseudo] = socket;
                         }
@@ -494,6 +496,7 @@ io.sockets.on('connection', function (socket) {
                         '/online': 'Liste les utilisateurs connectés',
                         '/quit': 'Déconnexion',
                         '/r [MESSAGE]': 'Repond au dernier message privé reçu',
+                        '/rename [PSEUDO]': 'Change temporairement le pseudo',
                         '/roomList': 'Liste les salons',
                         '/switch [SALON]': 'Switch de salons',
                         '/withMe': 'Liste les utilisateurs de mon salon'

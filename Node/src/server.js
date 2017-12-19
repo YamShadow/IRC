@@ -374,17 +374,20 @@ io.sockets.on('connection', (socket) => {
                     let splitRename = msg.split(" ")
                     let pseudoRename = splitRename[1]
                     if(pseudoRename != undefined){
-                        console.log(pseudoRename)
-                        console.log(socket.RealPseudo)
                         if(pseudoRename == socket.RealPseudo){
+                            socket.emit('chat_messageBrute', socket.pseudo+" est devenu "+socket.RealPseudo)
+                            socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo+" est devenu "+socket.RealPseudo)
                             socket.pseudo = socket.RealPseudo
                             users[socket.pseudo] = socket
                             delete socket.RealPseudo
+                            
                         }
                         else{
                             pseudoRename = '('+pseudoRename+')'
                             socket.RealPseudo = socket.pseudo
                             delete users[socket.pseudo]
+                            socket.emit('chat_messageBrute', socket.pseudo+" est devenu "+pseudoRename)
+                            socket.broadcast.to(socket.salon).emit('chat_messageBrute', socket.pseudo+" est devenu "+pseudoRename)
                             socket.pseudo = pseudoRename
                             users[socket.pseudo] = socket
                         }
