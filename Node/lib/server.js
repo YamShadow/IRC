@@ -94,8 +94,10 @@ io.sockets.on('connection', function (socket) {
         socket.pseudo = pseudo;
         users[socket.pseudo] = socket;
 
+        console.log(salon);
         //verifie si le salon est connu
         socket.salon = checkSalons(socket, salon);
+        console.log(socket.salon);
 
         socket.join(socket.salon);
 
@@ -140,7 +142,7 @@ io.sockets.on('connection', function (socket) {
 
     //Route de deconnexion
     socket.on('disconnect', function () {
-        sql = "UPDATE `users` SET `connected` = '' WHERE `users`.`pseudo` = '" + socket.pseudo + "'";
+        sql = "UPDATE `users` SET `connected` = '0' WHERE `users`.`pseudo` = '" + socket.pseudo + "'";
         callSQL(sql, function (err, data) {
             if (err) console.log("ERROR : ", err);
         });
@@ -197,7 +199,7 @@ io.sockets.on('connection', function (socket) {
                                 callSQL(sql, function (err, data) {
                                     if (err) console.log("ERROR : ", err);
                                 });
-                                if (data[0].connected != '') {
+                                if (data[0].connected != '' || data[0].connected != '0') {
                                     socket.emit('chat_messagePrivate', socket.pseudo + " (vous avez chuchoté): " + message);
                                     users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo + " (murmure): " + message);
                                     users[pseudoMsg].lastMsgPseudo = socket.pseudo;
@@ -209,7 +211,6 @@ io.sockets.on('connection', function (socket) {
                     });
                     break;
                 case '/r':
-                    console.log(socket.lastMsgPseudo);
                     var splitReponse = msg.split(" ");
                     var messageReponse = '';
                     for (var _i = 1; _i < splitReponse.length; _i++) {
@@ -224,7 +225,7 @@ io.sockets.on('connection', function (socket) {
                                 callSQL(sql, function (err, data) {
                                     if (err) console.log("ERROR : ", err);
                                 });
-                                if (data[0].connected != '') {
+                                if (data[0].connected != '' || data[0].connected != '0') {
                                     socket.emit('chat_messagePrivate', socket.pseudo + " (vous avez chuchoté): " + messageReponse);
                                     users[socket.lastMsgPseudo].emit('chat_messagePrivate', socket.pseudo + " (murmure): " + messageReponse);
                                     users[socket.lastMsgPseudo].lastMsgPseudo = socket.pseudo;
@@ -392,7 +393,6 @@ io.sockets.on('connection', function (socket) {
                                     socket.emit('chat_messageBrute', "Le salon " + nameCreateRoom + " a été crée !");
                                     salons.push(nameCreateRoom);
                                 }
-                                console.log(salons);
                             }
                         });
                     } else socket.emit('chat_messageBrute', "Veuillez saisir un nom de salon valide !");
@@ -473,14 +473,7 @@ io.sockets.on('connection', function (socket) {
                     var listeHelp = 'Listes des commandes disponibles :<br><br>';
                     for (var elmHelp in arrayHelp) {
                         listeHelp += '&emsp;&emsp;' + elmHelp + ' - ' + arrayHelp[elmHelp] + '<br>';
-                        // console.log(arrayHelp[elmHelp])
-                        // console.log(elmHelp)
-                        // if(listeHelp)
-                        // listeHelp.push() += ', '+listeHelp
-                        // else
-                        // listeHelp = room.nom
                     }
-                    console.log(listeHelp);
                     socket.emit('chat_help', listeHelp);
                     break;
 
@@ -512,8 +505,8 @@ function checkSalons(socket, salon) {
     var old = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
     var retour = void 0;
-    if (salons.indexOf(salon.toLowerCase()) > 0) {
-        retour = salon.toLowerCase();
+    if (salons.indexOf(salon.toLowerCase()) >= 0) {
+        retour = salon;
     } else {
         socket.emit('chat_messageBrute', "Le salon " + salon + " n'existe pas...");
         if (old != null) retour = old;else retour = salons[0];
