@@ -537,10 +537,6 @@ function checkSalons(socket, salon) {
     var old = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
     var retour = void 0;
-    // console.log(salon)
-    // console.log(old)
-    // console.log(salons)
-    console.log(salons.indexOf(salon.toLowerCase()));
     if (salons.indexOf(salon.toLowerCase()) >= 0) {
         retour = salon;
     } else {
