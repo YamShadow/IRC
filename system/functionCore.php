@@ -62,13 +62,18 @@ function redirect($action){
     header('Location: index.php?action='.$action);
 }
 
-function seterr($msg, $module) {
+function seterr($msg, $module, $ajax = false) {
     if (ENVIRONMENT == 'production') {
-        header('x', true, 500);
-        echo '<br />Veuillez contacter un administrateur système ou réessayer plus tard.';
+        if (!$ajax) {
+            header('x', true, 500);
+            echo '<br />Veuillez contacter un administrateur système ou réessayer plus tard.';
+        } else 
+            echo '{}';
+
         exit();
     } else if (ENVIRONMENT == 'development') {
         logs($msg, $module);
+        if ($ajax) die('{}');
         die('An error has occured. Please consult logs file.');
     }
 }

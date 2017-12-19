@@ -3,6 +3,14 @@
 require_once('application/models/Users.class.php');
 
 switch($action){
+    case 'logout':
+    // Permet de se déconnecter
+        session_destroy();
+
+        redirect('home');
+
+        break;
+
     case 'login':
     // Permet d'afficher toute la partie dédié au formulaire de connexion
         $header = array(

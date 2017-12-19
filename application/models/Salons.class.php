@@ -19,4 +19,15 @@ Class Salons extends DataObject {
     protected $id;
     protected $nom;
     protected $type_salon;
+
+    public function getUsers() {
+        $req = 'SELECT * FROM users WHERE channelConnected = '.$this->{$this->primaryKey}.' AND connected = 1';
+
+        $result = dbFetchAllAssoc($req);
+
+        if ($result)
+            return $result;
+        else 
+            return false;
+    }
 }
