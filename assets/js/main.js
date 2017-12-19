@@ -1,32 +1,7 @@
 $(document).ready(function() {
 
-    // Users connected
-    
-    var listMembers = new Vue({
-        el: '#connectedMembers',
-        data: {
-            members: [],
-        },
-        created () {
-            this.buildMembers();
-            this.timer = setInterval(this.buildMembers, 1000)
-        },
-        methods: {
-            buildMembers: function() {
-                var self = this
-                $.ajax({
-                    method: 'POST',
-                    url: 'ajax.php?action=usersInSalon',
-                    data: {
-                        salon_id: 1
-                    }
-                }).done(function (data) {
-                    self.members = data;
-                });
-            }
-        }
-    });
 
+    let idSalon = '';
 
     // Salon et ajout de salon
     var vueSalons = Vue.extend({
@@ -50,6 +25,10 @@ $(document).ready(function() {
                     var salons = data;
                     for(salon in salons) {
                         self.salons.push(salons[salon]);
+                        if(salons[salon].nom == $_GET("room")) {
+                            idSalon = salons[salon].id;
+                            console.log(idSalon);
+                        }
                     }
                 });
                 
@@ -64,6 +43,34 @@ $(document).ready(function() {
         el: '#salonsList',
         components: {
             'vue-salon': vueSalons
+        }
+    });
+
+
+    // Users connected
+    
+    var listMembers = new Vue({
+        el: '#connectedMembers',
+        data: {
+            members: [],
+        },
+        created () {
+            this.buildMembers();
+            this.timer = setInterval(this.buildMembers, 1000)
+        },
+        methods: {
+            buildMembers: function() {
+                var self = this
+                $.ajax({
+                    method: 'POST',
+                    url: 'ajax.php?action=usersInSalon',
+                    data: {
+                        salon_id: idSalon
+                    }
+                }).done(function (data) {
+                    self.members = data;
+                });
+            }
         }
     });
 
@@ -141,6 +148,21 @@ $(document).ready(function() {
             $('#connectedMembers').css('display', 'none');
         }
     });
+
+    function $_GET(param) {
+        let vars = {}
+        window.location.href.replace( location.hash, '' ).replace( 
+            /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+            function( m, key, value ) { // callback
+                vars[key] = value !== undefined ? value : ''
+            }
+        );
+
+        if (param) {
+            return vars[param] ? vars[param] : null	
+        }
+        return vars
+    }
 
 });
 
