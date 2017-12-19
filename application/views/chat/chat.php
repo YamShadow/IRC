@@ -8,11 +8,11 @@
         </div>
     </div>
     <div class="body">
-        <pre class="displayFlex">
+        <div class="pre displayFlex">
             <aside id="salonsList">
                 <span class="toggleSalons">Cacher le menu <i class="fa fa-eye-slash" aria-hidden="true"></i></span>
                 <h2 class="comment">#Salons :</h2>
-                <h3 class="custom">$ <span class="greenColor">add array Salons</span></h3>
+                <h3>$ <span class="greenColor">add array Salons</span></h3>
 
                 <vue-salon ref="foo"></vue-salon>
 
@@ -26,12 +26,12 @@
             <aside id="connectedMembers">
             <span class="toggleConnected">Cacher le menu <i class="fa fa-eye-slash" aria-hidden="true"></i></span>
             <h2 class="comment">#Connectés :</h2>
-            <h3 class="custom">$ <span class="greenColor">echo each Members</span></h3>
+            <h3>$ <span class="greenColor">echo each Members</span></h3>
                 <ul>
                     <li v-for="member in members" :id="member.id" :pseudo="member.pseudo" :avatar="member.avatar">{{ member.pseudo }}</li>
                 </ul>
             </aside>
-        </pre>
+        </div>
     </div>
 </main>
   <div class="filter"></div>
@@ -44,12 +44,12 @@
             </div>
         </div>
         <div class="body">
-            <pre>
-                $ <span class="greenColor" data-typer="add input newSalon"></span>
+            <div class="pre">
+                $ <span class="greenColor" data-typer="add input newSalon"></span><br />
                 <input class="pulse input-shell" id="inputNewSalon" type="text" v-model="name" />
                 <p class="errorMessage">Le salon doit avoir un nom !</p>
                 <button class="btn-shell" id="addNewSalon">Ajouter</button>
-            </pre>
+            </div>
         </div>
     </div>
 </div>
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="body">
-            <pre>
+            <div class="pre">
                 <h2 class="comment">#Modifier les paramètres de l'utilisateur :</h2>
                 <div class="prompt">$ <span class="command">add input update Login</span></div>
                 <div class="prompt">Update Login</div>
@@ -78,9 +78,9 @@
                 <div class="prompt">$ <input value="<?= $_SESSION['user_mail']; ?>" type="email" name="mail" id="mail" class="pulse input-shell" ></div>
                 <div class="prompt">$ <span class="command">add input update image</span></div>
                 <div class="prompt">Update Url Avatar</div>
-                <div class="prompt">$ <input value="<?= $_SESSION['user_image']; ?>"type="text" name="image" id="image" class="pulse input-shell" ></div>
+                <div class="prompt">$ <input value="<?= $_SESSION['user_image']; ?>" type="text" name="image" id="image" class="pulse input-shell" ></div>
                 <div><button id="updateUser" type="submit" class="btn-shell">Valider les changements</button></div>
-            </pre>
+            </div>
         </div>
     </div>
 </div>
@@ -93,10 +93,10 @@
       </div>
     </div>
     <div class="body">
-      <pre>
+      <div class="pre">
+        <img class="profilAvatar" src="assets/images/defaultUser.jpg" alt="Photo de profil" title="Photo de profil" />
         Profil de <span data-id="" class="profilPseudo"></span>
-        <img class="profilAvatar" src="" alt="Photo de profil" title="Photo de profil" />
-      </pre>
+      </div>
     </div>
   </div>
 </div>

@@ -26,8 +26,8 @@ footer small {
   font-size: .9rem;
 }
 
-pre{
-  line-height: 0.5;
+.pre{
+  line-height: 2;
 }
 
 h1 {
@@ -94,7 +94,7 @@ p {
   padding: 18px;
 }
 
-.body pre {
+.body .pre {
   margin: 0;
 }
 
@@ -159,6 +159,8 @@ p {
   padding: 10px 0;
   border-bottom: 1px dashed white;
   border-top: 1px dashed white;
+  display: block;
+  margin-top: 10px;
 }
 
 .btn-shell::before {

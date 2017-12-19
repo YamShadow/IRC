@@ -23,7 +23,6 @@ $(document).ready(function() {
                     url: 'ajax.php?action=listSalons',
                 }).done(function (data) {
                     var salons = data;
-                    console.log(salons);
                     for(salon in salons) {
                         self.salons.push(salons[salon]);
                         if(salons[salon].nom == $_GET("room")) {
@@ -33,8 +32,19 @@ $(document).ready(function() {
                 });
                 
             },
-            addSalon: function(input) {
-                this.salons.push(input);
+            addSalon: function() {
+                var newSalon = $('#inputNewSalon').val();
+                $.ajax({
+                    method: 'POST',
+                    url: 'ajax.php?action=addSalon',
+                    data: {
+                        nom: newSalon,
+                        id_type: 1
+                    }
+                }).done(function (data) {
+                    this.salons.push(data);
+                });
+                
             }
         }
     });
