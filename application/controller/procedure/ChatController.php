@@ -34,7 +34,7 @@ if(isset($_SESSION['user_id'])){
             view('template', $header);
             break;
         default: 
-            die('Erreur de routing dans ChatController.');
+            seterr('Erreur de routing dans ChatController.', 'ChatController');
     }
 }else
     redirect('login');
