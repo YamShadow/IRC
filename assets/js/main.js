@@ -29,10 +29,11 @@ $(document).ready(function() {
 
     // Salon et ajout de salon
     var vueSalons = Vue.extend({
-        template: '<ul><li v-for="salon in salons">{{ salon }}</li></ul>',
+        template: '<ul><li v-for="salon in salons"><a :href="url + salon.nom">{{ salon.nom }}</a></li></ul>',
         data: function() {
             return {
-                salons: []
+                salons: [],
+                url: 'index.php?action=chat&room='
             };
         },
         created () {
@@ -45,8 +46,12 @@ $(document).ready(function() {
                     method: 'POST',
                     url: 'ajax.php?action=listSalons',
                 }).done(function (data) {
-                    self.salons = data;
+                    var salons = data;
+                    for(salon in salons) {
+                        self.salons.push(salons[salon]);
+                    }
                 });
+                
             },
             addSalon: function(input) {
                 this.salons.push(input);
