@@ -94,10 +94,8 @@ io.sockets.on('connection', function (socket) {
         socket.pseudo = pseudo;
         users[socket.pseudo] = socket;
 
-        console.log(salon);
         //verifie si le salon est connu
         socket.salon = checkSalons(socket, salon);
-        console.log(socket.salon);
 
         socket.join(socket.salon);
 
@@ -388,7 +386,6 @@ io.sockets.on('connection', function (socket) {
                         sql = "INSERT INTO `salons` (`nom`, `type_salon`) VALUES ('" + nameCreateRoom + "', '1')";
                         callSQL(sql, function (err, data) {
                             if (err) console.log("ERROR : ", err);else {
-                                console.log(data);
                                 if (data.affectedRows > 0) {
                                     socket.emit('chat_messageBrute', "Le salon " + nameCreateRoom + " a été crée !");
                                     salons.push(nameCreateRoom);
@@ -467,8 +464,19 @@ io.sockets.on('connection', function (socket) {
                     break;
                 case '/help':
                     var arrayHelp = {
-                        '/quit': 'Commande qui permet de se deconnecter',
-                        '/r': 'methode qui permet de repondre au dernier message privé'
+                        '/acceptFriend [PSEUDO]': 'Accepte une requete d\'amitié',
+                        '/createRoom [NOM_SALON]': 'Créaction d\'un salon',
+                        '/declineFriend [PSEUDO]': 'Decline une requete d\'amitié',
+                        '/friendlist': 'Liste les amitiés',
+                        '/invite [PSEUDO]': 'Requette d\'amitié',
+                        '/kick [PSEUDO]': 'Expulse une personne',
+                        '/msg [PSEUDO] [MESSAGE]': 'Message privé à une personne',
+                        '/online': 'Liste les utilisateurs connectés',
+                        '/quit': 'Deconnexion',
+                        '/r [MESSAGE]': 'Repond au dernier message privé reçu',
+                        '/roomList': 'Liste les salons',
+                        '/switch [SALON]': 'Switch de salons',
+                        '/withMe': 'Liste les utilisateurs de mon salon'
                     };
                     var listeHelp = 'Listes des commandes disponibles :<br><br>';
                     for (var elmHelp in arrayHelp) {

@@ -63,7 +63,7 @@ On s'est fixé de partir sans serveur pour commencer.
 
 ### Mathieu
 - [x] Partie métier de login et register
-- [ ] <del>Maquettes</del>
+- [x] <del>Maquettes</del>
 - [ ] Implémenter les erreurs dans les views Logins/Register
 - [x] Switch de channel
 - [x] Rejet en cas de pseudo inconnu
@@ -87,7 +87,7 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] /withMe = liste les gens en ligne dans cette room
 - [x] /help = liste les commandes
 - [ ] target des users @
-- [ ] Logo
+- [x] Logo
 
 
 ### Florian
