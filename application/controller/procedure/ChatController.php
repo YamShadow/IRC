@@ -14,7 +14,6 @@ if(isset($_SESSION['user_pseudo'])){
                 'js' => array(
                     'vue',
                     'main'
-                    
                 ),
                 'jquery' => true,
                 'menu' => false,
@@ -24,6 +23,10 @@ if(isset($_SESSION['user_pseudo'])){
                     'data' => array(),
                 )
             );
+            if(!isset($_GET['room']))
+                $header['view']['data']['room'] = 'Generale';
+            else
+                $header['view']['data']['room'] = $_GET['room'];
             view('template', $header);
             break;
         default: 

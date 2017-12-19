@@ -1,21 +1,27 @@
 $(document).ready(function() {
 
+    // Users connected
+
     var listMembers = new Vue({
         el: '#connectedMembers',
         data: {
-            members: [
-                { id: 1, pseudo: 'John Doe 1', avatar: 'http://data-cache.abuledu.org/1024/icone-de-coq-5049c8fe.jpg'},
-                { id: 2, pseudo: 'John Doe 2', avatar: 'http://data-cache.abuledu.org/1024/icone-de-coq-5049c8fe.jpg'},
-                { id: 3, pseudo: 'John Doe 3', avatar: 'http://data-cache.abuledu.org/1024/icone-de-coq-5049c8fe.jpg'}
-            ],
-            name: '',
+            members: [],
+        },
+        created () {
+            this.buildMembers()
         },
         methods: {
-            addMember: function() {
-                if(this.name.length != 0) {
-                    connectedMembers.members.push({ pseudo: this.name })
-                    this.name = ''
-                }
+            buildMembers: function() {
+                var self = this
+                $.ajax({
+                    method: 'POST',
+                    url: 'ajax.php?action=usersInSalon',
+                    data: {
+                        salon_id: 1
+                    }
+                }).done(function (data) {
+                    self.members = data;
+                });
             }
         }
     });
@@ -93,20 +99,17 @@ $(document).ready(function() {
         $('.filter').hide();
     });
 
-
     var profilPseudo = $('#modalUsers').find('.profilPseudo');
     var profilAvatar = $('#modalUsers').find('.profilAvatar');
-    $('#connectedMembers li').each(function() {
-        $(this).click(function() {
-            var id = $(this).attr('id');
-            var pseudo = $(this).attr('pseudo');
-            var avatar = $(this).attr('avatar');
-            $(profilPseudo).html(pseudo);
-            $(profilPseudo).attr('data-id', id);
-            $(profilAvatar).attr('src', avatar);
-            $('#modalUsers').show();
-            $('.filter').show();
-        });
+    $('#connectedMembers').on('click', 'li', function() {
+        var id = $(this).attr('id');
+        var pseudo = $(this).attr('pseudo');
+        var avatar = $(this).attr('avatar');
+        $(profilPseudo).html(pseudo);
+        $(profilPseudo).attr('data-id', id);
+        $(profilAvatar).attr('src', avatar);
+        $('#modalUsers').show();
+        $('.filter').show();
     });
 
     // Toggle menus
@@ -141,3 +144,4 @@ $(window).resize(function() {
         $('#connectedMembers').show();
      }
 });
+
