@@ -20,7 +20,7 @@
                 <div class="prompt">$ <input type="text" name="image" id="image" class="pulse input-shell" ></div>
                 <div class="prompt">$ <span class="command">add input mail</span></div>
                 <div class="prompt">Mail</div>
-                <div class="prompt">$ <input type="text" name="mail" id="mail" class="pulse input-shell" ></div>
+                <div class="prompt">$ <input type="email" name="mail" id="mail" class="pulse input-shell" ></div>
                 <div class="prompt">$ <span class="command">add input inscription</span></div>
                 <div><button type="submit" class="btn-shell">Inscription</button></div>
             </form>
