@@ -2,13 +2,23 @@ h2, h3 {
     font-weight: normal;
 }
 
-.window {
-    height: 95%;
-    background: #232323;
-}
-
 .body {
     height: 94.3%;
+}
+
+.window {
+    background: #232323;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+body {
+    height: 99%;
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 1%;
+    padding-top: 0;
 }
 
 pre {
@@ -144,6 +154,15 @@ h3.custom {
     }
     #connectedMembers {
         display: block;
+    }
+    body {
+        padding-top: 2rem;
+        margin-top: 0;
+    }
+    .window {
+        width: 80%;
+        height: 95%;
+        background: #232323;
     }
 }
 
