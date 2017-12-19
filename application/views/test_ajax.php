@@ -14,12 +14,12 @@
         $(function (){
             $.ajax({
                 method: 'POST',
-                url: 'ajax.php?action=usersInSalon',
+                url: 'ajax.php?action=listSalons',
                 data: {
                     salon_id: 1
                 }
             }).done(function (data) {
-                $('#ret').text(data);
+                $('#ret').text(JSON.stringify(data, null, '\t'));
             });
         });
     </script>
