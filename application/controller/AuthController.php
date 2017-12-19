@@ -37,7 +37,8 @@ switch($action){
         } else $errors['fill'] = 'Veuillez saisir les champs requis.';
         
         if (!empty($userArray)) {
-            setUserSession($userArray[0]);
+            $user = $userArray[0];
+            $user->setUserSession();
             redirect('chat');
         } else
             redirect('login');

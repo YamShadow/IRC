@@ -87,7 +87,7 @@ io.sockets.on('connection', (socket) => {
 
     //Route de deconnexion
     socket.on('disconnect', function(){
-        sql = "UPDATE `users` SET `connected` = '' WHERE `users`.`pseudo` = '"+socket.pseudo+"'"
+        sql = "UPDATE `users` SET `connected` = '0' WHERE `users`.`pseudo` = '"+socket.pseudo+"'"
         callSQL(sql, function(err,data){
             if (err)
                 console.log("ERROR : ",err)
@@ -148,7 +148,7 @@ io.sockets.on('connection', (socket) => {
                                     if (err)
                                         console.log("ERROR : ",err)
                                 })
-                                if(data[0].connected != ''){
+                                if(data[0].connected != '' || data[0].connected != '0'){
                                     socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+message)
                                     users[pseudoMsg].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+message)
                                     users[pseudoMsg].lastMsgPseudo = socket.pseudo
@@ -178,7 +178,7 @@ io.sockets.on('connection', (socket) => {
                                     if (err)
                                         console.log("ERROR : ",err)
                                 })
-                                if(data[0].connected != ''){
+                                if(data[0].connected != '' || data[0].connected != '0'){
                                     socket.emit('chat_messagePrivate', socket.pseudo+" (vous avez chuchoté): "+messageReponse)
                                     users[socket.lastMsgPseudo].emit('chat_messagePrivate', socket.pseudo+" (murmure): "+messageReponse)
                                     users[socket.lastMsgPseudo].lastMsgPseudo = socket.pseudo
@@ -321,7 +321,6 @@ io.sockets.on('connection', (socket) => {
                             if (err)
                                 console.log("ERROR : ",err)
                             else{
-                                console.log(data)
                                 if(data.affectedRows > 0){
                                     socket.emit('chat_messageBrute', "Le salon "+nameCreateRoom+" a été crée !")
                                     salons.push(nameCreateRoom)
@@ -412,8 +411,8 @@ function callSQL(request, callback){
 
 function checkSalons(socket, salon, old = null){
     let retour
-    if(salons.indexOf(salon.toLowerCase()) > 0){
-        retour = salon.toLowerCase()
+    if(salons.indexOf(salon.toLowerCase()) >= 0){
+        retour = salon
     }
     else{
         socket.emit('chat_messageBrute', "Le salon "+salon+" n'existe pas...")

@@ -29,7 +29,7 @@ Class Users extends DataObject {
     }
 
     
-    public function setUserSession($user){
+    public function setUserSession(){
         $_SESSION['user_id'] = $this->id;
         $_SESSION['user_pseudo'] = $this->pseudo;
         $_SESSION['user_image'] = $this->image;
