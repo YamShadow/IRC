@@ -110,5 +110,5 @@ switch($action){
 
         break;
     default: 
-        die('Erreur de routing dans AuthController.');
+        seterr('Erreur de routing dans AuthController.', 'AuthController');
 }
