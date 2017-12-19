@@ -388,7 +388,8 @@ io.sockets.on('connection', function (socket) {
                             if (err) console.log("ERROR : ", err);else {
                                 if (data.affectedRows > 0) {
                                     socket.emit('chat_messageBrute', "Le salon " + nameCreateRoom + " a été crée !");
-                                    salons.push(nameCreateRoom);
+                                    salons.push(nameCreateRoom.toLowerCase());
+                                    console.log(salons);
                                 }
                             }
                         });
@@ -536,6 +537,10 @@ function checkSalons(socket, salon) {
     var old = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
     var retour = void 0;
+    // console.log(salon)
+    // console.log(old)
+    // console.log(salons)
+    console.log(salons.indexOf(salon.toLowerCase()));
     if (salons.indexOf(salon.toLowerCase()) >= 0) {
         retour = salon;
     } else {

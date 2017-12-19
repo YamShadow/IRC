@@ -323,7 +323,8 @@ io.sockets.on('connection', (socket) => {
                             else{
                                 if(data.affectedRows > 0){
                                     socket.emit('chat_messageBrute', "Le salon "+nameCreateRoom+" a été crée !")
-                                    salons.push(nameCreateRoom)
+                                    salons.push(nameCreateRoom.toLowerCase())
+                                    console.log(salons)
                                 }
                             }
                         })

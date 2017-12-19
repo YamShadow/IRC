@@ -17,7 +17,7 @@
         </nav>
         
         <div class="logoHomePage">
-            <img src="assets/images/logo.png" alt="ShellCoord" />
+            <img src="assets/images/logo.png" alt="ShellCoord" role="logo" />
         </div>  
         
         <footer>

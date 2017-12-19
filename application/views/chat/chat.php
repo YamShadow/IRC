@@ -1,6 +1,6 @@
 <main class="window">
     <div class="bar">
-        <div class="btn"></div>
+        <div class="btn"><span class="closeModal"><a href="index.php?action=logout">x</a></span></div>
         <div class="icons">
             <i title="Liste des salons existants" class="fa fa-sitemap toggleSalons" aria-hidden="true"></i>
             <i title="Liste des membres connectés" class="fa fa-address-book-o toggleConnected" aria-hidden="true"></i>
