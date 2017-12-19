@@ -161,7 +161,6 @@ io.sockets.on('connection', (socket) => {
                     })
                     break
                 case '/r':
-                    console.log(socket.lastMsgPseudo)
                     let splitReponse = msg.split(" ")
                     let messageReponse = ''
                     for(let i= 1; i<splitReponse.length; i++){
@@ -327,7 +326,6 @@ io.sockets.on('connection', (socket) => {
                                     socket.emit('chat_messageBrute', "Le salon "+nameCreateRoom+" a été crée !")
                                     salons.push(nameCreateRoom)
                                 }
-                                console.log(salons)
                             }
                         })
                     }else
@@ -372,19 +370,18 @@ io.sockets.on('connection', (socket) => {
                                 socket.emit('chat_messageBrute', "Utilisateur en ligne dans "+socket.salon+": "+listeOnlineRoom)
                         }
                     })
-                break
-
-                case '/help':
-                    array = [
-
-                    ]
                     break
-
-
-
-
-
-
+                case '/help':
+                    let arrayHelp = {
+                        '/quit' : 'Commande qui permet de se deconnecter',
+                        '/r' : 'methode qui permet de repondre au dernier message privé'
+                    }
+                    let listeHelp = 'Listes des commandes disponibles :<br><br>'
+                    for(let elmHelp in arrayHelp){
+                        listeHelp += '&emsp;&emsp;'+elmHelp+' - '+arrayHelp[elmHelp]+'<br>'
+                    }
+                    socket.emit('chat_help', listeHelp)
+                    break
 
                 default: 
                     sql = "INSERT INTO messages (message, emetteur, salon) VALUES ('"+ ent.encode(addslashes(msg.trim())) +"', (select id from users where pseudo='"+socket.pseudo+"'),(select id from salons where nom='"+socket.salon+"'))"

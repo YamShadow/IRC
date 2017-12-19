@@ -235,7 +235,6 @@ io.sockets.on('connection', function (socket) {
                             }
                         }
                     });
-
                     break;
                 case '/invite':
                     var splitInvite = msg.split(" ");
@@ -263,10 +262,16 @@ io.sockets.on('connection', function (socket) {
                                                     socket.emit('chat_messageBrute', "Une invitation est déjà en cours avec " + pseudoInvite);
                                                     break;
                                                 case 2:
-                                                    socket.emit('chat_messageBrute', "Vous êtes déjà ami avec " + pseudoInvite + " !");
-                                                    break;
-                                                case 2:
                                                     socket.emit('chat_messageBrute', pseudoInvite + " refuse d'être votre ami ! Prenez un Curly !");
+                                                    break;
+                                                case 3:
+                                                    socket.emit('chat_messageBrute', "Votre invitation à " + pseudoInvite + " a expirée !");
+                                                    break;
+                                                case 4:
+                                                    socket.emit('chat_messageBrute', "Invitation indésirable pour " + pseudoInvite + " !");
+                                                    break;
+                                                case 5:
+                                                    socket.emit('chat_messageBrute', "Vous êtes déjà ami avec " + pseudoInvite + " !");
                                                     break;
                                                 default:
                                                     socket.emit('chat_messageBrute', "Bug de la matrice !");
@@ -460,9 +465,23 @@ io.sockets.on('connection', function (socket) {
                         }
                     });
                     break;
-
                 case '/help':
-                    array = [];
+                    var arrayHelp = {
+                        '/quit': 'Commande qui permet de se deconnecter',
+                        '/r': 'methode qui permet de repondre au dernier message privé'
+                    };
+                    var listeHelp = 'Listes des commandes disponibles :<br><br>';
+                    for (var elmHelp in arrayHelp) {
+                        listeHelp += '&emsp;&emsp;' + elmHelp + ' - ' + arrayHelp[elmHelp] + '<br>';
+                        // console.log(arrayHelp[elmHelp])
+                        // console.log(elmHelp)
+                        // if(listeHelp)
+                        // listeHelp.push() += ', '+listeHelp
+                        // else
+                        // listeHelp = room.nom
+                    }
+                    console.log(listeHelp);
+                    socket.emit('chat_help', listeHelp);
                     break;
 
                 default:

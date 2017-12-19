@@ -86,6 +86,12 @@
 					window.scrollTo(0, document.body.scrollHeight);
 				})
 
+				//Affiche la réponse du serveur pour switch_channel / chat_privateMessageError
+				socket.on('chat_help', function(msg) {
+					$('#messages').append($('<li class="green" style="font-weight: bold;">').html('$ '+msg))
+					window.scrollTo(0, document.body.scrollHeight);
+				})
+
 				//Affiche la réponse du serveur pour chat_messagePrivate
 				socket.on('chat_messagePrivate', function(msg) {
 					$('#messages').append($('<li class="blue" style="font-weight: bold;">').text('$ '+msg))
