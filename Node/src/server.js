@@ -323,7 +323,8 @@ io.sockets.on('connection', (socket) => {
                             else{
                                 if(data.affectedRows > 0){
                                     socket.emit('chat_messageBrute', "Le salon "+nameCreateRoom+" a été crée !")
-                                    salons.push(nameCreateRoom)
+                                    salons.push(nameCreateRoom.toLowerCase())
+                                    console.log(salons)
                                 }
                             }
                         })
@@ -448,6 +449,10 @@ function callSQL(request, callback){
 
 function checkSalons(socket, salon, old = null){
     let retour
+    // console.log(salon)
+    // console.log(old)
+    // console.log(salons)
+    console.log(salons.indexOf(salon.toLowerCase()))
     if(salons.indexOf(salon.toLowerCase()) >= 0){
         retour = salon
     }
