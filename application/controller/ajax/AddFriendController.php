@@ -1,13 +1,15 @@
 <?php
 
-require_once('application/models/Salons.class.php');
+require_once('application/models/Users.class.php');
 
-$salon = new Salons();
-$salonArray = $salon->getBy(false, ['nom']);
+if (checkPost('id_a') && checkPost('id_b') && checkPost('id_etat')) {
+    $user = new Users($_POST['id_a']);
 
-if (!empty($salonArray))
-    echo json_encode($salonArray);
+    $user->addFriend($_POST['id_b'], $_POST['id_etat']);
+} else $errors['fill'] = 'Tous les champs devant être fournis ne le sont pas.';
+
+if (!empty($errors)) 
+    echo json_encode(['errors' => $errors]);
 else
-    echo '{}';
-
+    echo json_encode($userArray);
 ?>

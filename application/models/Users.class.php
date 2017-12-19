@@ -69,4 +69,10 @@ Class Users extends DataObject {
 
         return dbFetchAllAssoc($req);
     }
+
+    public function addFriend($id_personne, $id_etat) {
+        $req = 'ISNERT INTO amis (personne_a, personne_b, etat) VALUE ('.$this->id.', '.$id_personne.', '.$id_etat.')';
+
+        return dbQuery($req);
+    }
 }
