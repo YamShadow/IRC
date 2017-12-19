@@ -112,10 +112,16 @@ $(document).ready(function() {
     // Toggle menus
     $('.toggleConnected').click(function() {
         $('#connectedMembers').toggle();
+        if($('#salonsList').css('display') == 'block' && $('#connectedMembers').css('display') == 'block' && $(window).width() < 900) {
+            $('#salonsList').css('display', 'none');
+        }
     });
 
     $('.toggleSalons').click(function() {
         $('#salonsList').toggle();
+        if($('#connectedMembers').css('display') == 'block' && $('#salonsList').css('display') == 'block' && $(window).width() < 900) {
+            $('#connectedMembers').css('display', 'none');
+        }
     });
 
 });
