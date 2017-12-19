@@ -158,7 +158,7 @@ $(document).ready(function() {
         );
 
         if (param) {
-            return vars[param] ? vars[param] : null	
+            return vars[param] ? vars[param] : 'General'	
         }
         return vars
     }
