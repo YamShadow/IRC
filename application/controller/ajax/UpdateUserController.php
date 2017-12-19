@@ -23,6 +23,7 @@ if (isset($errors))
     echo json_encode(['errors' => $errors]);
 else {
     $user->save();
+    refreshSession($user->id);
     echo json_encode($user);
 }
 

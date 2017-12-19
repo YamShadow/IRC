@@ -1,9 +1,13 @@
 <?php 
 
-if(isset($_SESSION['user_pseudo'])){
+require_once('application/models/Users.class.php');
+
+if(isset($_SESSION['user_id'])){
     switch($action){
         case 'chat':
         // Permet d'afficher toute la partie dédié au formulaire de connexion
+            refreshSession($_SESSION['user_id']);
+
             $header = array(
                 'title' => 'Formulaire de login',
                 'description' => 'Page d\'interface de connexion au Tchat',

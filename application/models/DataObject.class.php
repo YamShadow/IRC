@@ -23,22 +23,22 @@ Class DataObject implements JsonSerializable {
 				$this->{$this->primaryKey} = $id;
 				$this->hydrate();
 			} else 
-			seterr('ERREUR : Une clef primaire non numérique a été fournie en construction d\'une entité.', 'DataObject.class.php');
+			seterr('ERREUR : Une clef primaire non numérique a été fournie en construction d\'une entité.', $this->className.'.class.php');
 		}
 	}
 	
 	public function hydrate() {			// Hydrate l'entité. Si elle possède des FK (autres que MtM), crée les entités associées en les hydratant à leur tour
 		if ($this->{$this->primaryKey} == null) 
-			seterr('Fatal error: pas de primary key.', 'DataObject.hydrate');
+			seterr('Fatal error: pas de primary key.', $this->className.'.hydrate');
 
 		if (!is_numeric($this->{$this->primaryKey}))
-			seterr('Error : Primary Key non numérique.', 'DataObject.hydrate');
+			seterr('Error : Primary Key non numérique.', $this->className.'.hydrate');
 
 		$query = 'SELECT * FROM '.$this->tableName.' WHERE '.$this->primaryKey.' = '.$this->{$this->primaryKey};
 
 		$result = dbFetchAssoc($query);
 		if (empty($result))
-			seterr('Fatal error: hydrate n\'a pas pu récupérer de donnée', 'DataObject.hydrate');
+			seterr('Fatal error: hydrate n\'a pas pu récupérer de donnée', $this->className.'.hydrate');
 
 		$this->isNewOne = false;								// Si on hydrate cela signifie que ce n'est pas une nouvelle entité mais une de la base
 
@@ -91,14 +91,14 @@ Class DataObject implements JsonSerializable {
 		if(in_array($attr_name, $this->innerFields) || isset($this->foreignFields[$attr_name]))
 			return $this->$attr_name;
 		else
-			seterr('La variable '.$attr_name.' n\'existe pas dans l\'entité '.$this->className, 'DataObject.__get');
+			seterr('La variable '.$attr_name.' n\'existe pas dans l\'entité '.$this->className, $this->className.'.__get');
 	}
 
 	public function __set($attr_name, $attr_value) {
 		if(in_array($attr_name, $this->innerFields) || isset($this->foreignFields[$attr_name]))
 			$this->$attr_name = $attr_value;
 		else
-			seterr('La variable '.$attr_name.' n\'existe pas dans l\'entité '.$this->className, 'DataObject.__set');
+			seterr('La variable '.$attr_name.' n\'existe pas dans l\'entité '.$this->className, $this->className.'.__set');
 	}
 
 	public function save() {		// Sauvegarde l'entité en base
@@ -118,7 +118,7 @@ Class DataObject implements JsonSerializable {
 
 			foreach ($this->foreignFields as $field => $foreignField) {
 				if (isset($this->$field)) 
-					$fv = $this->$field->$primaryKey;
+					$fv = $this->$field->{$this->$field->primaryKey};	
 				else
 					$fv = 'NULL';
 				$req .= $fv.', ';
@@ -154,14 +154,14 @@ Class DataObject implements JsonSerializable {
 		}
 
 		// Exécuter la requête et return + log et save l'id
-		logs('Requête appelée : <<< '.$req.' >>>', 'DataObject.save');
+		logs('Requête appelée : <<< '.$req.' >>>', $this->className.'.save');
 		if ($result = dbQuery($req)) {
 			if ($this->isNewOne) {
 				$this->{$this->primaryKey} = dbLastId();
 				$this->isNewOne = false;
 			}
 		} else 
-			seterr('Erreur : Requête non exécutée.', 'DataObject.save');
+			seterr('Erreur : Requête non exécutée.', $this->className.'.save');
 	}
 
 	public function jsonSerialize() {

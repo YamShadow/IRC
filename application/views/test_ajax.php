@@ -14,14 +14,13 @@
         $(function (){
             $.ajax({
                 method: 'POST',
-                url: 'ajax.php?action=updateUser',
+                url: 'ajax.php?action=addSalon',
                 data: {
-                    user_id: 4,
-                    mail: 'teste@tes.te',
-                    image: '/url'
+                    nom: 'blabla',
+                    id_type: 1
                 }
             }).done(function (data) {
-                $('#ret').text(JSON.stringify(data, null, '\t'));
+                $('#ret').html(data);
             });
         });
     </script>
