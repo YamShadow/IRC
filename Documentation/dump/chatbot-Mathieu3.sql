@@ -86,7 +86,7 @@ INSERT INTO `messages` (`id`, `message`, `emetteur`, `salon`, `date_message`) VA
 (38, 'lol', 3, 1, '2017-12-18 09:05:29'),
 (39, 'coucou', 3, 1, '2017-12-18 09:06:20'),
 (40, 'hgrohgovgeg', 3, 2, '2017-12-18 09:06:39'),
-(41, 'ge\'g', 2, 1, '2017-12-18 09:06:41'),
+(41, 'ge\g', 2, 1, '2017-12-18 09:06:41'),
 (42, 'fesfes', 3, 2, '2017-12-18 09:07:00'),
 (43, '', 2, 2, '2017-12-18 09:07:52'),
 (44, 'test', 4, 1, '2017-12-18 16:56:48'),
@@ -229,7 +229,7 @@ INSERT INTO `types_salon` (`id`, `nom`) VALUES
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `pseudo` varchar(100) NOT NULL,
-  `mail` varchar(255) NOT NULL,
+  `mail` varchar(255) NULL,
   `password` varchar(255) NOT NULL,
   `image` text,
   `connected` tinyint(1) NOT NULL,
