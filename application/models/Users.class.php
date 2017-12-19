@@ -1,5 +1,6 @@
 <?php 
 require_once('application/models/DataObject.class.php');
+require_once('application/models/Salons.class.php');
 
 Class Users extends DataObject {
     protected $className = 'Users';
@@ -13,6 +14,9 @@ Class Users extends DataObject {
         'mail',
         'connected',
     ];
+    protected $foreignFields = [
+        'channelConnected' => 'Salons'
+    ];
 
     protected $id;
     protected $pseudo;
@@ -20,8 +24,18 @@ Class Users extends DataObject {
     protected $password;
     protected $mail;
     protected $connected = 0;
+    protected $channelConnected = null;
 
-    
+    public function jsonSerialize() {
+        return [
+            'id' => $this->id,
+            'pseudo' => $this->pseudo,
+            'image' => $this->image,
+            'connected' => $this->connected,
+            'id' => $this->id
+        ];
+    }
+
     public function isConnected() {
         if (!in_array($connected, [0, 1], true)) seterr('Erreur de type pour $connected.', 'Users');
         if ($connected) return true;

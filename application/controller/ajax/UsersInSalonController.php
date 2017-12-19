@@ -1,13 +1,18 @@
 <?php 
 
-require_once('application/models/Salons.class.php');
+require_once('application/models/Users.class.php');
 
 if (checkPost('salon_id')) {
     if (is_numeric($_POST['salon_id'])) {
-        $salon = new Salons($_POST['salon_id']);
-        $usrArray = $salon->getUsers();
+        $user = new Users();
+        $usrArray = $user->getBy([
+            'connected' => 1,
+            'channelConnected' => $_POST['salon_id']
+        ], [
+            'pseudo'
+        ]);
         
-        if ($usrArray) 
+        if (!empty($usrArray))
             echo json_encode($usrArray);
         else
             echo '{}';
