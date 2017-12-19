@@ -105,6 +105,6 @@
     
 </div>
 
-<<script>
+<script>
     let idUser = <?= $_SESSION['user_id']; ?>
 </script>

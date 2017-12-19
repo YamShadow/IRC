@@ -90,6 +90,7 @@ h3.custom {
 }
 
 #modalAddSalon, #modalParameters, #modalUsers {
+    z-index: 500;
   display: none;
   width: 550px;
   position: absolute;
@@ -138,6 +139,7 @@ h3.custom {
   }
 
   .filter {
+      z-index: 1;
     display: none;
     position: fixed;
     top: 0;

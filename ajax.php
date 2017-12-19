@@ -55,7 +55,7 @@ else
 $controller_path = 'application/controller/ajax/'.$routes[$action].'.php';
 
 if(is_file($controller_path)) {
-	// header('Content-type: application/json');
+	header('Content-type: application/json');
 	include($controller_path);
 } else {
 	seterr('Controlleur inconnu pour l\'action : '.$action, 'index.php');

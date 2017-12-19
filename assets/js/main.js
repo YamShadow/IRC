@@ -23,6 +23,7 @@ $(document).ready(function() {
                     url: 'ajax.php?action=listSalons',
                 }).done(function (data) {
                     var salons = data;
+                    console.log(salons);
                     for(salon in salons) {
                         self.salons.push(salons[salon]);
                         if(salons[salon].nom == $_GET("room")) {
