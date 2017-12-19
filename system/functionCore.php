@@ -1,5 +1,5 @@
 <?php 
-
+require_once('application/models/Users.class.php');
 /*
 Methode conf_baseurl qui permet en fonction des méthode défine de definir la base_url
 */
@@ -93,4 +93,9 @@ function checkGet($name) {
 
 function checkSession($name) {
     return isset($_SESSION[$name]) && !empty($_SESSION[$name]);
+}
+
+function refreshSession($user_id) {
+    $user = new Users($user_id);
+    $user->setUserSession();
 }

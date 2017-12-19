@@ -8,6 +8,9 @@ $routes = [
     'usersInSalon' => 'UsersInSalonController',
     'listSalons' => 'ListSalonsController',
     'updateUser' => 'UpdateUserController',
+    'listFriends' => 'ListFriendsController',
+    'addSalon' => 'AddSalonController',
+    'addFriend' => 'AddFriendController',
 ];
 
 
