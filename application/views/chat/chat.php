@@ -66,7 +66,7 @@
                 <h2 class="comment">#Modifier les paramètres de l'utilisateur :</h2>
                 <div class="prompt">$ <span class="command">add input update Login</span></div>
                 <div class="prompt">Update Login</div>
-                <div class="prompt">$ <input type="text" name="login" id="login" class="pulse input-shell" required></div>
+                <div class="prompt">$ <input value="<?= $_SESSION['user_pseudo']; ?>" type="text" name="login" id="login" class="pulse input-shell" required></div>
                 <div class="prompt">$ <span class="command">add input update password</span></div>
                 <div class="prompt">Update Password</div>
                 <div class="prompt">$ <input type="password" name="mdp" id="mdp" class="pulse input-shell" required></div>
@@ -75,11 +75,11 @@
                 <div class="prompt">$ <input type="password" name="confirmMdp" id="confirmMdp" class="pulse input-shell" required></div>
                 <div class="prompt">$ <span class="command">add input update mail</span></div>
                 <div class="prompt">Update Mail</div>
-                <div class="prompt">$ <input type="email" name="mail" id="mail" class="pulse input-shell" ></div>
+                <div class="prompt">$ <input value="<?= $_SESSION['user_mail']; ?>" type="email" name="mail" id="mail" class="pulse input-shell" ></div>
                 <div class="prompt">$ <span class="command">add input update image</span></div>
                 <div class="prompt">Update Url Avatar</div>
-                <div class="prompt">$ <input type="text" name="image" id="image" class="pulse input-shell" ></div>
-                <div><button type="submit" class="btn-shell">Valider les changements</button></div>
+                <div class="prompt">$ <input value="<?= $_SESSION['user_image']; ?>"type="text" name="image" id="image" class="pulse input-shell" ></div>
+                <div><button id="updateUser" type="submit" class="btn-shell">Valider les changements</button></div>
             </pre>
         </div>
     </div>
@@ -99,6 +99,10 @@
       </pre>
     </div>
   </div>
+</div>
+
+<div class="modalSuccess">
+    
 </div>
 
 <<script>

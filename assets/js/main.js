@@ -27,7 +27,6 @@ $(document).ready(function() {
                         self.salons.push(salons[salon]);
                         if(salons[salon].nom == $_GET("room")) {
                             idSalon = salons[salon].id;
-                            console.log(idSalon);
                         }
                     }
                 });
@@ -165,16 +164,28 @@ $(document).ready(function() {
     }
 
     $('#updateUser').on('click', function() {
+        let login = $('#login').val();
+        let mail = $('#mail').val();
+        let avatar = $('#image').val();
+        let mdp = $('#mdp').val();
+        let confirmMdp = $('#confirmPseudo').val();
         $.ajax({
             method: 'POST',
             url: 'ajax.php?action=updateUser',
             data: {
-                user_id: 4,
-                mail: 'teste@tes.te',
-                image: '/url'
+                login: login,
+                user_id: idUser,
+                mdp: mdp,
+                confirmMdp: confirmMdp,
+                mail: mail,
+                image: avatar
             }
         }).done(function (data) {
-            $('#ret').text(JSON.stringify(data, null, '\t'));
+            $('.modalSuccess').show();
+            $('.modalSuccess').html('Vos données ont bien été mises à jour');
+            setTimeout(function() { $(".modalSuccess").hide(); }, 2000);
+            $('#modalParameters').hide();
+            $('.filter').hide();
         });
     });
 
