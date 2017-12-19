@@ -1,11 +1,16 @@
 <main class="window">
     <div class="bar">
         <div class="btn"></div>
-        <i title="Paramètres" class="fa fa-cog" aria-hidden="true"></i>
+        <div class="icons">
+            <i class="fa fa-sitemap toggleSalons" aria-hidden="true"></i>
+            <i class="fa fa-address-book-o toggleConnected" aria-hidden="true"></i>
+            <i title="Paramètres" class="fa fa-cog" aria-hidden="true"></i>
+        </div>
     </div>
     <div class="body">
         <pre class="displayFlex">
             <aside id="salonsList">
+                <span class="toggleSalons">Cacher le menu <i class="fa fa-eye-slash" aria-hidden="true"></i></span>
                 <h2 class="comment">#Salons :</h2>
                 <h3 class="custom">$ <span class="greenColor">add array Salons</span></h3>
 
@@ -19,6 +24,7 @@
             </object>
 
             <aside id="connectedMembers">
+            <span class="toggleConnected">Cacher le menu <i class="fa fa-eye-slash" aria-hidden="true"></i></span>
             <h2 class="comment">#Connectés :</h2>
             <h3 class="custom">$ <span class="greenColor">echo each Members</span></h3>
                 <ul>

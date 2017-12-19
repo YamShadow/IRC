@@ -39,18 +39,28 @@ object {
 
 #salonsList {
     display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 200px;
     padding-left: 7px;
     padding-right: 15px;
     border-right: 1px solid #454545;
+    background-color: #232323;
 }
 
 #connectedMembers {
     display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
     width: 200px;
     padding-left: 15px;
     padding-right: 7px;
     border-left: 1px solid #454545;
+    background-color: #232323;
 }
 
 #connectedMembers li:nth-child(odd), #salonsList li:nth-child(odd) {
@@ -133,10 +143,19 @@ h3.custom {
     background: rgba(0,0,0, .5);
   }
 
-  .fa-cog {
+  .icons {
     float: right;
     margin-right: 15px;
+    
+  }
+
+  .icons .fa {
     cursor: pointer;
+    margin: 0 5px;
+  }
+
+  .toggleConnected, .toggleSalons {
+      cursor: pointer;
   }
 
   .closeModal {
@@ -153,7 +172,12 @@ h3.custom {
         margin-right: 15px;
     }
     #connectedMembers {
+        position: relative;
         display: block;
+        width: 200px;
+        padding-left: 15px;
+        padding-right: 7px;
+        border-left: 1px solid #454545;
     }
     body {
         padding-top: 2rem;
@@ -171,6 +195,11 @@ h3.custom {
         margin-left: 15px;
     }
     #salonsList {
+        position: relative;
         display: block;
+        width: 200px;
+        padding-left: 7px;
+        padding-right: 15px;
+        border-right: 1px solid #454545;
     }
 }

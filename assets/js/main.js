@@ -109,5 +109,29 @@ $(document).ready(function() {
         });
     });
 
+    // Toggle menus
+    $('.toggleConnected').click(function() {
+        $('#connectedMembers').toggle();
+    });
 
+    $('.toggleSalons').click(function() {
+        $('#salonsList').toggle();
+    });
+
+});
+
+$(window).resize(function() {
+    if ($(window).width() < 900) {
+        $('#salonsList').css('display', 'none');
+     }
+     else {
+        $('#salonsList').css('display', 'block');
+     }
+
+     if ($(window).width() < 750) {
+        $('#connectedMembers').hide();
+     }
+     else {
+        $('#connectedMembers').show();
+     }
 });
