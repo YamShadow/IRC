@@ -2,8 +2,8 @@
     <div class="bar">
         <div class="btn"></div>
         <div class="icons">
-            <i class="fa fa-sitemap toggleSalons" aria-hidden="true"></i>
-            <i class="fa fa-address-book-o toggleConnected" aria-hidden="true"></i>
+            <i title="Liste des salons existants" class="fa fa-sitemap toggleSalons" aria-hidden="true"></i>
+            <i title="Liste des membres connectés" class="fa fa-address-book-o toggleConnected" aria-hidden="true"></i>
             <i title="Paramètres" class="fa fa-cog" aria-hidden="true"></i>
         </div>
     </div>
