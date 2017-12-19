@@ -56,7 +56,7 @@ $(document).ready(function() {
         },
         created () {
             this.buildMembers();
-            this.timer = setInterval(this.buildMembers, 1000)
+            this.timer = setInterval(this.buildMembers, 3000)
         },
         methods: {
             buildMembers: function() {
@@ -163,6 +163,20 @@ $(document).ready(function() {
         }
         return vars
     }
+
+    $('#updateUser').on('click', function() {
+        $.ajax({
+            method: 'POST',
+            url: 'ajax.php?action=updateUser',
+            data: {
+                user_id: 4,
+                mail: 'teste@tes.te',
+                image: '/url'
+            }
+        }).done(function (data) {
+            $('#ret').text(JSON.stringify(data, null, '\t'));
+        });
+    });
 
 });
 
