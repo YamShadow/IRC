@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     // Users connected
-
+    
     var listMembers = new Vue({
         el: '#connectedMembers',
         data: {
@@ -32,13 +32,22 @@ $(document).ready(function() {
         template: '<ul><li v-for="salon in salons">{{ salon }}</li></ul>',
         data: function() {
             return {
-                salons: ['first salon',
-                'sescond salon',
-                'third salon'
-                ]
+                salons: []
             };
         },
+        created () {
+            this.buildSalons()
+        },
         methods: {
+            buildSalons: function() {
+                var self = this
+                $.ajax({
+                    method: 'POST',
+                    url: 'ajax.php?action=listSalons',
+                }).done(function (data) {
+                    self.salons = data;
+                });
+            },
             addSalon: function(input) {
                 this.salons.push(input);
             }
