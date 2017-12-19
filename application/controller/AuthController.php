@@ -1,4 +1,7 @@
 <?php 
+
+require_once('application/models/Users.class.php');
+
 switch($action){
     case 'login':
     // Permet d'afficher toute la partie dédié au formulaire de connexion
@@ -23,17 +26,24 @@ switch($action){
         break;
     case 'login_form':
     // Permet de faire le traitement du formulaire de connexion
-        require('application/models/functions/users.php');
-        $users = getUser();
-        if($users){
-            setSessionUser($users);
+        $userArray = array();
+
+        if (checkPost('login') && checkPost('mdp')) {
+            $user = new Users();
+            $userArray = $user->getBy([
+                'pseudo' => $_POST['login'], 
+                'password' => md5($_POST['mdp'])
+            ]);
+        } else $errors['fill'] = 'Veuillez saisir les champs requis.';
+        
+        if (!empty($userArray)) {
+            setUserSession($userArray[0]);
             redirect('chat');
-        }
-        else{
+        } else
             redirect('login');
-        }
 
         break;
+
     case 'register':
     // Permet d'affichier toute la partie dédiée au formulaire d'inscription
         $header = array(
@@ -53,24 +63,42 @@ switch($action){
                 'data' => array(),
             )
         );
+
         view('template', $header);
+
         break;
+
     case 'register_form':
     // Permet de faire le traitement du formulaire d'inscription
-        require('application/models/functions/users.php');
-        $users = setUser();
-        if($users){
+        if (checkPost('login') && checkPost('mdp') && checkPost('confirmMdp')) {
+            if ($_POST['mdp'] !== $_POST['confirmMdp'])
+                $errors['mdp'] = 'Vos mots de passe ne correspondent pas';
+            
+            
+            $user = new Users();
+            
+            $user->pseudo = $_POST['login'];
+            $user->password = md5($_POST['mdp']);
+            $user->pseudo = $_POST['login'];
+            $user->mail = $_POST['mail'];
+            $user->image = $_POST['image'];
+
+            $usrVerif = $user->getBy([
+                'pseudo' => $user->pseudo
+            ]);
+
+            if (!empty($usrVerif)) 
+                $errors['login'] = 'Le pseudo est déjà pris.';
+        } else {
+            $errors['fill'] = 'Veuillez saisir tous les champs requis.';
+        }
+
+        if (!isset($errors)) {
+            $user->save();
             redirect('login');
-        }
-        else{
+        } else 
             redirect('register');
-        }
 
-
-        // $user = new User();
-        // $user->nom = $_POST['nom'];
-        // $user->prenom = $_POST['prenom'];
-        //header location 
         break;
     default: 
         die('Erreur de routing dans AuthController.');

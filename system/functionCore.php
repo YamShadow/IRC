@@ -62,12 +62,12 @@ function redirect($action){
     header('Location: index.php?action='.$action);
 }
 
-function seterr($mdg, $module) {
+function seterr($msg, $module) {
     if (ENVIRONMENT == 'production') {
         header('x', true, 500);
         echo '<br />Veuillez contacter un administrateur système ou réessayer plus tard.';
         exit();
-    } else if (ENVIRONMENT == 'testing') {
+    } else if (ENVIRONMENT == 'development') {
         logs($msg, $module);
         die('An error has occured. Please consult logs file.');
     }
@@ -76,4 +76,16 @@ function seterr($mdg, $module) {
 function pr($chose) {
     var_dump($chose);
     echo '<hr>';
+}
+
+function checkPost($name) {
+    return isset($_POST[$name]) && !empty($_POST[$name]);
+}
+
+function checkGet($name) {
+    return isset($_GET[$name]) && !empty($_GET[$name]);
+}
+
+function checkSession($name) {
+    return isset($_SESSION[$name]) && !empty($_SESSION[$name]);
 }

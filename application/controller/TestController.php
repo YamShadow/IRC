@@ -1,11 +1,9 @@
 <?php
-require_once('application/models/Users.class.php');
+require_once('application/models/Salons.class.php');
 
-$ent = 'kk';
+$salon = new Salons(1);
 
+pr($salon);
 
-
-
-pr($ent);
 die();
 ?>

@@ -27,4 +27,15 @@ Class Users extends DataObject {
         if ($connected) return true;
         return false;
     }
+
+    
+    public function setUserSession($user){
+        $_SESSION['user_id'] = $this->id;
+        $_SESSION['user_pseudo'] = $this->pseudo;
+        $_SESSION['user_image'] = $this->image;
+        $_SESSION['user_mail'] = $this->mail;
+        $_SESSION['user_connected'] = 1;
+        $this->connected = 1;
+        $this->save();
+    }
 }

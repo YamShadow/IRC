@@ -1,6 +1,8 @@
 <?php 
 
 require_once('application/models/DataObject.class.php');
+require_once('application/models/Users.class.php');
+require_once('application/models/Salons.class.php');
 
 
 Class Messages extends DataObject {

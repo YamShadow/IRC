@@ -1,6 +1,7 @@
 <?php 
 
 require_once('application/models/DataObject.class.php');
+require_once('application/models/TypesSalon.class.php');
 
 
 Class Salons extends DataObject {

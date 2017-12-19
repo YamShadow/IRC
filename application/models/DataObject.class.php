@@ -88,17 +88,17 @@ Class DataObject {
 	}
 
 	public function __get($attr_name) {
-		if(in_array($attr_name, $this->innerFields) || in_array($attr_name, $this->foreignFields))
+		if(in_array($attr_name, $this->innerFields) || isset($this->foreignFields[$attr_name]))
 			return $this->$attr_name;
 		else
-			seterr('La variable n\'existe pas', 'DataObject.__get');
+			seterr('La variable '.$attr_name.' n\'existe pas dans l\'entité '.$this->className, 'DataObject.__get');
 	}
 
 	public function __set($attr_name, $attr_value) {
-		if(in_array($attr_name, $this->innerFields) || in_array($attr_name, $this->foreignFields))
+		if(in_array($attr_name, $this->innerFields) || isset($this->foreignFields[$attr_name]))
 			$this->$attr_name = $attr_value;
 		else
-			seterr('La variable n\'existe pas', 'DataObject.__set');
+			seterr('La variable '.$attr_name.' n\'existe pas dans l\'entité '.$this->className, 'DataObject.__set');
 	}
 
 	public function save() {		// Sauvegarde l'entité en base
@@ -118,7 +118,7 @@ Class DataObject {
 
 			foreach ($this->foreignFields as $field => $foreignField) {
 				if (isset($this->$field)) 
-					$fv = $this->$field->primaryKey;
+					$fv = $this->$field->$primaryKey;
 				else
 					$fv = 'NULL';
 				$req .= $fv.', ';
@@ -140,7 +140,7 @@ Class DataObject {
 
 			foreach ($this->foreignFields as $field => $foreignField) {
 				if (isset($this->$field)) 
-					$fv = $this->$field->primaryKey;
+					$fv = $this->$field->{$this->$field->primaryKey};
 				else
 					$fv = 'NULL';
 

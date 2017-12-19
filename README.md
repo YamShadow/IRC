@@ -48,6 +48,9 @@ On s'est fixé de partir sans serveur pour commencer.
     * Ajout des MP
     * Début du style css du chat
 
+### Lundi 18
+* Jordan : Les FK fonctionnent par l'ORM. Entités de base. Réécrit le connect en utilisant des fonctions de Users.
+
 --------------
 
 ## TODO
@@ -58,6 +61,7 @@ On s'est fixé de partir sans serveur pour commencer.
 - [x] Sortir le schéma de la base
 - [ ] .htaccess
 - [ ] Début des requettes Salons/personne en ligne en php ? 
+- [ ] Créer les scripts répondant aux requêtes AJAX faites par le client.
 
 ### Mathieu
 - [x] Partie métier de login et register
