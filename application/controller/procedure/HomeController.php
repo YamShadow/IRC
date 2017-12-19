@@ -25,4 +25,7 @@ switch($action){
             );
             view('template', $header);
             break;
+        default:
+            seterr('Erreur dans le routing', 'HomeController')
+            break;
 }

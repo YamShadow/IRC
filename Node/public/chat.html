@@ -55,8 +55,16 @@
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 		<script>
 			$(function () {
-				let mySound = new Audio('http://www.yamishadow.fr/Telechargement/keyblade_appears.mp3');
-				mySound.load();
+				let soundRacer = new Audio('http://www.yamishadow.fr/ECV/M1/IRC/racer.mp3');
+				soundRacer.load();
+				let soundSoin = new Audio('http://www.yamishadow.fr/ECV/M1/IRC/soin.mp3');
+				soundSoin.load();
+				let soundMario = new Audio('http://www.yamishadow.fr/ECV/M1/IRC/mario.mp3');
+				soundMario.load();
+				let soundMarioPipe = new Audio('http://www.yamishadow.fr/ECV/M1/IRC/MarioPipe.mp3');
+				soundMarioPipe.load();
+				let soundNavi = new Audio('http://www.yamishadow.fr/ECV/M1/IRC/navi.mp3');
+				soundNavi.load();
 				let socket = io();
 
 				//recuperation de GET
@@ -71,45 +79,50 @@
 				//Affiche la réponse du serveur pour new_user
 				socket.on('new_user', function(data) {
 					$('#messages').append($('<li class="green" style="font-weight: bold;">').text('$ '+data.pseudo + ' a rejoint ShellCoord dans le salon '+data.salon+' !'))
-					window.scrollTo(0, document.body.scrollHeight);
+					window.scrollTo(0, document.body.scrollHeight)
 				})
 						
 				//Affiche la réponse du serveur pour goodbye_user
 				socket.on('goodbye_user', function(pseudo) {
 					$('#messages').append($('<li class="green" style="font-weight: bold;">').text('$ '+pseudo + ' a quitter ShellCoord !'))
-					window.scrollTo(0, document.body.scrollHeight);
+					window.scrollTo(0, document.body.scrollHeight)
+					soundRacer.play()
 				})
 
 				//Affiche la réponse du serveur pour switch_channel / chat_privateMessageError
 				socket.on('chat_messageBrute', function(msg) {
 					$('#messages').append($('<li class="green" style="font-weight: bold;">').text('$ '+msg))
-					window.scrollTo(0, document.body.scrollHeight);
+					window.scrollTo(0, document.body.scrollHeight)
+					soundMarioPipe.play()
 				})
 
-				//Affiche la réponse du serveur pour switch_channel / chat_privateMessageError
+				//Affiche la réponse du serveur pour chat_help
 				socket.on('chat_help', function(msg) {
 					$('#messages').append($('<li class="green" style="font-weight: bold;">').html('$ '+msg))
-					window.scrollTo(0, document.body.scrollHeight);
+					window.scrollTo(0, document.body.scrollHeight)
+					soundSoin.play()
 				})
 
 				//Affiche la réponse du serveur pour chat_messagePrivate
 				socket.on('chat_messagePrivate', function(msg) {
 					$('#messages').append($('<li class="blue" style="font-weight: bold;">').text('$ '+msg))
-					window.scrollTo(0, document.body.scrollHeight);
+					window.scrollTo(0, document.body.scrollHeight)
+					soundNavi.play();
 				})
 						
 				//Affiche la réponse du serveur pour quit_user
 				socket.on('quit_user', function(msg) {
 					$('#messages').append($('<li style="font-weight: bold;color:#32c146">').text('$ Vous avez été déconnecté !'))
-					window.scrollTo(0, document.body.scrollHeight);
+					window.scrollTo(0, document.body.scrollHeight)
 					socket.close()
+					soundRacer.play()
 				})
 						
 				//Traitement du formulaire
 				socket.on('chat_message', function(data){
 					$('#messages').append($('<li>').text(data.pseudo+' - $ '+data.message))
 					window.scrollTo(0, document.body.scrollHeight);
-					mySound.play()
+					soundMario.play()
 				});
 
 				//Traitement du formulaire
