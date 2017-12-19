@@ -372,8 +372,19 @@ io.sockets.on('connection', (socket) => {
                     break
                 case '/help':
                     let arrayHelp = {
-                        '/quit' : 'Commande qui permet de se deconnecter',
-                        '/r' : 'methode qui permet de repondre au dernier message privé'
+                        '/acceptFriend [PSEUDO]' : 'Accepte une requete d\'amitié',
+                        '/createRoom [NOM_SALON]' : 'Créaction d\'un salon',
+                        '/declineFriend [PSEUDO]' : 'Decline une requete d\'amitié',
+                        '/friendlist' : 'Liste les amitiés',
+                        '/invite [PSEUDO]' : 'Requette d\'amitié',
+                        '/kick [PSEUDO]' : 'Expulse une personne',
+                        '/msg [PSEUDO] [MESSAGE]' : 'Message privé à une personne',
+                        '/online' : 'Liste les utilisateurs connectés',
+                        '/quit' : 'Deconnexion',
+                        '/r [MESSAGE]' : 'Repond au dernier message privé reçu',
+                        '/roomList' : 'Liste les salons',
+                        '/switch [SALON]' : 'Switch de salons',
+                        '/withMe' : 'Liste les utilisateurs de mon salon'
                     }
                     let listeHelp = 'Listes des commandes disponibles :<br><br>'
                     for(let elmHelp in arrayHelp){
