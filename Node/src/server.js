@@ -370,18 +370,41 @@ io.sockets.on('connection', (socket) => {
                         }
                     })
                     break
+                case '/rename':
+                    let splitRename = msg.split(" ")
+                    let pseudoRename = splitRename[1]
+                    if(pseudoRename != undefined){
+                        console.log(pseudoRename)
+                        console.log(socket.RealPseudo)
+                        if(pseudoRename == socket.RealPseudo){
+                            socket.pseudo = socket.RealPseudo
+                            users[socket.pseudo] = socket
+                            delete socket.RealPseudo
+                        }
+                        else{
+                            pseudoRename = '('+pseudoRename+')'
+                            socket.RealPseudo = socket.pseudo
+                            delete users[socket.pseudo]
+                            socket.pseudo = pseudoRename
+                            users[socket.pseudo] = socket
+                        }
+                    }else
+                        socket.emit('chat_messageBrute', "Veuillez saisir un pseudo !")
+                    break
                 case '/help':
                     let arrayHelp = {
                         '/acceptFriend [PSEUDO]' : 'Accepte une requête d\'amitié',
                         '/createRoom [NOM_SALON]' : 'Créaction d\'un salon',
                         '/declineFriend [PSEUDO]' : 'Decline une requête d\'amitié',
                         '/friendlist' : 'Liste les amitiés',
+                        '/help' : 'Liste des commandes',
                         '/invite [PSEUDO]' : 'Requêtte d\'amitié',
                         '/kick [PSEUDO]' : 'Expulse une personne',
                         '/msg [PSEUDO] [MESSAGE]' : 'Message privé à une personne',
                         '/online' : 'Liste les utilisateurs connectés',
                         '/quit' : 'Déconnexion',
                         '/r [MESSAGE]' : 'Repond au dernier message privé reçu',
+                        '/rename [PSEUDO]' : 'Change temporairement le pseudo',
                         '/roomList' : 'Liste les salons',
                         '/switch [SALON]' : 'Switch de salons',
                         '/withMe' : 'Liste les utilisateurs de mon salon'

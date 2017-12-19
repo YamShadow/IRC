@@ -462,17 +462,37 @@ io.sockets.on('connection', function (socket) {
                         }
                     });
                     break;
+                case '/rename':
+                    var splitRename = msg.split(" ");
+                    var pseudoRename = splitRename[1];
+                    if (pseudoRename != undefined) {
+                        console.log(pseudoRename);
+                        console.log(socket.RealPseudo);
+                        if (pseudoRename == socket.RealPseudo) {
+                            socket.pseudo = socket.RealPseudo;
+                            users[socket.pseudo] = socket;
+                            delete socket.RealPseudo;
+                        } else {
+                            pseudoRename = '(' + pseudoRename + ')';
+                            socket.RealPseudo = socket.pseudo;
+                            delete users[socket.pseudo];
+                            socket.pseudo = pseudoRename;
+                            users[socket.pseudo] = socket;
+                        }
+                    } else socket.emit('chat_messageBrute', "Veuillez saisir un pseudo !");
+                    break;
                 case '/help':
                     var arrayHelp = {
-                        '/acceptFriend [PSEUDO]': 'Accepte une requete d\'amitié',
+                        '/acceptFriend [PSEUDO]': 'Accepte une requête d\'amitié',
                         '/createRoom [NOM_SALON]': 'Créaction d\'un salon',
-                        '/declineFriend [PSEUDO]': 'Decline une requete d\'amitié',
+                        '/declineFriend [PSEUDO]': 'Decline une requête d\'amitié',
                         '/friendlist': 'Liste les amitiés',
-                        '/invite [PSEUDO]': 'Requette d\'amitié',
+                        '/help': 'Liste des commandes',
+                        '/invite [PSEUDO]': 'Requêtte d\'amitié',
                         '/kick [PSEUDO]': 'Expulse une personne',
                         '/msg [PSEUDO] [MESSAGE]': 'Message privé à une personne',
                         '/online': 'Liste les utilisateurs connectés',
-                        '/quit': 'Deconnexion',
+                        '/quit': 'Déconnexion',
                         '/r [MESSAGE]': 'Repond au dernier message privé reçu',
                         '/roomList': 'Liste les salons',
                         '/switch [SALON]': 'Switch de salons',
