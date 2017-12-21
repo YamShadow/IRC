@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
--- Client :  127.0.0.1
--- Généré le :  Mar 19 Décembre 2017 à 14:09
--- Version du serveur :  5.7.11
--- Version de PHP :  7.0.4
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  jeu. 21 déc. 2017 à 20:58
+-- Version du serveur :  5.7.19
+-- Version de PHP :  7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,8 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `chatbot`
+-- Base de données :  `shellcoord`
 --
+CREATE DATABASE IF NOT EXISTS `shellcoord` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `shellcoord`;
 
 -- --------------------------------------------------------
 
@@ -26,12 +30,17 @@ SET time_zone = "+00:00";
 -- Structure de la table `amis`
 --
 
-CREATE TABLE `amis` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `amis`;
+CREATE TABLE IF NOT EXISTS `amis` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `personne_a` int(10) UNSIGNED NOT NULL,
   `personne_b` int(10) UNSIGNED NOT NULL,
-  `etat` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `etat` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `personne_a` (`personne_a`),
+  KEY `personne_b` (`personne_b`),
+  KEY `etat` (`etat`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -39,13 +48,15 @@ CREATE TABLE `amis` (
 -- Structure de la table `etats`
 --
 
-CREATE TABLE `etats` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nom` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `etats`;
+CREATE TABLE IF NOT EXISTS `etats` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nom` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `etats`
+-- Déchargement des données de la table `etats`
 --
 
 INSERT INTO `etats` (`id`, `nom`) VALUES
@@ -61,16 +72,20 @@ INSERT INTO `etats` (`id`, `nom`) VALUES
 -- Structure de la table `messages`
 --
 
-CREATE TABLE `messages` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `emetteur` int(10) UNSIGNED NOT NULL,
   `salon` int(10) UNSIGNED NOT NULL,
-  `date_message` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `date_message` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `emetteur` (`emetteur`),
+  KEY `salon` (`salon`)
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `messages`
+-- Déchargement des données de la table `messages`
 --
 
 INSERT INTO `messages` (`id`, `message`, `emetteur`, `salon`, `date_message`) VALUES
@@ -154,16 +169,20 @@ INSERT INTO `messages` (`id`, `message`, `emetteur`, `salon`, `date_message`) VA
 -- Structure de la table `messages_prives`
 --
 
-CREATE TABLE `messages_prives` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `messages_prives`;
+CREATE TABLE IF NOT EXISTS `messages_prives` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `emetteur` int(10) UNSIGNED NOT NULL,
   `destinataire` int(10) UNSIGNED NOT NULL,
-  `date_message` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `date_message` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `emetteur` (`emetteur`),
+  KEY `destinataire` (`destinataire`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `messages_prives`
+-- Déchargement des données de la table `messages_prives`
 --
 
 INSERT INTO `messages_prives` (`id`, `message`, `emetteur`, `destinataire`, `date_message`) VALUES
@@ -191,9 +210,11 @@ INSERT INTO `messages_prives` (`id`, `message`, `emetteur`, `destinataire`, `dat
 -- Structure de la table `permissions`
 --
 
-CREATE TABLE `permissions` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nom` varchar(100) NOT NULL
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -202,10 +223,13 @@ CREATE TABLE `permissions` (
 -- Structure de la table `roles`
 --
 
-CREATE TABLE `roles` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) NOT NULL,
-  `salon` int(10) UNSIGNED NOT NULL
+  `salon` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `salon` (`salon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -214,9 +238,12 @@ CREATE TABLE `roles` (
 -- Structure de la table `roles_permissions`
 --
 
-CREATE TABLE `roles_permissions` (
+DROP TABLE IF EXISTS `roles_permissions`;
+CREATE TABLE IF NOT EXISTS `roles_permissions` (
   `role` int(10) UNSIGNED NOT NULL,
-  `permission` int(10) UNSIGNED NOT NULL
+  `permission` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`role`,`permission`),
+  KEY `permission` (`permission`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -225,14 +252,17 @@ CREATE TABLE `roles_permissions` (
 -- Structure de la table `salons`
 --
 
-CREATE TABLE `salons` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `salons`;
+CREATE TABLE IF NOT EXISTS `salons` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) NOT NULL,
-  `type_salon` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `type_salon` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `type_salon` (`type_salon`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `salons`
+-- Déchargement des données de la table `salons`
 --
 
 INSERT INTO `salons` (`id`, `nom`, `type_salon`) VALUES
@@ -247,13 +277,15 @@ INSERT INTO `salons` (`id`, `nom`, `type_salon`) VALUES
 -- Structure de la table `types_salon`
 --
 
-CREATE TABLE `types_salon` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nom` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `types_salon`;
+CREATE TABLE IF NOT EXISTS `types_salon` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `types_salon`
+-- Déchargement des données de la table `types_salon`
 --
 
 INSERT INTO `types_salon` (`id`, `nom`) VALUES
@@ -268,18 +300,20 @@ INSERT INTO `types_salon` (`id`, `nom`) VALUES
 -- Structure de la table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `pseudo` varchar(100) NOT NULL,
   `mail` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `image` text,
   `connected` tinyint(1) DEFAULT '0',
-  `channelConnected` int(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `channelConnected` int(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `users`
+-- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`id`, `pseudo`, `mail`, `password`, `image`, `connected`, `channelConnected`) VALUES
@@ -293,10 +327,14 @@ INSERT INTO `users` (`id`, `pseudo`, `mail`, `password`, `image`, `connected`, `
 -- Structure de la table `users_roles`
 --
 
-CREATE TABLE `users_roles` (
+DROP TABLE IF EXISTS `users_roles`;
+CREATE TABLE IF NOT EXISTS `users_roles` (
   `user` int(10) UNSIGNED NOT NULL,
   `role` int(10) UNSIGNED NOT NULL,
-  `salon` int(10) UNSIGNED NOT NULL
+  `salon` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`user`,`role`,`salon`),
+  KEY `role` (`role`),
+  KEY `salon` (`salon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -305,151 +343,16 @@ CREATE TABLE `users_roles` (
 -- Structure de la table `users_salons`
 --
 
-CREATE TABLE `users_salons` (
+DROP TABLE IF EXISTS `users_salons`;
+CREATE TABLE IF NOT EXISTS `users_salons` (
   `user` int(10) UNSIGNED NOT NULL,
-  `salon` int(10) UNSIGNED NOT NULL
+  `salon` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`user`,`salon`),
+  KEY `salon` (`salon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Index pour les tables exportées
---
-
---
--- Index pour la table `amis`
---
-ALTER TABLE `amis`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `personne_a` (`personne_a`),
-  ADD KEY `personne_b` (`personne_b`),
-  ADD KEY `etat` (`etat`);
-
---
--- Index pour la table `etats`
---
-ALTER TABLE `etats`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `messages`
---
-ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `emetteur` (`emetteur`),
-  ADD KEY `salon` (`salon`);
-
---
--- Index pour la table `messages_prives`
---
-ALTER TABLE `messages_prives`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `emetteur` (`emetteur`),
-  ADD KEY `destinataire` (`destinataire`);
-
---
--- Index pour la table `permissions`
---
-ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `salon` (`salon`);
-
---
--- Index pour la table `roles_permissions`
---
-ALTER TABLE `roles_permissions`
-  ADD PRIMARY KEY (`role`,`permission`),
-  ADD KEY `permission` (`permission`);
-
---
--- Index pour la table `salons`
---
-ALTER TABLE `salons`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `type_salon` (`type_salon`);
-
---
--- Index pour la table `types_salon`
---
-ALTER TABLE `types_salon`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `users_roles`
---
-ALTER TABLE `users_roles`
-  ADD PRIMARY KEY (`user`,`role`,`salon`),
-  ADD KEY `role` (`role`),
-  ADD KEY `salon` (`salon`);
-
---
--- Index pour la table `users_salons`
---
-ALTER TABLE `users_salons`
-  ADD PRIMARY KEY (`user`,`salon`),
-  ADD KEY `salon` (`salon`);
-
---
--- AUTO_INCREMENT pour les tables exportées
---
-
---
--- AUTO_INCREMENT pour la table `amis`
---
-ALTER TABLE `amis`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT pour la table `etats`
---
-ALTER TABLE `etats`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT pour la table `messages`
---
-ALTER TABLE `messages`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
---
--- AUTO_INCREMENT pour la table `messages_prives`
---
-ALTER TABLE `messages_prives`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
---
--- AUTO_INCREMENT pour la table `permissions`
---
-ALTER TABLE `permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `salons`
---
-ALTER TABLE `salons`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT pour la table `types_salon`
---
-ALTER TABLE `types_salon`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT pour la table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- Contraintes pour les tables exportées
+-- Contraintes pour les tables déchargées
 --
 
 --
@@ -507,6 +410,7 @@ ALTER TABLE `users_roles`
 ALTER TABLE `users_salons`
   ADD CONSTRAINT `users_salons_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `users_salons_ibfk_2` FOREIGN KEY (`salon`) REFERENCES `salons` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
